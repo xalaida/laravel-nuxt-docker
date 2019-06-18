@@ -1,0 +1,70 @@
+version: '3'
+
+######### Services ########
+
+services:
+  # Server container
+  nginx:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    volumes:
+      # Logs volume
+      - ./docker/nginx/logs:/var/log/nginx
+    ports:
+      - 8080:80
+    links:
+      - node
+      - php-fpm
+    networks:
+      - internal
+
+  # PHP FastCGI Process Manager container
+  php-fpm:
+    build:
+      context: docker/php-fpm
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www
+#    links:
+#      - mysql
+#      - redis
+#      - mailhog
+    networks:
+      - internal
+
+  # Node container
+  node:
+    build:
+      context: docker/node
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/var/www
+    networks:
+      - internal
+
+  # Redis container
+  redis:
+    build:
+      context: docker/redis
+      dockerfile: Dockerfile
+    volumes:
+      - redis:/data
+    ports:
+      - 63791:6379
+    networks:
+      - internal
+
+######### Volumes #########
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local
+
+######### Networks ########
+
+networks:
+  internal:
+    driver: bridge
