@@ -7,7 +7,7 @@ FROM node:12.4-alpine
 #RUN apk add libpq
 
 # Set up work directory
-WORKDIR /var/www/
+WORKDIR /var/www/client
 
 # TODO: npm install -g @vue/cli @vue/cli-init
 # TODO: Check if project exists. If not - create the new one (nuxt create-project)
@@ -19,4 +19,4 @@ WORKDIR /var/www/
 
 ENV HOST 0.0.0.0
 
-CMD ["sh", "-c", "npm install && npm run dev"]
+CMD ["sh", "-c", "yarn install && yarn dev"]

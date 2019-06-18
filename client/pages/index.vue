@@ -17,6 +17,8 @@
           href="https://github.com/nuxt/nuxt.js"
           target="_blank"
           class="button--grey">GitHub</a>
+
+        <button @click.prevent="fetch" type="button">Fetch</button>
       </div>
     </div>
   </section>
@@ -28,6 +30,17 @@ import AppLogo from '~/components/AppLogo.vue'
 export default {
   components: {
     AppLogo
+  },
+
+  methods: {
+    async fetch() {
+      try {
+        const response = await this.$axios.$get('api/');
+        console.log(response);
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 }
 </script>

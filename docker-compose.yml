@@ -1,6 +1,6 @@
 version: '3'
 
-######### Services ########
+######### Services ###################################
 
 services:
   # Server container
@@ -25,11 +25,26 @@ services:
       context: docker/php-fpm
       dockerfile: Dockerfile
     volumes:
-      - ./:/var/www
-#    links:
-#      - mysql
-#      - redis
-#      - mailhog
+      - ./api:/var/www/api
+    #    links:
+    #      - mysql
+    #      - redis
+    #      - mailhog
+    networks:
+      - internal
+
+  # PHP Command line
+  php-cli:
+    build:
+      context: docker/php-cli
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/var/www/api
+    #    links:
+    #      - mysql
+    #      - redis
+    #      - mailhog
+    tty: true
     networks:
       - internal
 
@@ -39,7 +54,7 @@ services:
       context: docker/node
       dockerfile: Dockerfile
     volumes:
-      - ./client:/var/www
+      - ./client:/var/www/client
     networks:
       - internal
 
@@ -55,7 +70,7 @@ services:
     networks:
       - internal
 
-######### Volumes #########
+######### Volumes ###################################
 
 volumes:
   mysql:
@@ -63,7 +78,7 @@ volumes:
   redis:
     driver: local
 
-######### Networks ########
+######### Networks ###################################
 
 networks:
   internal:

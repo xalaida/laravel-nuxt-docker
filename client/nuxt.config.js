@@ -34,6 +34,15 @@ module.exports = {
         })
       }
     }
-  }
-}
+  },
+
+  modules: [
+    '@nuxtjs/axios',
+  ],
+
+  axios: {
+    port: '8080',
+  },
+};
+
 
