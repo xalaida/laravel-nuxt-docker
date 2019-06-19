@@ -26,6 +26,8 @@ Clone and go!
 - add node-cli container
 - proxy redis port (for gui tools access)
 - add commands for postgres usage
+- add commands for displaying logs
+- add commands for clearing logs
 
 ### Installing nuxt:
 1. Remove old client directory:
