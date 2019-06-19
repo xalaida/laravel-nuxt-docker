@@ -1,4 +1,4 @@
-# About
+# About (Currently work in progress)
 Dockerized started template for Laravel + Nuxt.JS easy development
 
 Clone and go!
