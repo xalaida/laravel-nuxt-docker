@@ -32,6 +32,22 @@ rebuild: down build
 remove-volumes:
 	docker-compose down --volumes
 
+#-----------------------------------------------------------
+# Installation
+#-----------------------------------------------------------
+laravel:
+	sudo rm -rf api
+	mkdir api
+	docker-compose exec --user "$(id -u):$(id -g)" php-cli composer create-project --prefer-dist laravel/laravel .
+	make permissions
+
+#-----------------------------------------------------------
+# Laravel
+#-----------------------------------------------------------
+permissions:
+	sudo chmod -R 777 api/bootstrap/cache
+	sudo chmod -R 777 api/storage
+
 ##---------------------------
 ## Application
 ##---------------------------

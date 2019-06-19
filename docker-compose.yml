@@ -9,7 +9,7 @@ services:
       context: docker/nginx
       dockerfile: Dockerfile
     volumes:
-      # Pass all to allow nginx proxy requests into index.php or node instance
+      # Pass all to allow to proxy requests into index.php or node instance
       - ./:/var/www
       # Logs volume
       - ./docker/nginx/logs:/var/log/nginx
@@ -31,10 +31,9 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./api:/var/www/api
-    #    links:
-    #      - mysql
-    #      - redis
-    #      - mailhog
+    links:
+      - postgres
+      - redis
     networks:
       - internal
 
@@ -75,25 +74,31 @@ services:
     networks:
       - internal
 
-  # PHP Command line
+  # Node command line container
+  node-cli:
+    build:
+      context: docker/node-cli
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/var/www/client
+    tty: true
+
+  # PHP Command line container
   php-cli:
     build:
       context: docker/php-cli
       dockerfile: Dockerfile
     volumes:
       - ./api:/var/www/api
-    #    links:
-    #      - mysql
-    #      - redis
-    #      - mailhog
+    links:
+      - postgres
+      - redis
     tty: true
-    networks:
-      - internal
 
 ######### Volumes ###################################
 
 volumes:
-  mysql:
+  database:
     driver: local
   redis:
     driver: local
