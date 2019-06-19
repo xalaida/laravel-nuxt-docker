@@ -17,6 +17,10 @@ s:
 # Restart all docker containers
 restart: down up
 
+# Restart all docker containers
+restart-node:
+	docker-compose restart node
+
 # Build and up docker containers
 build:
 	docker-compose up -d --build

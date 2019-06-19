@@ -41,7 +41,7 @@ export default {
 
   methods: {
     apiGet() {
-      this.$axios.get('/')
+      this.$axios.get('/api')
         .then(response => {
           console.log(response);
         })
@@ -51,7 +51,7 @@ export default {
     },
 
     apiPost() {
-      this.$axios.post('/', { foo: 'bar' })
+      this.$axios.post('/api', { foo: 'bar' })
         .then(response => {
           console.log(response);
         })

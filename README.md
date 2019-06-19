@@ -1,13 +1,17 @@
+# About
+Dockerized started template for Laravel + Nuxt.JS easy development
+
+Clone and go!
+
 ### TODO LIST:
-- separate volume directories (client and api)
 - update PHP to 7.3
 - add instructions about reinstallation nuxt and laravel with fresh versions
-
 - install eslinter
 - add logs to .gitignore
 - add docker ignore
-
-- add command for restarting node
+- add other containers
+- migrate to SSL and probably HTTP2
+- add instructions about axios usage
 
 ### Installing nuxt:
 1. Remove old client directory:
@@ -21,7 +25,7 @@ yarn create nuxt-app client
 ```
 
 
-### Installing laravel:
+### Installing fresh laravel:
 1. Remove old client directory:
 ```
 sudo rm -rf api
@@ -32,7 +36,3 @@ yarn create nuxt-app client
 ```
 3. Set up permissions
 
-#### Next steps:
-- figure it out with errors in console about websockets (try the same with fresh nuxt)
-- add instructions about axios usage (maybe avoid using plugin)
-- add php-fpm proxy with nginx by prefix /api 
