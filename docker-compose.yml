@@ -9,10 +9,15 @@ services:
       context: docker/nginx
       dockerfile: Dockerfile
     volumes:
+      # Pass all to allow nginx proxy requests into index.php or node instance
+      - ./:/var/www
       # Logs volume
       - ./docker/nginx/logs:/var/log/nginx
     ports:
+      # Nuxt port
       - 8080:80
+      # Laravel port
+      - 8081:81
     links:
       - node
       - php-fpm

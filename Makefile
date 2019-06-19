@@ -15,13 +15,14 @@ s:
 	docker-compose ps
 
 # Restart all docker containers
-restart:
-	docker-compose down
-	docker-compose up -d
+restart: down up
 
 # Build and up docker containers
 build:
 	docker-compose up -d --build
+
+# Build and up docker containers
+rebuild: down build
 
 # Shut down and remove all volumes
 remove-volumes:

@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/api', function () {
+    return view('welcome');
+});
+
+Route::post('/api', function (\Illuminate\Http\Request$request) {
+    return response()->json($request->all());
+});
