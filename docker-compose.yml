@@ -9,9 +9,7 @@ services:
       context: docker/nginx
       dockerfile: Dockerfile
     volumes:
-      # Pass all to allow to proxy requests into index.php or node instance
       - ./:/var/www
-      # Logs volume
       - ./docker/nginx/logs:/var/log/nginx
     ports:
       # Nuxt port
@@ -34,6 +32,23 @@ services:
     links:
       - postgres
       - redis
+    networks:
+      - internal
+
+  # Supervisor container (schedule and queue runner)
+  supervisor:
+    build:
+      context: docker/supervisor
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/
+      - ./docker/supervisor/conf.d:/etc/supervisor/conf.d
+      - ./docker/supervisor/logs:/var/log
+    links:
+      - postgres
+      - redis
+#      - nginx
+#      - mailhog
     networks:
       - internal
 

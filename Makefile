@@ -36,6 +36,13 @@ rebuild: down build
 remove-volumes:
 	docker-compose down --volumes
 
+# Show status of the each container
+clear-logs:
+	sudo rm docker/nginx/logs/access.log
+	sudo rm docker/nginx/logs/error.log
+	sudo rm docker/supervisor/logs/cron.log
+	sudo rm docker/supervisor/logs/queue.log
+
 #-----------------------------------------------------------
 # Laravel
 #-----------------------------------------------------------

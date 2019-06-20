@@ -18,8 +18,8 @@ RUN apt-get install -y libcurl3-dev curl && docker-php-ext-install curl
 # BC Math
 RUN docker-php-ext-install bcmath
 
-# MySQL
-RUN docker-php-ext-install pdo pdo_mysql
+# PostgreSQL
+RUN apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
 
 # Human Language and Character Encoding Support
 RUN apt-get install -y zlib1g-dev libicu-dev g++
@@ -39,4 +39,4 @@ RUN apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set up default directory
-WORKDIR /var/www
+WORKDIR /var/www/api

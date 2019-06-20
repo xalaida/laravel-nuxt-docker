@@ -17,14 +17,12 @@ Dockerized started template for Laravel + Nuxt.JS easy development.
 * PHP-CLI for back-end workspace
 
 ### TODO LIST:
-- add other containers (selenium, echo-server, queue, schedule)
+- add other containers (selenium, echo-server)
 - add instructions about reinstallation nuxt and laravel with fresh versions
 - migrate to SSL and probably HTTP2
 - add instructions about axios usage
 - proxy redis port (for gui tools access)
-- add commands for postgres usage
-- add commands for displaying logs
-- add commands for clearing logs
+- add commands for postgres and redis usage
 
 **If you want, you can reinstall fresh laravel version with the following commands:**
 

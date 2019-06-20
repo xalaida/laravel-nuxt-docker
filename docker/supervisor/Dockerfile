@@ -9,6 +9,29 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Dependencies
 RUN apt-get update
 
+
+# ---- Unique for supervisor only ---->
+
+# Prepare log files
+RUN touch /var/log/cron.log
+RUN touch /var/log/queue.log
+RUN touch /var/log/supervisord.log
+
+# Supervisor
+RUN apt-get install -y supervisor
+
+# Add supervisor configuration
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+
+# Crontab
+RUN apt-get install -y cron
+COPY cron.d/schedule /etc/cron.d
+RUN chmod -R 644 /etc/cron.d
+RUN crontab /etc/cron.d/schedule
+
+# <---- Unique for supervisor only ----
+
+
 # Zip
 RUN apt-get install -y libzip-dev zip && docker-php-ext-configure zip --with-libzip && docker-php-ext-install zip
 
@@ -35,22 +58,23 @@ RUN apt-get install -y zlib1g-dev libicu-dev g++
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
 
-## Xdebug
-#RUN pecl install xdebug && docker-php-ext-enable xdebug
-#COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
 # Custom php.ini config
-COPY custom.ini /usr/local/etc/php/conf.d/custom.ini
+ADD ./custom.ini /usr/local/etc/php/conf.d/custom.ini
 
-# Composer installation
-ENV COMPOSER_ALLOW_SUPERUSER 1
-RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
-RUN chmod 0755 /usr/bin/composer
+# ---- Unique for supervisor only ---->
+# Removed line for installing composer
+# <---- Unique for supervisor only ----
 
 # Clean up
 RUN apt-get clean
 RUN apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+
+# ---- Unique for supervisor only ---->
+
 # Set up default directory
-WORKDIR /var/www/api
+WORKDIR /etc/supervisor/conf.d/
+
+# Run after container is up
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
