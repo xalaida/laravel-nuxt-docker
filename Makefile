@@ -33,65 +33,42 @@ remove-volumes:
 	docker-compose down --volumes
 
 #-----------------------------------------------------------
-# Installation
-#-----------------------------------------------------------
-laravel:
-	sudo rm -rf api
-	mkdir api
-	docker-compose exec --user "$(id -u):$(id -g)" php-cli composer create-project --prefer-dist laravel/laravel .
-	make permissions
-
-#-----------------------------------------------------------
 # Laravel
 #-----------------------------------------------------------
+
+# Add permissions for cache and store folders
 permissions:
 	sudo chmod -R 777 api/bootstrap/cache
 	sudo chmod -R 777 api/storage
 
-##---------------------------
-## Application
-##---------------------------
-#
-#migrate:
-#	docker-compose exec php-cli php artisan migrate
-#
-#rollback:
-#	docker-compose exec php-cli php artisan rollback
-#
-#refresh:
-#	docker-compose exec php-cli php artisan migrate:fresh
-#
-#seed:
-#	docker-compose exec php-cli php artisan db:seed -v
-#
-#reseed: refresh seed
-#
-#tinker:
-#	docker-compose exec php-cli php artisan tinker
-#
-#test:
-#	docker-compose exec php-cli vendor/bin/phpunit
-#
-#coverage:
-#	docker-compose exec php-cli vendor/bin/phpunit --coverage-html tests/report
-#
-#autoload:
-#	docker-compose exec php-cli composer dump-autoload
-#
-#perm:
-#	sudo chmod -R 777 bootstrap/cache
-#	sudo chmod -R 777 storage
-#
-#env:
-#	cp ./.env.example ./.env
-#	docker-compose exec php-cli php artisan key:generate
-#
-##---------------------------
-## Front-end
-##---------------------------
-#
-#assets:
-#	docker-compose exec node yarn install
-#
-#watch:
-#	docker-compose exec node yarn watch
+# Run tinker
+tinker:
+	docker-compose exec php-cli php artisan tinker
+
+# Run phpunit tests
+test:
+	docker-compose exec php-cli vendor/bin/phpunit
+
+# Run phpunit tests with coverage
+coverage:
+	docker-compose exec php-cli vendor/bin/phpunit --coverage-html tests/report
+
+# PHP composer autoload comand
+autoload:
+	docker-compose exec php-cli composer dump-autoload
+
+# Run database migrations
+db-migrate:
+	docker-compose exec php-cli php artisan migrate
+
+# Run migrations rollback
+db-rollback:
+	docker-compose exec php-cli php artisan rollback
+
+# Run seeders
+db-seed:
+	docker-compose exec php-cli php artisan db:seed
+
+# Fresh all migrations
+db-fresh:
+	docker-compose exec php-cli php artisan migrate:fresh
