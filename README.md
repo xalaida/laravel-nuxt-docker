@@ -13,6 +13,8 @@ Dockerized started template for Laravel + Nuxt.JS easy development.
 * Node version 12.4 (For SSR)
 * Redis
 * PostgreSQL version 11.3
+* Supervisor with queue and schedule
+* Mailhog for easy SMTP testing
 * NODE-CLI for front-end workspace
 * PHP-CLI for back-end workspace
 
@@ -23,20 +25,17 @@ Dockerized started template for Laravel + Nuxt.JS easy development.
 - add instructions about axios usage
 - proxy redis port (for gui tools access)
 - add commands for postgres and redis usage
+- add instructions about testing (and generate .env.testing file)
 
 **If you want, you can reinstall fresh laravel version with the following commands:**
 
-Remove old laravel directory
+Remove the old laravel directory and create the new empty one
 ```
 sudo rm -rf api
-```
-
-Create new empty directory (name must be 'api' because it mounts inside docker-containers)
-```
 mkdir api
 ```
 
-Restart docker containers to allow to remount the new 'api' directory
+Restart docker containers to allow to remount the new just created 'api' directory
 ```
 docker-compose down
 docker-compose up -d
@@ -56,6 +55,18 @@ Set up laravel permissions
 ```
 sudo chmod -R 777 api/bootstrap/cache
 sudo chmod -R 777 api/storage
+```
+
+Update environment variables and generate laravel application key
+```
+sudo rm api/.env
+cp .env api/.env
+docker-compose exec php-cli php artisan key:generate 
+```
+
+Install redis php client
+```
+docker-compose exec php-cli composer require predis/predis
 ```
 
 Open http://localhost:8081 and make sure it works

@@ -62,7 +62,7 @@ services:
     networks:
       - internal
 
-  # PostgreSQL
+  # PostgreSQL database container
   postgres:
     build:
       context: docker/postgres
@@ -71,6 +71,17 @@ services:
       - database:/var/lib/postgresql/data
     ports:
       - 54321:5432
+    environment:
+      - LC_ALL=C.UTF-8
+      - POSTGRES_DB=app
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=app
+
+  # PostgreSQL testing database container
+  postgres-testing:
+    build:
+      context: docker/postgres
+      dockerfile: Dockerfile
     environment:
       - LC_ALL=C.UTF-8
       - POSTGRES_DB=app
@@ -88,6 +99,14 @@ services:
       - 63791:6379
     networks:
       - internal
+
+  # Mailhog container (smtp testing)
+  mailhog:
+    build:
+      context: docker/mailhog
+      dockerfile: Dockerfile
+    ports:
+      - 8026:8025
 
   # Node command line container
   node-cli:
