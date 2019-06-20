@@ -6,7 +6,7 @@
         client
       </h1>
       <h2 class="subtitle">
-        My splendiferous Nuxt.js project
+        My incredible Nuxt.js project
       </h2>
       <div class="links">
         <a
@@ -20,13 +20,6 @@
           class="button--grey"
         >GitHub</a>
       </div>
-
-      <div>
-        <button @click="apiGet" type="button">GET</button>
-      </div>
-      <div>
-        <button @click="apiPost" type="button">POST</button>
-      </div>
     </div>
   </div>
 </template>
@@ -37,28 +30,6 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
-  },
-
-  methods: {
-    apiGet() {
-      this.$axios.get('/api')
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-    },
-
-    apiPost() {
-      this.$axios.post('/api', { foo: 'bar' })
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-    },
   }
 }
 </script>

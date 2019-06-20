@@ -33,8 +33,18 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    // Doc: https://bootstrap-vue.js.org/docs/
+    'bootstrap-vue/nuxt',
+    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/eslint-module'
   ],
+  /*
+  ** Axios module configuration
+  ** See https://axios.nuxtjs.org/options
+  */
+  axios: {
+  },
   /*
   ** Build configuration
   */
@@ -44,9 +54,5 @@ export default {
     */
     extend(config, ctx) {
     }
-  },
-
-  axios: {
-    port: '8080',
   }
 }

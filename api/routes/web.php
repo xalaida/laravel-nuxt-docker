@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/api/hit', function () {
+    return 'correct with api request';
+});
+
+Route::get('/hit', function () {
+    return 'incorrect';
+});
