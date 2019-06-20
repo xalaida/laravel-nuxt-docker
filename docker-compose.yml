@@ -32,6 +32,7 @@ services:
     links:
       - postgres
       - redis
+      - mailhog
     networks:
       - internal
 
@@ -47,8 +48,7 @@ services:
     links:
       - postgres
       - redis
-#      - nginx
-#      - mailhog
+      - mailhog
     networks:
       - internal
 
@@ -127,6 +127,7 @@ services:
     links:
       - postgres
       - redis
+      - mailhog
     tty: true
 
 ######### Volumes ###################################
