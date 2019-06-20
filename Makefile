@@ -14,6 +14,10 @@ down:
 s:
 	docker-compose ps
 
+# Show status of the each container
+logs:
+	docker-compose logs
+
 # Restart all docker containers
 restart: down up
 
