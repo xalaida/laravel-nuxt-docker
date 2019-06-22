@@ -83,3 +83,7 @@ db-seed:
 # Fresh all migrations
 db-fresh:
 	docker-compose exec php-cli php artisan migrate:fresh
+
+# Dump database into file
+db-dump:
+	docker-compose exec postgres pg_dump -U app -d app > docker/postgres/dumps/dump.sql

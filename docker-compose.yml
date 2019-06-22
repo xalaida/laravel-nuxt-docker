@@ -68,7 +68,10 @@ services:
       context: docker/postgres
       dockerfile: Dockerfile
     volumes:
+      # Database volume
       - database:/var/lib/postgresql/data
+      # Temp volume to allow using dumps
+      - ./docker/postgres/dumps/:/tmp/
     ports:
       - 54321:5432
     environment:

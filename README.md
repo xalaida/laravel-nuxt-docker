@@ -1,35 +1,6 @@
 ## About
 > Dockerized started template for Laravel + Nuxt.JS comfortable development.
 
-## Installation
-// todo
-
-## Usage
-For using Laravel api from Nuxt.JS application, you must add **_/api_** prefix for all API requests.
-
-**_Axios_** module must use 8080 port in its configuration (nuxt.config.js)
-```
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  axios: {
-    port: 8080
-  }, 
-```
-
-### Logs
-
-All **_nginx_** logs are available inside _docker/nginx/logs_ directory
-
-All **_supervisor_** logs are available inside _docker/supervisor/logs_ directory
-
-Other logs is available with commands:
-```
-docker-compose logs
-docker-compose logs <container>
-```
-
 ## Available containers
 * Nginx (as proxy resolver between Laravel and Nuxt)
 * PHP-FPM version 7.3
@@ -41,6 +12,122 @@ docker-compose logs <container>
 * NODE-CLI for front-end workspace
 * PHP-CLI for back-end workspace
 
+## Installation
+
+1. Download or clone repo
+
+2. Run the command:
+```
+docker-compose up -d --build
+```
+Or the same with available _make_ command
+```
+make build
+```
+
+3. That's it. Go to http://localhost:8080 and start to develop. 
+
+## Usage
+
+To up all containers, run
+```
+docker-compose up -d
+```
+Or the same with available _make_ command
+```
+make up
+```
+
+**Nuxt**
+
+Application is available by http://localhost:8080 url (you also can change it in your _/etc/hosts_ file).
+
+If you want to use **_Axios_** module, set 8080 port in its configuration (nuxt.config.js)
+```
+  /*
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
+  axios: {
+    port: 8080
+  }, 
+```
+
+**Laravel**
+
+Laravel API is available with http://localhost:8080/api url (or http://localhost:8081)
+
+Artisan commands can be used like this:
+```
+docker-compose exec php-cli php artisan migrate
+```
+If you want to generate a new controller, the commands should be executed from the current user like this:
+```
+docker-compose exec --user "$(id -u):$(id -g)" php-cli php artisan make:controller HomeController
+```
+To make the workflow a simpler, there is the aliases.sh file, which allow to do the same like this:
+```
+artisan make:controller HomeController
+```
+[More about aliases.sh](#Aliases)
+
+**Database**
+
+If you want to connect to PostgreSQL database from external tool, for example _Sequel Pro_ or _Navicat_, use the following parameters:
+```
+HOST: localhost
+PORT: 54321
+DB: app
+USER: app
+PASSWORD: app   
+```
+
+Also you can connect to DB with CLI using docker container:
+```
+// Connect to container bash cli
+docker-compose exec postgres bash
+    // Then connect to DB cli 
+    psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+```
+
+For example, if you want to export dump file, use the command:
+```
+docker-compose exec postgres pg_dump ${POSTGRES_USER} -d ${POSTGRES_DB} > docker/postgres/dumps/dump.sql
+```
+For import file into database, put your file to docker/postgres/dumps folder, it mounts into /tmp folder inside container:
+```
+// Connect to container bash cli
+docker-compose exec postgres bash
+    // Then connect to DB cli 
+    psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} < /tmp/dump.sql
+```
+
+**Redis**
+
+To connect to redis cli, use the command:
+```
+docker-compose exec redis redis-cli
+```
+
+If you want to connect with external GUI tool, use the port 54321
+
+**Mailhog**
+If you want to check how all sent mail look, just go to http://localhost:8026.
+It is test mail catcher tool for SMTP testing.
+
+For using Laravel api from Nuxt.JS application, you must add **_/api_** prefix for all API requests.
+
+### Logs
+
+All **_nginx_** logs are available inside _docker/nginx/logs_ directory
+
+All **_supervisor_** logs are available inside _docker/supervisor/logs_ directory
+
+To view docker containers logs, use the commands:
+```
+docker-compose logs
+docker-compose logs <container>
+```
 
 #### Makefile
 For example, to start all docker containers you may use:
@@ -140,9 +227,7 @@ docker-compose restart
 Open http://localhost:8080 and make sure it works
 
 
-### TODO LIST:
-- add installation instructions
-- add commands for postgres and redis usage
+##### TODO LIST:
 - add image to readme.md with connected containers and workflow explaining 
 - add other containers (selenium, laravel-echo-server)
 - add instructions about testing (and generate .env.testing file)
