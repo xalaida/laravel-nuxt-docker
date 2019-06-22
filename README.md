@@ -1,5 +1,5 @@
 ## About
-> Dockerized started template for Laravel + Nuxt.JS comfortable development.
+Dockerized started template for Laravel + Nuxt.JS comfortable development.
 
 ## Available containers
 * Nginx (as proxy resolver between Laravel and Nuxt)
