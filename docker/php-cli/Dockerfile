@@ -47,9 +47,6 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 RUN chmod 0755 /usr/bin/composer
 
-COPY ../../api/composer.json /var/www/api/composer.json
-RUN /var/www/api/composer install
-
 # Clean up
 RUN apt-get clean
 RUN apt-get -y autoremove

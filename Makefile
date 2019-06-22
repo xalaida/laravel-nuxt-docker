@@ -87,3 +87,6 @@ db-fresh:
 # Dump database into file
 db-dump:
 	docker-compose exec postgres pg_dump -U app -d app > docker/postgres/dumps/dump.sql
+
+composer-install:
+		docker-compose exec php-cli composer install
