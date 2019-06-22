@@ -14,12 +14,12 @@ Dockerized started template for Laravel + Nuxt.JS comfortable development.
 
 ## Installation
 
-1. Download or clone repo
+**1. Download or clone repo**
 ```
 git clone https://github.com/nevadskiy/laravel-nuxt-docker.git app
 ```
 
-2. Run the command:
+**2. Run the command:**
 ```
 docker-compose up -d --build
 ```
@@ -30,7 +30,7 @@ make build
 
 _It lasts about 10 minutes, so you can take a coffee break_
 
-3. Install composer dependencies:
+**3. Install composer dependencies:**
 ```
 docker-compose exec php-cli composer istall
 ```
@@ -39,7 +39,7 @@ Or the same with available _make_ command
 make composer-install
 ```
 
-4. Copy environment file
+**4. Copy environment file**
 ```
 cp .env api/.env
 ```
@@ -48,7 +48,7 @@ Or the same with available _make_ command
 make composer-install
 ```
 
-5. Set up laravel permissions
+**5. Set up laravel permissions**
 ```
 	sudo chmod -R 777 api/bootstrap/cache
 	sudo chmod -R 777 api/storage
@@ -58,7 +58,7 @@ Or the same with available _make_ command
 make permissions
 ```
 
-6. That's it. Go to http://localhost:8080 and start to develop.
+**6. That's it. Go to http://localhost:8080 and start to develop.**
  
 _If you see 502 error, just wait a bit when _yarn install_ process will be finished (Check the status with the command ```docker-compose logs node```)_
 
