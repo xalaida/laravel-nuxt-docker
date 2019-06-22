@@ -266,6 +266,5 @@ Open http://localhost:8080 and make sure it works
 - add image to readme.md with connected containers and workflow explaining 
 - add other containers (selenium, laravel-echo-server)
 - add instructions about testing (and generate .env.testing file)
-- reinstall laravel and nuxt with fresh and empty templates
 - migrate to SSL and probably HTTP2
 - find and replace all hardcoded values with ENV variables 
