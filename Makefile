@@ -8,7 +8,7 @@ up:
 
 # Shut down docker containers
 down:
-	docker-compose down
+	docker-compose down --remove-orphans
 
 # Show status of the each container
 s:
@@ -42,6 +42,10 @@ clear-logs:
 	sudo rm docker/nginx/logs/error.log
 	sudo rm docker/supervisor/logs/cron.log
 	sudo rm docker/supervisor/logs/queue.log
+
+# Remove all existing networks (usefull if network already exists with the same attributes)
+prune-networks:
+	docker network prune
 
 #-----------------------------------------------------------
 # Laravel
