@@ -264,6 +264,7 @@ Open http://localhost:8080 and make sure it works
 
 ##### TODO LIST:
 - add image to readme.md with connected containers and workflow explaining 
+- add xDebug phpstorm tutorial
 - add other containers (selenium, laravel-echo-server)
 - add instructions about testing (and generate .env.testing file)
 - migrate to SSL and probably HTTP2
