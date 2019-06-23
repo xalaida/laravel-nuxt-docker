@@ -59,10 +59,11 @@ RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
 
 # Custom php.ini config
-ADD ./custom.ini /usr/local/etc/php/conf.d/custom.ini
+COPY php.ini /usr/local/etc/php/php.ini
 
 # ---- Unique for supervisor only ---->
-# Removed line for installing composer
+# Removed lines for installing composer
+# Removed lines for installing xDebug
 # <---- Unique for supervisor only ----
 
 # Clean up

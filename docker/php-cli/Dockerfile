@@ -35,12 +35,12 @@ RUN apt-get install -y zlib1g-dev libicu-dev g++
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
 
-## Xdebug
-#RUN pecl install xdebug && docker-php-ext-enable xdebug
-#COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
 # Custom php.ini config
-COPY custom.ini /usr/local/etc/php/conf.d/custom.ini
+COPY php.ini /usr/local/etc/php/php.ini
+
+# Install Xdebug
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
 
 # Composer installation
 ENV COMPOSER_ALLOW_SUPERUSER 1

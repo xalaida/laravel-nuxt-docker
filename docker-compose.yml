@@ -29,6 +29,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./api:/var/www/api
+    environment:
+      # If you down want to use xDebug, set remote_enable=0
+      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
     links:
       - postgres
       - redis
@@ -127,6 +131,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./api:/var/www/api
+    environment:
+      # If you down want to use xDebug, set remote_enable=0
+      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
     links:
       - postgres
       - redis
@@ -146,3 +154,8 @@ volumes:
 networks:
   internal:
     driver: bridge
+    # Allow to use the same IP (useful for xDebug)
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28
