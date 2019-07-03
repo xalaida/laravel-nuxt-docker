@@ -269,3 +269,4 @@ Open http://localhost:8080 and make sure it works
 - add instructions about testing (and generate .env.testing file)
 - migrate to SSL and probably HTTP2
 - find and replace all hardcoded values with ENV variables 
+- add pcntl and mbstring php extenstions
