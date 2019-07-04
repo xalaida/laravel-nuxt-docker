@@ -8,7 +8,7 @@ up:
 
 # Shut down docker containers
 down:
-	docker-compose down --remove-orphans
+	docker-compose down
 
 # Show status of the each container
 s:
