@@ -44,8 +44,15 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 RUN docker-php-ext-install gd
 
 # ImageMagick
-RUN apt-get install -y imagemagick && apt-get install -y --no-install-recommends libmagickwand-dev
-RUN pecl install imagick && docker-php-ext-enable imagick
+# RUN apt-get install -y imagemagick && apt-get install -y --no-install-recommends libmagickwand-dev
+# RUN pecl install imagick && docker-php-ext-enable imagick
+
+
+RUN apt-get update && apt-get install -y \
+    libmagickwand-dev --no-install-recommends \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick
+
 
 # PostgreSQL
 RUN apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
