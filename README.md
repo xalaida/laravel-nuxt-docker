@@ -173,7 +173,7 @@ make up
 Feel free to explore it, there are some useful commands for comfortable development.
 
 #### Aliases
-Also, there are _aliases.sh_ file which you can apply with command:
+Also, there is _aliases.sh_ file which you can apply with command:
 ```
 source aliases.sh
 ```
@@ -181,11 +181,11 @@ For example, it helps to execute commands from containers a little simpler:
 
 Instead of
 ```
-docker-compose exec php-cli artisan migate
+docker-compose exec php-cli php artisan migate
 ```
 Now available 'from' alias
 ```
-from php-cli artisan migate
+from php-cli php artisan migate
 ```
 
 **If you want to reinstall laravel from scratch with the fresh version, use the following commands:**
