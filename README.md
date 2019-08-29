@@ -270,3 +270,4 @@ Open http://localhost:8080 and make sure it works
 - migrate to SSL and probably HTTP2
 - find and replace all hardcoded values with ENV variables 
 - add pcntl and mbstring php extenstions
+- make containers smaller (probably cache php-cli build with all extensions for reusing from other containers)
