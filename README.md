@@ -46,10 +46,6 @@ make composer-install
 ```
 cp .env api/.env
 ```
-Or the same with available _make_ command
-```
-make composer-install
-```
 
 **5. Set up laravel permissions**
 ```
