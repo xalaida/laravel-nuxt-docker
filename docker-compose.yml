@@ -19,8 +19,6 @@ services:
     links:
       - node
       - php-fpm
-    networks:
-      - internal
 
   # PHP FastCGI Process Manager container
   php-fpm:
@@ -31,14 +29,12 @@ services:
       - ./api:/var/www/api
     environment:
       # If you down want to use xDebug, set remote_enable=0
-      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      XDEBUG_CONFIG: "remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
     links:
       - postgres
       - redis
       - mailhog
-    networks:
-      - internal
 
   # Supervisor container (schedule and queue runner)
   supervisor:
@@ -53,8 +49,6 @@ services:
       - postgres
       - redis
       - mailhog
-    networks:
-      - internal
 
   # Node container
   node:
@@ -63,8 +57,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./client:/var/www/client
-    networks:
-      - internal
 
   # PostgreSQL database container
   postgres:
@@ -104,8 +96,6 @@ services:
       - redis:/data
     ports:
       - 63791:6379
-    networks:
-      - internal
 
   # Mailhog container (smtp testing)
   mailhog:
@@ -133,7 +123,7 @@ services:
       - ./api:/var/www/api
     environment:
       # If you down want to use xDebug, set remote_enable=0
-      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      XDEBUG_CONFIG: "remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
     links:
       - postgres
@@ -148,14 +138,3 @@ volumes:
     driver: local
   redis:
     driver: local
-
-######### Networks ###################################
-
-networks:
-  internal:
-    driver: bridge
-    # Allow to use the same IP (useful for xDebug)
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.220.0/28
