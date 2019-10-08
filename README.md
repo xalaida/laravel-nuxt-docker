@@ -1,16 +1,19 @@
 ## About
 Dockerized starter template for Laravel + Nuxt.JS project.
 
-## Available containers
-* Nginx (as proxy resolver between Laravel and Nuxt)
-* PHP-FPM version 7.3
-* Node version 12.4 (For SSR)
-* Redis
-* PostgreSQL version 11.3
-* Supervisor with queue and schedule
-* Mailhog for easy SMTP testing
-* NODE-CLI for front-end workspace
-* PHP-CLI for back-end workspace
+## Stack includes
+* Laravel 6.0 (clean fresh version)
+* Nuxt.JS (clean fresh version)
+* PostgreSQL 11.3
+* Redis 3.0
+* Mailhog (SMPT testing)
+* Nginx
+* Supervisor (queues, schedule commands, etc.)
+
+#### Also
+* Bash aliases for simple cli using
+* A lot of **make** commands
+* Separate testing database
 
 ## Installation
 
@@ -181,14 +184,14 @@ For example, it helps to execute commands from containers a little simpler:
 
 Instead of
 ```
-docker-compose exec php-cli php artisan migate
+docker-compose exec php-cli php artisan migrate
 ```
 Now available 'from' alias
 ```
-from php-cli php artisan migate
+from php-cli php artisan migrate
 ```
 
-**If you want to reinstall laravel from scratch with the fresh version, use the following commands:**
+**If you want to reinstall laravel from scratch with a fresh version, use the following commands:**
 
 Remove the old laravel directory and create the new empty one
 ```
@@ -231,7 +234,7 @@ docker-compose exec php-cli composer require predis/predis
 
 Open http://localhost:8081 and make sure it works
 
-**If you want to reinstall Nuxt.JS from scratch with the fresh version, use the following commands:**
+**If you want to reinstall Nuxt.JS from scratch with a fresh version, use the following commands:**
 
 Remove the old nuxt directory and create the new one
 ```
