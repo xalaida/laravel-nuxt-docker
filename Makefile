@@ -88,9 +88,17 @@ db-seed:
 db-fresh:
 	docker-compose exec php-cli php artisan migrate:fresh
 
+# Fresh all migrations
+key:
+	docker-compose exec php-cli php artisan key:generate --ansi
+
 # Dump database into file
 db-dump:
 	docker-compose exec postgres pg_dump -U app -d app > docker/postgres/dumps/dump.sql
 
 composer-install:
 		docker-compose exec php-cli composer install
+
+update-dependencies:
+		docker-compose exec php-cli composer update
+		docker-compose exec node-cli yarn update
