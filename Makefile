@@ -47,6 +47,7 @@ clear-logs:
 prune-networks:
 	docker network prune
 
+
 #-----------------------------------------------------------
 # Laravel
 #-----------------------------------------------------------
@@ -92,13 +93,23 @@ db-fresh:
 key:
 	docker-compose exec php-cli php artisan key:generate --ansi
 
+
+#-----------------------------------------------------------
+# Database
+#-----------------------------------------------------------
+
 # Dump database into file
 db-dump:
 	docker-compose exec postgres pg_dump -U app -d app > docker/postgres/dumps/dump.sql
 
+
+#-----------------------------------------------------------
+# Dependencies
+#-----------------------------------------------------------
+
 composer-install:
 		docker-compose exec php-cli composer install
 
-update-dependencies:
+dependencies-update:
 		docker-compose exec php-cli composer update
 		docker-compose exec node-cli yarn update
