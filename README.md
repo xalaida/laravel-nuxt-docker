@@ -266,6 +266,9 @@ Open http://localhost:8080 and make sure it works
 
 
 ##### TODO LIST:
+- update to laravel 6.0
+- fix postres docker compose network
+- rewrite laravel.sh to save original .env.example file
 - add image to readme.md with connected containers and workflow explaining 
 - add xDebug phpstorm tutorial
 - add other containers (selenium, laravel-echo-server)
@@ -273,3 +276,4 @@ Open http://localhost:8080 and make sure it works
 - migrate to SSL and probably HTTP2
 - find and replace all hardcoded values with ENV variables 
 - add pcntl and mbstring php extenstions
+- make containers smaller (probably cache php-cli build with all extensions for reusing from other containers)
