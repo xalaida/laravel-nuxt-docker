@@ -1,6 +1,6 @@
 # client
 
-> My tiptop Nuxt.js project
+> My breathtaking Nuxt.js project
 
 ## Build Setup
 
@@ -9,14 +9,14 @@
 $ yarn install
 
 # serve with hot reload at localhost:3000
-$ yarn run dev
+$ yarn dev
 
 # build for production and launch server
-$ yarn run build
+$ yarn build
 $ yarn start
 
 # generate static project
-$ yarn run generate
+$ yarn generate
 ```
 
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

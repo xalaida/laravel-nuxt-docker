@@ -30,19 +30,17 @@ export default {
   plugins: [
   ],
   /*
+  ** Nuxt.js dev-modules
+  */
+  buildModules: [
+    // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
+    '@nuxtjs/tailwindcss',
+  ],
+  /*
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/eslint-module'
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {
-  },
   /*
   ** Build configuration
   */
@@ -50,7 +48,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend(config, ctx) {
+    extend (config, ctx) {
     }
   }
 }
