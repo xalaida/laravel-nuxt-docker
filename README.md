@@ -269,6 +269,16 @@ docker-compose restart
 Open http://localhost:8080 and make sure it works
 
 
+#### Run commands from containers
+```
+# PHP
+docker-compose exec php-cli bash
+
+# NODE
+docker-compose exec node /bin/sh
+```
+
+
 ##### TODO LIST:
 - add image to readme.md with connected containers and workflow explaining 
 - add xDebug phpstorm tutorial
