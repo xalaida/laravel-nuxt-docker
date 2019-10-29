@@ -62,7 +62,7 @@ sudo chmod -R 777 api/storage
 
 ## Usage
 
-Your base url is ```http://localhost:8080```. All requests to Laravel API should be sent at ```http://localhost:8080/api```. Nginx server will proxy all requests the with ```/api``` prefix to the node server which serves the nuxt. 
+Your base url is ```http://localhost:8080```. All requests to Laravel API should be sent at the url which starts from ```http://localhost:8080/api```. Nginx server will proxy all requests the with ```/api``` prefix to the node server which serves the nuxt. 
 
 **Environment**
 
