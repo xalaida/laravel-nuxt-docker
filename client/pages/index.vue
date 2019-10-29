@@ -6,7 +6,7 @@
         client
       </h1>
       <h2 class="subtitle">
-        My breathtaking Nuxt.js project
+        My well-made Nuxt.js project
       </h2>
       <div class="links">
         <a
