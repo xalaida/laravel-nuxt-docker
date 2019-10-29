@@ -1,8 +1,8 @@
 #-----------------------------------------------------------
-# Docker controls
+# Docker
 #-----------------------------------------------------------
 
-# Up docker containers
+# Wake up docker containers
 up:
 	docker-compose up -d
 
@@ -10,18 +10,18 @@ up:
 down:
 	docker-compose down
 
-# Show status of the each container
+# Show status of each container
 s:
 	docker-compose ps
 
-# Show status of the each container
+# Show logs of each container
 logs:
 	docker-compose logs
 
-# Restart all docker containers
+# Restart all containers
 restart: down up
 
-# Restart all docker containers
+# Restart node container
 restart-node:
 	docker-compose restart node
 
@@ -36,42 +36,25 @@ rebuild: down build
 remove-volumes:
 	docker-compose down --volumes
 
-# Show status of the each container
-clear-logs:
-	sudo rm docker/nginx/logs/access.log
-	sudo rm docker/nginx/logs/error.log
-	sudo rm docker/supervisor/logs/cron.log
-	sudo rm docker/supervisor/logs/queue.log
-
 # Remove all existing networks (usefull if network already exists with the same attributes)
 prune-networks:
 	docker network prune
 
 
 #-----------------------------------------------------------
-# Laravel
+# Logs
 #-----------------------------------------------------------
 
-# Add permissions for cache and store folders
-permissions:
-	sudo chmod -R 777 api/bootstrap/cache
-	sudo chmod -R 777 api/storage
+# Clear file-based logs
+logs-clear:
+	sudo rm docker/nginx/logs/*.log
+	sudo rm docker/supervisor/logs/*.log
+	sudo rm api/storage/logs/*.log
 
-# Run tinker
-tinker:
-	docker-compose exec php-cli php artisan tinker
 
-# Run phpunit tests
-test:
-	docker-compose exec php-cli vendor/bin/phpunit
-
-# Run phpunit tests with coverage
-coverage:
-	docker-compose exec php-cli vendor/bin/phpunit --coverage-html tests/report
-
-# PHP composer autoload comand
-autoload:
-	docker-compose exec php-cli composer dump-autoload
+#-----------------------------------------------------------
+# Database
+#-----------------------------------------------------------
 
 # Run database migrations
 db-migrate:
@@ -89,18 +72,45 @@ db-seed:
 db-fresh:
 	docker-compose exec php-cli php artisan migrate:fresh
 
-# Fresh all migrations
-key:
-	docker-compose exec php-cli php artisan key:generate --ansi
-
-
-#-----------------------------------------------------------
-# Database
-#-----------------------------------------------------------
-
 # Dump database into file
 db-dump:
 	docker-compose exec postgres pg_dump -U app -d app > docker/postgres/dumps/dump.sql
+
+
+#-----------------------------------------------------------
+# Redis
+#-----------------------------------------------------------
+
+redis:
+	docker-compose exec redis redis-cli
+
+redis-flush:
+	docker-compose exec redis redis-cli FLUSHALL
+
+redis-install:
+	docker-compose exec php-cli composer require predis/predis
+
+
+#-----------------------------------------------------------
+# Queue
+#-----------------------------------------------------------
+
+# Restart queue process
+queue-restart:
+	docker-compose exec php-cli php artisan queue:restart
+
+
+#-----------------------------------------------------------
+# Testing
+#-----------------------------------------------------------
+
+# Run phpunit tests
+test:
+	docker-compose exec php-cli vendor/bin/phpunit
+
+# Run phpunit tests with coverage
+coverage:
+	docker-compose exec php-cli vendor/bin/phpunit --coverage-html tests/report
 
 
 #-----------------------------------------------------------
@@ -108,8 +118,46 @@ db-dump:
 #-----------------------------------------------------------
 
 composer-install:
-		docker-compose exec php-cli composer install
+	docker-compose exec php-cli composer install
 
-dependencies-update:
-		docker-compose exec php-cli composer update
-		docker-compose exec node-cli yarn update
+composer-update:
+	docker-compose exec php-cli composer install
+
+yarn-update:
+	docker-compose exec node-cli yarn update
+
+dependencies-update: composer-update yarn-update
+
+
+#-----------------------------------------------------------
+# Tinker
+#-----------------------------------------------------------
+
+# Run tinker
+tinker:
+	docker-compose exec php-cli php artisan tinker
+
+
+#-----------------------------------------------------------
+# Installation
+#-----------------------------------------------------------
+
+# Copy the environment file
+env:
+	cp .env app/.env
+
+# Add permissions for Laravel cache and storage folders
+permissions:
+	sudo chmod -R 777 api/bootstrap/cache
+	sudo chmod -R 777 api/storage
+
+# Generate a Laravel app key
+key:
+	docker-compose exec php-cli php artisan key:generate --ansi
+
+# PHP composer autoload comand
+autoload:
+	docker-compose exec php-cli composer dump-autoload
+
+# Install the environment
+install: build composer-install env key permissions
