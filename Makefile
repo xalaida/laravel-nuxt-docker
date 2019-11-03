@@ -10,9 +10,12 @@ up:
 down:
 	docker-compose down
 
-# Show status of each container
-s:
+# Show a status of each container
+status:
 	docker-compose ps
+
+# Status alias
+s: status
 
 # Show logs of each container
 logs:
@@ -21,9 +24,12 @@ logs:
 # Restart all containers
 restart: down up
 
-# Restart node container
+# Restart the node container
 restart-node:
 	docker-compose restart node
+
+# Restart the node container alias
+rn: restart-node
 
 # Build and up docker containers
 build:
@@ -142,9 +148,13 @@ tinker:
 # Installation
 #-----------------------------------------------------------
 
-# Copy the environment file
-env:
-	cp .env app/.env
+# Copy the Laravel API environment file
+env-api:
+	cp .env.api api/.env
+
+# Copy the NuxtJS environment file
+env-client:
+	cp .env.client client/.env
 
 # Add permissions for Laravel cache and storage folders
 permissions:
@@ -160,4 +170,15 @@ autoload:
 	docker-compose exec php-cli composer dump-autoload
 
 # Install the environment
-install: build composer-install env key permissions
+install: build composer-install env-api env-client key permissions rn
+
+#-----------------------------------------------------------
+# Git commands
+#-----------------------------------------------------------
+
+git-undo:
+	git reset --soft HEAD~1
+
+git-wip:
+	git add .
+	git commit -m "WIP"
