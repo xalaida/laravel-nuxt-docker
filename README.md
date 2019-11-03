@@ -1,6 +1,8 @@
 ## About
 Dockerized starter template for Laravel + Nuxt.JS project.
 
+![Schema](docker/schema.png)
+
 ## Stack includes
 * Laravel (clean 6.4 version)
 * Nuxt.JS (clean 2.10 version)
@@ -340,7 +342,7 @@ docker-compose exec node-cli /bin/sh
 
 
 ##### TODO LIST:
-- add image to readme.md with connected containers and workflow explaining 
-- add other containers (selenium, laravel-echo-server)
-- add instructions about testing (and generate .env.testing file)
-- migrate to SSL and probably HTTP2
+- migrate to SSL
+- migrate NGINX into HTTP2
+- add laravel-echo-server container for websocket integration
+- add selenium container and instructions about testing
