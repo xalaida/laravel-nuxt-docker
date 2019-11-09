@@ -323,6 +323,15 @@ buildModules: [
 ],
 ```
 
+Import dotenv module to the very top of the nuxt configuration file
+```
+require('dotenv').config()
+
+export default {
+  // your usual nuxt config.
+}
+```
+
 Restart Docker containers again for starting the fresh Nuxt instance
 ```
 docker-compose restart node
