@@ -1,6 +1,7 @@
 ## About
 Dockerized starter template for Laravel + Nuxt.JS project.
 
+The next image demonstrates a request path going through the environment.
 ![Schema](docker/schema.png)
 
 ## Stack includes
