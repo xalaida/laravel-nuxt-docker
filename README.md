@@ -49,7 +49,7 @@ docker-compose up -d --build
 
 **Install composer dependencies:**
 ```
-docker-compose exec php-cli composer istall
+docker-compose exec php-cli composer install
 ```
 
 **Copy environment files**
