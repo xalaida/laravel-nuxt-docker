@@ -1,6 +1,7 @@
 ## About
 Dockerized starter template for Laravel + Nuxt.JS project.
 
+The following image demonstrates a request path going through the environment.
 ![Schema](docker/schema.png)
 
 ## Stack includes
@@ -168,7 +169,7 @@ You can use the alias `from`:
 from postgres pg_dump
 ```
 
-But the big power is *artisan* alias
+But the big power is `artisan` alias
 
 If you want to generate a new controller or any Laravel class, all commands should be executed from the current user, which grants all needed file permissions
 ```
@@ -322,6 +323,15 @@ buildModules: [
     // ...
     '@nuxtjs/dotenv'
 ],
+```
+
+Import dotenv module to the very top of the nuxt configuration file
+```
+require('dotenv').config()
+
+export default {
+  // your usual nuxt config.
+}
 ```
 
 Restart Docker containers again for starting the fresh Nuxt instance
