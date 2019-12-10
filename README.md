@@ -21,8 +21,8 @@ Dockerized starter template for Laravel + Nuxt.JS project.
 
 **1. Clone or download the repository and enter its folder**
 ```
-git clone https://github.com/nevadskiy/laravel-nuxt-docker.git app
-cd app
+git clone https://github.com/nevadskiy/laravel-nuxt-docker.git your-app-folder
+cd your-app-folder
 ```
 
 **2. Run the installation script (it may take up to 10 minutes)**
@@ -48,7 +48,7 @@ docker-compose up -d --build
 
 **Install composer dependencies:**
 ```
-docker-compose exec php-cli composer istall
+docker-compose exec php composer install
 ```
 
 **Copy environment files**
@@ -70,64 +70,67 @@ docker-compose restart node
 
 ## Usage
 
-Your base url is ```http://localhost:8080```. All requests to Laravel API should be sent at the url which starts from ```http://localhost:8080/api```. Nginx server will proxy all requests the with ```/api``` prefix to the node server which serves the nuxt. 
+Your base url is ```http://localhost:8080```. All requests to Laravel API must be sent at the url which starts from ```http://localhost:8080/api```. Nginx server will proxy all requests the with ```/api``` prefix to the node server which serves the nuxt. 
 
-**Environment**
+#### Environment
 
 To up all containers, run the command:
 ```
-# Full command
-docker-compose up -d
-
 # Make command
 make up
+
+# Full command
+docker-compose up -d
 ```
 
 To shut down all containers, run the command:
 ```
-# Full command
-docker-compose down
-
 # Make command
 make down
+
+# Full command
+docker-compose down
 ```
 
-**Nuxt**
+#### Nuxt
 
 Your application is available at the [http://localhost:8080](http://localhost:8080) url.
 
-If you update or install node dependencies, then you should restart the nuxt process which is run by node container like this:
+If you update or install node dependencies, then you should restart the nuxt process, which is executed by the node container, like this:
 ```
-# Full command
-docker-compose restart node
-
 # Make command
 make rn
+
+# Full command
+docker-compose restart node
 ```
 
-**Laravel**
+#### Laravel
 
 Laravel API is available at the [http://localhost:8080/api](http://localhost:8080/api) url. For testing purposes you can also use the ```[http://localhost:8081](http://localhost:8081)``` url, which Nginx will proxy directly to the Laravel. 
 
 Artisan commands can be used like this:
 ```
-docker-compose exec php-cli php artisan migrate
+docker-compose exec php php artisan migrate
 ```
 
 But if you want to generate a new controller or any laravel class, all commands should be executed from the current user like this, which grants all needed file permissions
 ```
-docker-compose exec --user "$(id -u):$(id -g)" php-cli php artisan make:controller HomeController
+docker-compose exec --user "$(id -u):$(id -g)" php php artisan make:controller HomeController
 ```
 
-To make the workflow simpler, there is the _aliases.sh_ file, which allow to do the same work like this
+However, to make the workflow a bit simpler, there is the _aliases.sh_ file, which allows to do the same work like this:
 ```
 artisan make:controller HomeController
 ```
 [More about aliases.sh](#Aliases)
 
+#### Laravel file storage
+Nginx will proxy all requests with the `/storage` path prefix to the Laravel storage.
+
 #### Makefile
 There are a lot of useful make commands you can use. 
-All of them you should run from the project directory where Makefile is located.
+All of them you should run from the project directory where `Makefile` is located.
 
 Examples:
 ```
@@ -147,11 +150,11 @@ make down
 Feel free to explore it and add your commands if you need them.
 
 #### Aliases
-Also, there is _aliases.sh_ file which you can apply with command:
+Also, there is the _aliases.sh_ file which you can apply with command:
 ```
 source aliases.sh
 ```
-_Note that you should always run this command when you open the terminal._
+_Note that you should always run this command when you open the new terminal instance._
 
 It helps to execute commands from different containers a bit simpler:
 
@@ -159,26 +162,25 @@ For example, instead of
 ```
 docker-compose exec postgres pg_dump
 ```
-You can use the alias
+
+You can use the alias `from`:
 ```
 from postgres pg_dump
 ```
 
-But the big power is *artisan* alias:
+But the big power is *artisan* alias
 
 If you want to generate a new controller or any Laravel class, all commands should be executed from the current user, which grants all needed file permissions
 ```
-docker-compose exec --user "$(id -u):$(id -g)" php-cli php artisan make:model Post
+docker-compose exec --user "$(id -u):$(id -g)" php php artisan make:model Post
 ```
 
-The artisan alias allows to do the same like this:
+The `artisan` alias allows to do the same like this:
 ```
 artisan make:model Post
 ``` 
 
-
-**Database**
-
+#### Database
 If you want to connect to PostgreSQL database from external tool, for example _Sequel Pro_ or _Navicat_, use the following parameters
 ```
 HOST: localhost
@@ -209,8 +211,7 @@ docker-compose exec postgres bash
     psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} < /tmp/dump.sql
 ```
 
-**Redis**
-
+#### Redis
 To connect to redis cli, use the command:
 ```
 docker-compose exec redis redis-cli
@@ -218,7 +219,7 @@ docker-compose exec redis redis-cli
 
 If you want to connect with external GUI tool, use the port ```54321```
 
-**Mailhog**
+#### Mailhog
 If you want to check how all sent mail look, just go to [http://localhost:8026](http://localhost:8026).
 It is the test mail catcher tool for SMTP testing. All sent mails will be stored here..
 
@@ -254,7 +255,7 @@ docker-compose restart
 
 Create a new Laravel project 
 ```
-docker-compose exec php-cli composer create-project --prefer-dist laravel/laravel .
+docker-compose exec php composer create-project --prefer-dist laravel/laravel .
 ```
 
 Give permissions for all files and directories generated by docker user
@@ -272,12 +273,12 @@ Update environment variables and generate the Laravel application key
 ```
 sudo rm api/.env
 cp .env.api api/.env
-docker-compose exec php-cli php artisan key:generate --ansi 
+docker-compose exec php php artisan key:generate --ansi 
 ```
 
 Install the Redis PHP client
 ```
-docker-compose exec php-cli composer require predis/predis
+docker-compose exec php composer require predis/predis
 ```
 
 Open [http://localhost:8081](http://localhost:8081) in your browser and make sure it works
@@ -297,7 +298,7 @@ docker-compose restart
 
 Create a new Nuxt project with axios module and other preferable configurations (recommended: no custom server framework, universal rendering mode, yarn package manager)
 ```
-docker-compose exec node-cli yarn create nuxt-app .
+docker-compose exec node yarn create nuxt-app .
 ```
 
 Give permissions for all files and directories generated by docker user
@@ -312,7 +313,7 @@ cp .env.client client/.env
 
 Install dotenv nuxt module
 ```
-docker-compose exec node-cli yarn add @nuxtjs/dotenv --dev
+docker-compose exec node yarn add @nuxtjs/dotenv --dev
 ```
 
 Include the dotenv module to the nuxt.config.js file 
@@ -331,17 +332,19 @@ docker-compose restart node
 Open [http://localhost:8080](http://localhost:8080) in your browser and make sure it works
 
 
-#### Run commands from containers
+#### Run into containers cli
 ```
 # PHP
-docker-compose exec php-cli bash
+docker-compose exec php bash
 
 # NODE
-docker-compose exec node-cli /bin/sh
+docker-compose exec node /bin/sh
 ```
 
 
 ##### TODO LIST:
+- add a mysql branch
+- add a prod build
 - migrate to SSL
 - migrate NGINX into HTTP2
 - add laravel-echo-server container for websocket integration
