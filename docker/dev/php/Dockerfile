@@ -1,5 +1,5 @@
 # Image
-FROM php:7.3-cli
+FROM php:7.3-fpm
 
 # Starting from scratch
 RUN apt-get clean

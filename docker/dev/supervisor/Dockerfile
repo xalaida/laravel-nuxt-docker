@@ -9,7 +9,6 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Dependencies
 RUN apt-get update
 
-
 # ---- Unique for supervisor only ---->
 
 # Prepare log files
@@ -30,7 +29,6 @@ RUN chmod -R 644 /etc/cron.d
 RUN crontab /etc/cron.d/schedule
 
 # <---- Unique for supervisor only ----
-
 
 # Zip
 RUN apt-get install -y libzip-dev zip && docker-php-ext-configure zip --with-libzip && docker-php-ext-install zip
@@ -62,8 +60,10 @@ RUN docker-php-ext-install intl
 COPY php.ini /usr/local/etc/php/php.ini
 
 # ---- Unique for supervisor only ---->
+
 # Removed lines for installing composer
 # Removed lines for installing xDebug
+
 # <---- Unique for supervisor only ----
 
 # Clean up
@@ -71,8 +71,7 @@ RUN apt-get clean
 RUN apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-
-# ---- Unique for supervisor only ---->
+# <---- Unique for supervisor only ----
 
 # Set up default directory
 WORKDIR /etc/supervisor/conf.d/

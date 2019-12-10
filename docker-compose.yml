@@ -6,11 +6,11 @@ services:
   # Server container
   nginx:
     build:
-      context: docker/nginx
+      context: docker/dev/nginx
       dockerfile: Dockerfile
     volumes:
       - ./:/var/www
-      - ./docker/nginx/logs:/var/log/nginx
+      - ./docker/dev/nginx/logs:/var/log/nginx
     ports:
       # Nuxt port
       - 8080:80
@@ -18,12 +18,12 @@ services:
       - 8081:81
     links:
       - node
-      - php-fpm
+      - php
 
   # PHP FastCGI Process Manager container
-  php-fpm:
+  php:
     build:
-      context: docker/php-fpm
+      context: docker/dev/php
       dockerfile: Dockerfile
     volumes:
       - ./api:/var/www/api
@@ -33,41 +33,42 @@ services:
       PHP_IDE_CONFIG: "serverName=Docker"
     links:
       - postgres
-      - redis
-      - mailhog
-
-  # Supervisor container (schedule and queue runner)
-  supervisor:
-    build:
-      context: docker/supervisor
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/var/www/
-      - ./docker/supervisor/conf.d:/etc/supervisor/conf.d
-      - ./docker/supervisor/logs:/var/log
-    links:
-      - postgres
+      - postgres-testing
       - redis
       - mailhog
 
   # Node container
   node:
     build:
-      context: docker/node
+      context: docker/dev/node
       dockerfile: Dockerfile
     volumes:
       - ./client:/var/www/client
 
+  # Supervisor container (schedule and queue runner)
+  supervisor:
+    build:
+      context: docker/dev/supervisor
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/
+      - ./docker/dev/supervisor/conf.d:/etc/supervisor/conf.d
+      - ./docker/dev/supervisor/logs:/var/log
+    links:
+      - postgres
+      - redis
+      - mailhog
+
   # PostgreSQL database container
   postgres:
     build:
-      context: docker/postgres
+      context: docker/dev/postgres
       dockerfile: Dockerfile
     volumes:
       # Database volume
       - database:/var/lib/postgresql/data
       # Temp volume to allow using dumps
-      - ./docker/postgres/dumps/:/tmp/
+      - ./docker/dev/postgres/dumps/:/tmp/
     ports:
       - 54321:5432
     environment:
@@ -79,7 +80,7 @@ services:
   # PostgreSQL testing database container
   postgres-testing:
     build:
-      context: docker/postgres
+      context: docker/dev/postgres
       dockerfile: Dockerfile
     environment:
       - LC_ALL=C.UTF-8
@@ -90,46 +91,20 @@ services:
   # Redis container
   redis:
     build:
-      context: docker/redis
+      context: docker/dev/redis
       dockerfile: Dockerfile
     volumes:
       - redis:/data
     ports:
       - 63791:6379
 
-  # Mailhog container (smtp testing)
+  # Mailhog container (SMTP testing)
   mailhog:
     build:
-      context: docker/mailhog
+      context: docker/dev/mailhog
       dockerfile: Dockerfile
     ports:
       - 8026:8025
-
-  # Node command line container
-  node-cli:
-    build:
-      context: docker/node-cli
-      dockerfile: Dockerfile
-    volumes:
-      - ./client:/var/www/client
-    tty: true
-
-  # PHP Command line container
-  php-cli:
-    build:
-      context: docker/php-cli
-      dockerfile: Dockerfile
-    volumes:
-      - ./api:/var/www/api
-    environment:
-      # If you down want to use xDebug, set remote_enable=0
-      XDEBUG_CONFIG: "remote_enable=1"
-      PHP_IDE_CONFIG: "serverName=Docker"
-    links:
-      - postgres
-      - redis
-      - mailhog
-    tty: true
 
 ######### Volumes ###################################
 
