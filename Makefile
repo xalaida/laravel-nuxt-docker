@@ -155,7 +155,7 @@ composer-update:
 
 # Update yarn dependencies
 yarn-update:
-	docker-compose exec node-cli yarn update
+	docker-compose exec node yarn update
 
 # Update all dependencies
 dependencies-update: composer-update yarn-update
@@ -210,7 +210,7 @@ autoload:
 	docker-compose exec php composer dump-autoload
 
 # Install the environment
-install: build composer-install env-api env-client key permissions rn
+install: build env-api env-client composer-install key permissions rn
 
 #-----------------------------------------------------------
 # Git commands
