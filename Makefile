@@ -205,12 +205,16 @@ perm: permissions
 key:
 	docker-compose exec php php artisan key:generate --ansi
 
+# Generate a Laravel storage symlink
+storage:
+	docker-compose exec php php artisan storage:link
+
 # PHP composer autoload comand
 autoload:
 	docker-compose exec php composer dump-autoload
 
 # Install the environment
-install: build env-api env-client composer-install key permissions rn
+install: build env-api env-client composer-install key storage permissions rn
 
 #-----------------------------------------------------------
 # Git commands

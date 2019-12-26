@@ -1,25 +1,52 @@
-## About
-Dockerized starter template for Laravel + Nuxt.JS project.
+## Dockerized starter template for Laravel + Nuxt.JS project.
 
-The following image demonstrates a request path going through the environment.
-![Schema](docker/schema.png)
+## Overview
+Look at one of the following topics to learn more about the project
+
+* [Stack](#stack-includes)
+* [Structure](#about-the-structure)
+* [Installation](#installation)
+* [Basic usage](#basic-usage)
+    * [Manual installation](#manual-installation)
+* [Environment](#environment)
+* [Nuxt](#nuxt)
+* [Laravel](#laravel)
+    * [Artisan](#artisan)
+    * [File storage](#file-storage)
+* [Makefile](#makefile)
+* [Aliases](#aliases)
+* [Database](#database)
+* [Redis](#redis)
+* [Mailhog](#mailhog)
+* [Logs](#logs)
+* [Running commands](#running-commands-from-containers)
+* [Reinstallation](#reinstallation)
+    * [Nuxt](#reinstallation-nuxt)
+    * [Laravel](#reinstallation-laravel)
 
 ## Stack includes
 * Laravel (clean 6.4 version)
 * Nuxt.JS (clean 2.10 version)
 * PostgreSQL 11.3
-* Redis 3.0
-* Mailhog (SMPT testing)
 * Nginx
+* Redis 3.0
 * Supervisor (queues, schedule commands, etc.)
+* Mailhog (SMPT testing)
 
 #### Also
 * Bash aliases for simple cli using
 * A lot of useful **make** commands
-* The separate testing database
+* A separate testing database
+
+## About the structure
+Laravel API and Nuxt are totally separate from each other and there are some reasons why I dont mix them up.
+- First, throwing two frameworks together is a guaranteed mess in the future.
+- API should be the only one layer of coupling. 
+- You can host them on the different servers.
+- You can even split them into separate repositories if (when) the project will grow.  
+- You can even add a third project, for example, a mobile APP, which will use the same API also.
 
 ## Installation
-
 **1. Clone or download the repository and enter its folder**
 ```
 git clone https://github.com/nevadskiy/laravel-nuxt-docker.git your-app-folder
@@ -33,13 +60,11 @@ make install
 
 **3. That's it.** 
 
-Open [http://localhost:8080](http://localhost:8080) url in your browser.
-
-There is also available [http://localhost:8081](http://localhost:8081) which is handled by Laravel and can be used for comfortable testing. 
+Open [http://localhost:8080](http://localhost:8080) url in your browser. 
 
 _If you see the 502 error page, just wait a bit when ```yarn install && yarn dev``` process will be finished (Check the status with the command ```docker-compose logs node```)_
 
-### Manual installation
+#### Manual installation
 If you do not have available the make utility or you just want to install the project manually, you can go through the installation process running the following commands:
 
 **Build and up docker containers (It may take up to 10 minutes)**
@@ -69,12 +94,17 @@ sudo chmod -R 777 api/storage
 docker-compose restart node
 ```
 
-## Usage
+## Basic usage
+Your base url is ```http://localhost:8080```. All requests to Laravel API must be sent using to the url starting with `/api` prefix. Nginx server will proxy all requests with ```/api``` prefix to the node static server which serves the Nuxt. 
 
-Your base url is ```http://localhost:8080```. All requests to Laravel API must be sent at the url which starts from ```http://localhost:8080/api```. Nginx server will proxy all requests the with ```/api``` prefix to the node server which serves the nuxt. 
+There is also available [http://localhost:8081](http://localhost:8081) url which is handled by Laravel and should be used for testing purposes only.
 
-#### Environment
+You **don't** need to configure the api to allow cross origin requests because all requests are proxied through the Nginx.
 
+The following image demonstrates a request path going through the environment.
+![Schema](docker/schema.png)
+
+## Environment
 To up all containers, run the command:
 ```
 # Make command
@@ -93,11 +123,20 @@ make down
 docker-compose down
 ```
 
-#### Nuxt
-
+## Nuxt
 Your application is available at the [http://localhost:8080](http://localhost:8080) url.
 
-If you update or install node dependencies, then you should restart the nuxt process, which is executed by the node container, like this:
+Take a look at `client/.env` file. There are two variables:
+```
+API_URL=http://nginx:80
+API_URL_BROWSER=http://localhost:8080
+```
+`API_URL` is the url where Nuxt sends requests during SSR process and is equal to the Nginx url inside the docker network. Take a look at the [image above](#basic-usage).
+
+`API_URL_BROWSER` is the base application url for browsers.
+
+#### Dependencies
+If you update or install node dependencies, you should restart the Nuxt process, which is executed automatically by the node container:
 ```
 # Make command
 make rn
@@ -106,10 +145,12 @@ make rn
 docker-compose restart node
 ```
 
-#### Laravel
+## Laravel
+Laravel API is available at the [http://localhost:8080/api](http://localhost:8080/api) url.   
 
-Laravel API is available at the [http://localhost:8080/api](http://localhost:8080/api) url. For testing purposes you can also use the ```[http://localhost:8081](http://localhost:8081)``` url, which Nginx will proxy directly to the Laravel. 
+There is also available [http://localhost:8081](http://localhost:8081) url which is handled by Laravel and should be used for testing purposes only.
 
+#### Artisan
 Artisan commands can be used like this:
 ```
 docker-compose exec php php artisan migrate
@@ -126,10 +167,11 @@ artisan make:controller HomeController
 ```
 [More about aliases.sh](#Aliases)
 
-#### Laravel file storage
-Nginx will proxy all requests with the `/storage` path prefix to the Laravel storage.
+#### File storage
+Nginx will proxy all requests with the `/storage` path prefix to the Laravel storage, so you can easily access it.
+Just make sure you run the `artisan storage:link` command (Runs automatically during the `make install` process).
 
-#### Makefile
+## Makefile
 There are a lot of useful make commands you can use. 
 All of them you should run from the project directory where `Makefile` is located.
 
@@ -150,7 +192,7 @@ make down
 
 Feel free to explore it and add your commands if you need them.
 
-#### Aliases
+## Aliases
 Also, there is the _aliases.sh_ file which you can apply with command:
 ```
 source aliases.sh
@@ -181,7 +223,7 @@ The `artisan` alias allows to do the same like this:
 artisan make:model Post
 ``` 
 
-#### Database
+## Database
 If you want to connect to PostgreSQL database from external tool, for example _Sequel Pro_ or _Navicat_, use the following parameters
 ```
 HOST: localhost
@@ -212,7 +254,7 @@ docker-compose exec postgres bash
     psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} < /tmp/dump.sql
 ```
 
-#### Redis
+## Redis
 To connect to redis cli, use the command:
 ```
 docker-compose exec redis redis-cli
@@ -220,17 +262,16 @@ docker-compose exec redis redis-cli
 
 If you want to connect with external GUI tool, use the port ```54321```
 
-#### Mailhog
+## Mailhog
 If you want to check how all sent mail look, just go to [http://localhost:8026](http://localhost:8026).
 It is the test mail catcher tool for SMTP testing. All sent mails will be stored here..
 
-### Logs
+## Logs
+All **_nginx_** logs are available inside the _docker/nginx/logs_ directory.
 
-All **_nginx_** logs are available inside the _docker/nginx/logs_ directory
+All **_supervisor_** logs are available inside the _docker/supervisor/logs_ directory.
 
-All **_supervisor_** logs are available inside the _docker/supervisor/logs_ directory
-
-To view docker containers logs, use the commands:
+To view docker containers logs, use the command:
 ```
 # All containers
 docker-compose logs
@@ -239,8 +280,19 @@ docker-compose logs
 docker-compose logs <container>
 ```
 
-#### Reinstallation frameworks
+## Running commands from containers
+You can run commands from inside containers cli. To enter into the container run the following command:
+```
+# PHP
+docker-compose exec php bash
 
+# NODE
+docker-compose exec node /bin/sh
+```
+
+## Reinstallation
+
+#### Reinstallation Laravel
 **If you want to reinstall Laravel from scratch with the fresh version, use the following commands:**
 
 Remove the old Laravel directory and create a new empty one
@@ -284,6 +336,7 @@ docker-compose exec php composer require predis/predis
 
 Open [http://localhost:8081](http://localhost:8081) in your browser and make sure it works
 
+#### Reinstallation Nuxt
 **If you want to reinstall Nuxt.JS from scratch with the fresh version, use the following commands:**
 
 Remove the old Nuxt directory and create a new empty one
@@ -341,21 +394,10 @@ docker-compose restart node
 
 Open [http://localhost:8080](http://localhost:8080) in your browser and make sure it works
 
-
-#### Run into containers cli
-```
-# PHP
-docker-compose exec php bash
-
-# NODE
-docker-compose exec node /bin/sh
-```
-
-
 ##### TODO LIST:
-- add a mysql branch
-- add a prod build
-- migrate to SSL
-- migrate NGINX into HTTP2
-- add laravel-echo-server container for websocket integration
-- add selenium container and instructions about testing
+- [ ] add a mysql branch
+- [ ] add a prod build
+- [ ] migrate to SSL
+- [ ] HTTP2
+- [ ] add laravel-echo-server container for websocket integration
+- [ ] add selenium container and instructions about testing
