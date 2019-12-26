@@ -39,7 +39,7 @@ Look at one of the following topics to learn more about the project
 * A separate testing database
 
 ## About the structure
-Laravel API and Nuxt are totally separate from each other and there are some reasons why I dont mix them up.
+Laravel API and Nuxt are totally separate from each other and there are some reasons why I don't mix them up.
 - First, throwing two frameworks together is a guaranteed mess in the future.
 - API should be the only one layer of coupling. 
 - You can host them on the different servers.
