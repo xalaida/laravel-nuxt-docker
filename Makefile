@@ -214,7 +214,8 @@ autoload:
 	docker-compose exec php composer dump-autoload
 
 # Install the environment
-install: build env-api env-client composer-install key storage permissions rn
+install: build env-api env-client composer-install key storage permissions migrate rn
+
 
 #-----------------------------------------------------------
 # Git commands
