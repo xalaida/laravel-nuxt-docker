@@ -135,6 +135,14 @@ API_URL_BROWSER=http://localhost:8080
 
 `API_URL_BROWSER` is the base application url for browsers.
 
+Example of API request:
+```
+this.$axios.post('/api/register', { 
+    email: this.email, 
+    password: this.password 
+});
+```
+
 #### Dependencies
 If you update or install node dependencies, you should restart the Nuxt process, which is executed automatically by the node container:
 ```
