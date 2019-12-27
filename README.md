@@ -403,6 +403,7 @@ docker-compose restart node
 Open [http://localhost:8080](http://localhost:8080) in your browser and make sure it works
 
 ##### TODO LIST:
+- [ ] pass all logs into storage/logs directory
 - [ ] add a mysql branch
 - [ ] add a prod build
 - [ ] migrate to SSL
