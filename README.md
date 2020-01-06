@@ -404,6 +404,7 @@ Open [http://localhost:8080](http://localhost:8080) in your browser and make sur
 
 ##### TODO LIST:
 - [ ] pass all logs into storage/logs directory
+- [ ] add a command for reinstallation frameworks from scratch
 - [ ] add a mysql branch
 - [ ] add a prod build
 - [ ] migrate to SSL
