@@ -71,7 +71,7 @@ RUN apt-get clean
 RUN apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# <---- Unique for supervisor only ----
+# ---- Unique for supervisor only ---->
 
 # Set up default directory
 WORKDIR /etc/supervisor/conf.d/
