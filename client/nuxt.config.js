@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 export default {
   mode: 'universal',
   /*
@@ -34,16 +32,19 @@ export default {
   ** Nuxt.js dev-modules
   */
   buildModules: [
+    // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/dotenv'
+    // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
+    '@nuxtjs/tailwindcss'
   ],
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // Doc: https://github.com/nuxt-community/dotenv-module
+    '@nuxtjs/dotenv'
   ],
   /*
   ** Axios module configuration

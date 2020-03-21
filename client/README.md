@@ -1,10 +1,10 @@
 # client
 
-> My well-made Nuxt.js project
+> My super Nuxt.js project
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ yarn install
 

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "description": "My well-made Nuxt.js project",
+  "description": "My super Nuxt.js project",
   "author": "",
   "private": true,
   "scripts": {
@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/dotenv": "^1.4.1",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
-    "@nuxtjs/dotenv": "^1.4.1",
-    "@nuxtjs/eslint-config": "^1.0.1",
+    "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
     "@nuxtjs/tailwindcss": "^1.0.0",
     "babel-eslint": "^10.0.1",
