@@ -17,7 +17,7 @@ services:
       # Laravel port
       - 8081:81
     links:
-      - node
+      - client
       - php
 
   # PHP FastCGI Process Manager container
@@ -36,14 +36,6 @@ services:
       - postgres-testing
       - redis
       - mailhog
-
-  # Node container
-  node:
-    build:
-      context: docker/dev/node
-      dockerfile: Dockerfile
-    volumes:
-      - ./client:/var/www/client
 
   # Supervisor container (schedule and queue runner)
   supervisor:
@@ -105,6 +97,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8026:8025
+
+  # Client container
+  client:
+    build:
+      context: docker/dev/client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/var/www/client
 
 ######### Volumes ###################################
 
