@@ -24,12 +24,12 @@ logs:
 # Restart all containers
 restart: down up
 
-# Restart the node container
-restart-node:
-	docker-compose restart node
+# Restart the client container
+restart-client:
+	docker-compose restart client
 
-# Restart the node container alias
-rn: restart-node
+# Restart the client container alias
+rc: restart-client
 
 # Build and up docker containers
 build:
@@ -46,9 +46,9 @@ rebuild: down build
 php:
 	docker-compose exec php bash
 
-# Run terminal of the node container
-node:
-	docker-compose exec node /bin/sh
+# Run terminal of the client container
+client:
+	docker-compose exec client /bin/sh
 
 
 #-----------------------------------------------------------
@@ -155,7 +155,7 @@ composer-update:
 
 # Update yarn dependencies
 yarn-update:
-	docker-compose exec node yarn update
+	docker-compose exec client yarn update
 
 # Update all dependencies
 dependencies-update: composer-update yarn-update
@@ -228,6 +228,35 @@ git-wip:
 	git add .
 	git commit -m "WIP"
 
+#-----------------------------------------------------------
+# Reinstallation
+#-----------------------------------------------------------
+
+# Laravel
+reinstall-laravel:
+	sudo rm -rf api
+	mkdir api
+	docker-compose restart
+	docker-compose exec php composer create-project --prefer-dist laravel/laravel .
+	sudo chown ${USER}:${USER} -R api
+	sudo chmod -R 777 api/bootstrap/cache
+	sudo chmod -R 777 api/storage
+	sudo rm api/.env
+	cp .env.api api/.env
+	docker-compose exec php php artisan key:generate --ansi
+	docker-compose exec php composer require predis/predis
+	docker-compose exec php php artisan --version
+
+# Nuxt.JS
+reinstall-nuxt:
+	sudo rm -rf client
+	mkdir client
+	docker-compose run client yarn create nuxt-app .
+	docker-compose restart
+	sudo chown ${USER}:${USER} -R client
+	cp .env.client client/.env
+	docker-compose restart client
+	docker-compose exec client yarn info nuxt version
 
 #-----------------------------------------------------------
 # Clearing
