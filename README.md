@@ -329,3 +329,5 @@ During the nuxt app creation select the following options:
 - [ ] prod build (http2 + ssl)
 - [ ] laravel-echo-server container for websocket integration
 - [ ] selenium container and instructions about testing
+- [ ] add a project starter readme.md file
+- [ ] add a command for updating environment from the latest realese when the project is started on this template
