@@ -31,6 +31,13 @@ restart-client:
 # Restart the client container alias
 rc: restart-client
 
+# Show the client logs
+logs-client:
+	docker-compose logs client
+
+# Show the client logs alias
+lc: logs-client
+
 # Build and up docker containers
 build:
 	docker-compose up -d --build
@@ -57,8 +64,8 @@ client:
 
 # Clear file-based logs
 logs-clear:
-	sudo rm docker/nginx/logs/*.log
-	sudo rm docker/supervisor/logs/*.log
+	sudo rm docker/dev/nginx/logs/*.log
+	sudo rm docker/dev/supervisor/logs/*.log
 	sudo rm api/storage/logs/*.log
 
 
@@ -75,7 +82,7 @@ migrate: db-migrate
 
 # Run migrations rollback
 db-rollback:
-	docker-compose exec php php artisan rollback
+	docker-compose exec php php artisan migrate:rollback
 
 # Rollback alias
 rollback: db-rollback
@@ -151,7 +158,7 @@ composer-install:
 
 # Update composer dependencies
 composer-update:
-	docker-compose exec php composer install
+	docker-compose exec php composer update
 
 # Update yarn dependencies
 yarn-update:
@@ -209,31 +216,37 @@ key:
 storage:
 	docker-compose exec php php artisan storage:link
 
-# PHP composer autoload comand
+# PHP composer autoload command
 autoload:
 	docker-compose exec php composer dump-autoload
 
 # Install the environment
-install: build env-api env-client composer-install key storage permissions migrate rn
+install: build env-api env-client composer-install key storage permissions migrate rc
 
 
 #-----------------------------------------------------------
 # Git commands
 #-----------------------------------------------------------
 
+# Undo the last commit
 git-undo:
 	git reset --soft HEAD~1
 
+# Make a Work In Progress commit
 git-wip:
 	git add .
 	git commit -m "WIP"
 
+# Export the codebase as app.zip archive
+git archive --format zip --output app.zip master
+
+
 #-----------------------------------------------------------
-# Reinstallation
+# Frameworks installation
 #-----------------------------------------------------------
 
 # Laravel
-reinstall-laravel:
+install-laravel:
 	sudo rm -rf api
 	mkdir api
 	docker-compose restart
@@ -248,11 +261,11 @@ reinstall-laravel:
 	docker-compose exec php php artisan --version
 
 # Nuxt.JS
-reinstall-nuxt:
+install-nuxt:
 	sudo rm -rf client
 	mkdir client
-	docker-compose run client yarn create nuxt-app .
 	docker-compose restart
+	docker-compose run client yarn create nuxt-app .
 	sudo chown ${USER}:${USER} -R client
 	cp .env.client client/.env
 	docker-compose restart client
@@ -266,6 +279,6 @@ reinstall-nuxt:
 remove-volumes:
 	docker-compose down --volumes
 
-# Remove all existing networks (usefull if network already exists with the same attributes)
+# Remove all existing networks (useful if network already exists with the same attributes)
 prune-networks:
 	docker network prune
