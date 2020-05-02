@@ -238,7 +238,8 @@ git-wip:
 	git commit -m "WIP"
 
 # Export the codebase as app.zip archive
-git archive --format zip --output app.zip master
+git-export:
+	git archive --format zip --output app.zip master
 
 
 #-----------------------------------------------------------
@@ -270,6 +271,7 @@ install-nuxt:
 	cp .env.client client/.env
 	docker-compose restart client
 	docker-compose exec client yarn info nuxt version
+
 
 #-----------------------------------------------------------
 # Clearing
