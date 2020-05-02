@@ -354,4 +354,3 @@ During the nuxt app creation select the following options:
 - [ ] laravel-echo-server container for websocket integration
 - [ ] selenium container and instructions about testing
 - [ ] add a project starter readme.md file
-- [ ] add a command for updating environment from the latest release when you started the project on this template
