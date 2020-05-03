@@ -270,7 +270,7 @@ reinstall-nuxt:
 	docker-compose run client yarn create nuxt-app .
 	sudo chown ${USER}:${USER} -R client
 	cp .env.client client/.env
-	sed -i "1i require('dotenv').config()\n" client/nuxt.config.js
+	sed -i "1i require('dotenv').config()" client/nuxt.config.js
 	docker-compose restart client
 	docker-compose exec client yarn info nuxt version
 
