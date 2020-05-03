@@ -248,9 +248,10 @@ git-export:
 
 # Laravel
 reinstall-laravel:
+	docker-compose down
 	sudo rm -rf api
 	mkdir api
-	docker-compose restart
+	docker-compose up -d
 	docker-compose exec php composer create-project --prefer-dist laravel/laravel .
 	sudo chown ${USER}:${USER} -R api
 	sudo chmod -R 777 api/bootstrap/cache
