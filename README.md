@@ -24,7 +24,7 @@ Look at one of the following topics to learn more about the project
 
 ## Stack includes
 * Laravel (clean 7.0 version)
-* Nuxt.JS (clean 2.12.0 version)
+* Nuxt.JS (clean 2.12.2 version)
 * PostgreSQL 11.3
 * Nginx
 * Redis 3.0
@@ -37,6 +37,9 @@ Look at one of the following topics to learn more about the project
 * A separate testing database
 
 ## Prerequisites
+- Docker-compose
+- Make tool
+
 Well tested on Ubuntu 19.10, 20.04.
 
 ## About the structure
