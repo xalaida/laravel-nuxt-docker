@@ -23,7 +23,7 @@ Look at one of the following topics to learn more about the project
 * [Reinstallation](#reinstallation-frameworks)
 
 ## Stack includes
-* Laravel (clean 7.0 version)
+* Laravel (clean 7.9.2 version)
 * Nuxt.JS (clean 2.12.2 version)
 * PostgreSQL 11.3
 * Nginx
@@ -352,6 +352,7 @@ During the nuxt app creation select the following options:
 - At other steps you can choose an option what you want
 
 ##### TODO LIST:
+- [ ] use PECL redis extension instead of predis/predis package
 - [ ] mysql branch
 - [ ] prod build (http2 + ssl)
 - [ ] laravel-echo-server container for websocket integration
