@@ -247,7 +247,7 @@ git-export:
 #-----------------------------------------------------------
 
 # Laravel
-install-laravel:
+reinstall-laravel:
 	sudo rm -rf api
 	mkdir api
 	docker-compose restart
@@ -262,13 +262,15 @@ install-laravel:
 	docker-compose exec php php artisan --version
 
 # Nuxt.JS
-install-nuxt:
+reinstall-nuxt:
+	docker-compose down
 	sudo rm -rf client
 	mkdir client
-	docker-compose restart
+	docker-compose up -d
 	docker-compose run client yarn create nuxt-app .
 	sudo chown ${USER}:${USER} -R client
 	cp .env.client client/.env
+	sed -i "1i require('dotenv').config()\n" client/nuxt.config.js
 	docker-compose restart client
 	docker-compose exec client yarn info nuxt version
 
