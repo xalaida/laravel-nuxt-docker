@@ -40,7 +40,7 @@ Look at one of the following topics to learn more about the project
 - Docker-compose
 - Make tool
 
-Well tested on Ubuntu 19.10, 20.04.
+Well tested on Ubuntu 18.04, 19.10 and 20.04.
 
 ## About the structure
 Laravel API and Nuxt are totally separate from each other and there are some reasons why I don't mix them up.
