@@ -6,7 +6,7 @@
         client
       </h1>
       <h2 class="subtitle">
-        My super Nuxt.js project
+        My transcendent Nuxt.js project
       </h2>
       <div class="links">
         <a
@@ -34,10 +34,6 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
-  },
-
-  mounted () {
-    console.log(process.env.API_URL_BROWSER)
   }
 }
 </script>

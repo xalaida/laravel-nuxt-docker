@@ -1,6 +1,6 @@
 # client
 
-> My super Nuxt.js project
+> My transcendent Nuxt.js project
 
 ## Build Setup
 
