@@ -23,7 +23,7 @@ Look at one of the following topics to learn more about the project
 * [Reinstallation](#reinstallation-frameworks)
 
 ## Stack includes
-* Laravel (clean 7.9.2 version)
+* Laravel (clean 8.4.0 version)
 * Nuxt.JS (clean 2.12.2 version)
 * PostgreSQL 11.3
 * Nginx
@@ -53,8 +53,8 @@ Laravel API and Nuxt are totally separate from each other and there are some rea
 ## Installation
 **1. Clone or download the repository and enter its folder**
 ```
-git clone https://github.com/nevadskiy/laravel-nuxt-docker.git your-app-folder
-cd your-app-folder
+git clone https://github.com/nevadskiy/laravel-nuxt-docker.git app
+cd app
 ```
 
 **2. Run the installation script (it may take up to 10 minutes)**
