@@ -24,7 +24,7 @@ Look at one of the following topics to learn more about the project
 
 ## Stack includes
 * Laravel (clean 8.4.0 version)
-* Nuxt.JS (clean 2.12.2 version)
+* Nuxt.JS (clean 2.14.5 version)
 * PostgreSQL 11.3
 * Nginx
 * Redis 3.0

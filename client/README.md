@@ -1,7 +1,5 @@
 # client
 
-> My transcendent Nuxt.js project
-
 ## Build Setup
 
 ```bash
