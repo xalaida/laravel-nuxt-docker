@@ -105,6 +105,15 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./client:/var/www/client
+  
+  #Adminer container
+  adminer:
+    image: adminer
+    ports:
+      - 8082:8080
+    links:
+      - postgres
+      - postgres-testing
 
 ######### Volumes ###################################
 
