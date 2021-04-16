@@ -1,5 +1,5 @@
 # Image
-FROM php:7.3-fpm
+FROM php:8.0-fpm
 
 # Starting from scratch
 RUN apt-get clean
@@ -10,7 +10,7 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN apt-get update
 
 # Zip
-RUN apt-get install -y libzip-dev zip && docker-php-ext-configure zip --with-libzip && docker-php-ext-install zip
+RUN apt-get install -y libzip-dev zip && docker-php-ext-configure zip && docker-php-ext-install zip
 
 # Git
 RUN apt-get install -y git
@@ -20,15 +20,23 @@ RUN apt-get install -y libcurl3-dev curl && docker-php-ext-install curl
 
 # GD
 RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
 RUN docker-php-ext-install gd
 
-# ImageMagick
-RUN apt-get install -y imagemagick && apt-get install -y --no-install-recommends libmagickwand-dev
-RUN pecl install imagick && docker-php-ext-enable imagick
+# Imagick
+RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends && rm -rf /var/lib/apt/lists/*
+# Version is not officially released https://pecl.php.net/get/imagick but following works for PHP 8
+RUN mkdir -p /usr/src/php/ext/imagick; \
+    curl -fsSL https://github.com/Imagick/imagick/archive/06116aa24b76edaf6b1693198f79e6c295eda8a9.tar.gz | tar xvz -C "/usr/src/php/ext/imagick" --strip 1; \
+    docker-php-ext-install imagick;
 
 # PostgreSQL
-RUN apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
+# RUN apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
+
+ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions /usr/local/bin/
+
+RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
+    install-php-extensions pdo_pgsql
 
 # BC Math
 RUN docker-php-ext-install bcmath
