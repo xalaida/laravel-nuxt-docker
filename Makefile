@@ -266,13 +266,11 @@ reinstall-laravel:
 reinstall-nuxt:
 	docker-compose down
 	sudo rm -rf client
-	mkdir client
-	docker-compose up -d
-	docker-compose run client yarn create nuxt-app .
+	docker-compose run client yarn create nuxt-app ../client
 	sudo chown ${USER}:${USER} -R client
 	cp .env.client client/.env
 	sed -i "1i require('dotenv').config()" client/nuxt.config.js
-	docker-compose restart client
+	docker-compose up -d
 	docker-compose exec client yarn info nuxt version
 
 
