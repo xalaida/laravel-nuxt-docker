@@ -1,2 +1,2 @@
 # Image
-FROM postgres:11.3
+FROM postgres:13.2
