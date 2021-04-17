@@ -23,8 +23,8 @@ Look at one of the following topics to learn more about the project
 * [Reinstallation](#reinstallation-frameworks)
 
 ## Stack includes
-* Laravel (clean 8.37.0 version)
-* Nuxt.JS (clean 2.15.4 version)
+* Laravel (auto install latest version)
+* Nuxt.JS (auto install latest version)
 * PostgreSQL 13.2
 * Nginx 1.18.0
 * Redis 6.2
