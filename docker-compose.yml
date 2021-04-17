@@ -16,7 +16,7 @@ services:
       - 8080:80
       # Laravel port
       - 8081:81
-    links:
+    depends_on:
       - client
       - php
 
@@ -31,7 +31,7 @@ services:
       # If you down want to use xDebug, set remote_enable=0
       XDEBUG_CONFIG: "remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
-    links:
+    depends_on:
       - postgres
       - postgres-testing
       - redis
@@ -46,7 +46,7 @@ services:
       - ./:/var/www/
       - ./docker/dev/supervisor/conf.d:/etc/supervisor/conf.d
       - ./docker/dev/supervisor/logs:/var/log
-    links:
+    depends_on:
       - postgres
       - redis
       - mailhog

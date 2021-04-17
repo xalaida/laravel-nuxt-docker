@@ -1,5 +1,5 @@
 # Image
-FROM php:7.3-fpm
+FROM php:8.0-fpm
 
 # Starting from scratch
 RUN apt-get clean
@@ -10,7 +10,7 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN apt-get update
 
 # Zip
-RUN apt-get install -y libzip-dev zip && docker-php-ext-configure zip --with-libzip && docker-php-ext-install zip
+RUN apt-get install -y libzip-dev zip && docker-php-ext-configure zip && docker-php-ext-install zip
 
 # Git
 RUN apt-get install -y git
@@ -20,12 +20,8 @@ RUN apt-get install -y libcurl3-dev curl && docker-php-ext-install curl
 
 # GD
 RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
 RUN docker-php-ext-install gd
-
-# ImageMagick
-RUN apt-get install -y imagemagick && apt-get install -y --no-install-recommends libmagickwand-dev
-RUN pecl install imagick && docker-php-ext-enable imagick
 
 # PostgreSQL
 RUN apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
@@ -34,9 +30,9 @@ RUN apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
 RUN docker-php-ext-install bcmath
 
 # Human Language and Character Encoding Support
-RUN apt-get install -y zlib1g-dev libicu-dev g++
-RUN docker-php-ext-configure intl
-RUN docker-php-ext-install intl
+RUN apt-get install -y zlib1g-dev libicu-dev g++ \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl
 
 # PHP Redis extension
 RUN pecl install redis

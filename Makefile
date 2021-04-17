@@ -221,7 +221,7 @@ autoload:
 	docker-compose exec php composer dump-autoload
 
 # Install the environment
-install: build env-api env-client composer-install key storage permissions migrate rc
+install: build install-laravel env-api migrate install-nuxt env-client restart
 
 
 #-----------------------------------------------------------
@@ -247,7 +247,7 @@ git-export:
 #-----------------------------------------------------------
 
 # Laravel
-reinstall-laravel:
+install-laravel:
 	docker-compose down
 	sudo rm -rf api
 	mkdir api
@@ -262,17 +262,15 @@ reinstall-laravel:
 	docker-compose exec php composer require predis/predis
 	docker-compose exec php php artisan --version
 
-# Nuxt.JS
-reinstall-nuxt:
+# Nuxt
+install-nuxt:
 	docker-compose down
 	sudo rm -rf client
-	mkdir client
-	docker-compose up -d
-	docker-compose run client yarn create nuxt-app .
+	docker-compose run client yarn create nuxt-app ../client
 	sudo chown ${USER}:${USER} -R client
 	cp .env.client client/.env
 	sed -i "1i require('dotenv').config()" client/nuxt.config.js
-	docker-compose restart client
+	docker-compose up -d
 	docker-compose exec client yarn info nuxt version
 
 
@@ -287,3 +285,7 @@ remove-volumes:
 # Remove all existing networks (useful if network already exists with the same attributes)
 prune-networks:
 	docker network prune
+
+# Clear cache
+prune-a:
+	docker system prune -a

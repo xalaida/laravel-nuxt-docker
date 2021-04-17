@@ -1,20 +1,7 @@
-# client
+# This directory is needed for the Nuxt application
 
-## Build Setup
+It will be installed during the initial build process with the `make install` command.
 
-```bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+During the nuxt app creation select the following options:
+- Rendering mode
+    - [x] Universal (SSR)
