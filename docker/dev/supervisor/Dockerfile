@@ -42,18 +42,15 @@ RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/i
 RUN docker-php-ext-install gd
 
 # PostgreSQL
-ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions /usr/local/bin/
-
-RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions pdo_pgsql
+RUN apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
 
 # BC Math
 RUN docker-php-ext-install bcmath
 
 # Human Language and Character Encoding Support
-RUN apt-get install -y zlib1g-dev libicu-dev g++
-RUN docker-php-ext-configure intl
-RUN docker-php-ext-install intl
+RUN apt-get install -y zlib1g-dev libicu-dev g++ \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl
 
 # Custom php.ini config
 COPY php.ini /usr/local/etc/php/php.ini
