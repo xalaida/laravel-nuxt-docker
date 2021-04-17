@@ -68,35 +68,6 @@ Open [http://localhost:8080](http://localhost:8080) url in your browser.
 
 _If you see the 502 error page, just wait a bit when ```yarn install && yarn dev``` process will be finished (Check the status with the command ```docker-compose logs client```)_
 
-#### Manual installation
-If you do not have available the make utility, or you just want to install the project manually, you can go through the installation process running the following commands:
-
-**Build and up docker containers (It may take up to 10 minutes)**
-```
-docker-compose up -d --build
-```
-
-**Install composer dependencies:**
-```
-docker-compose exec php composer install
-```
-
-**Copy environment files**
-```
-cp .env.api api/.env
-cp .env.client client/.env
-```
-
-**Set up laravel permissions**
-```
-sudo chmod -R 777 api/bootstrap/cache
-sudo chmod -R 777 api/storage
-```
-
-**Restart the client container**
-```
-docker-compose restart client
-```
 
 ## Basic usage
 Your base url is ```http://localhost:8080```. All requests to Laravel API must be sent using to the url starting with `/api` prefix. Nginx server will proxy all requests with ```/api``` prefix to the node static server which serves the Nuxt. 
@@ -324,19 +295,6 @@ docker-compose exec php bash
 
 # NODE
 docker-compose exec client /bin/sh
-```
-
-## Reinstallation frameworks
-If you want to reinstall Laravel OR Nuxt from scratch with a fresh version, use the following command
-
-##### Laravel
-```
-make reinstall-laravel
-```
-
-##### Nuxt
-```
-make reinstall-nuxt
 ```
 
 During the nuxt app creation select the following options:
