@@ -46,9 +46,7 @@ RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 
 # Composer installation
-ENV COMPOSER_ALLOW_SUPERUSER 1
-RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
-RUN chmod 0755 /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # Clean up
 RUN apt-get clean
