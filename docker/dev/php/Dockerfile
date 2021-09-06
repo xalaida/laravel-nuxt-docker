@@ -54,10 +54,10 @@ RUN apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set up user permissions
-ARG USER_ID
-ARG GROUP_ID
-RUN addgroup --gid $GROUP_ID user
-RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID user
+ARG UID
+ARG GID
+RUN addgroup --gid $GID user
+RUN adduser --disabled-password --gecos '' --uid $UID --gid $GID user
 USER user
 
 # Set up default directory
