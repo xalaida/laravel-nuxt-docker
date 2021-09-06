@@ -266,7 +266,6 @@ install-laravel:
 	sudo rm api/.env
 	cp .env.api api/.env
 	docker-compose exec php php artisan key:generate --ansi
-	docker-compose exec php composer require predis/predis
 	docker-compose exec php php artisan --version
 
 # Nuxt
