@@ -2,8 +2,8 @@
 # Set up environment variables
 #-----------------------------------------------------------
 
-BUILD_USER_ID=$(shell id -u)
-BUILD_GROUP_ID=$(shell id -g)
+USER_ID=$(shell id -u)
+GROUP_ID=$(shell id -g)
 
 
 #-----------------------------------------------------------
@@ -48,7 +48,7 @@ lc: logs-client
 
 # Build and up docker containers
 build:
-	docker-compose build --build-arg USER_ID=$(BUILD_USER_ID) --build-arg GROUP_ID=$(BUILD_GROUP_ID)
+	docker-compose build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID)
 
 # Build containers with no cache option
 build-no-cache:
@@ -273,7 +273,7 @@ install-nuxt:
 	docker-compose down
 	sudo rm -rf client
 	docker-compose run client yarn create nuxt-app ../client
-	sudo chown ${USER}:${USER} -R client
+	sudo chown -R ${USER_ID}:${GROUP_ID} client
 	cp .env.client client/.env
 	sed -i "1i require('dotenv').config()" client/nuxt.config.js
 	docker-compose up -d
