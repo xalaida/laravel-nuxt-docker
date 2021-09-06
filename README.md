@@ -29,7 +29,7 @@ Look at one of the following topics to learn more about the project
 * Nginx 1.18.0
 * Redis 6.2
 * Supervisor (queues, schedule commands, etc.)
-* Mailhog (SMPT testing)
+* Mailhog (SMTP testing)
 
 #### Also
 * Bash aliases for simple cli using
