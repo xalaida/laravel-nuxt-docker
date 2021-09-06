@@ -1,4 +1,12 @@
 #-----------------------------------------------------------
+# Set up environment variables
+#-----------------------------------------------------------
+
+BUILD_USER_ID=$(shell id -u)
+BUILD_GROUP_ID=$(shell id -g)
+
+
+#-----------------------------------------------------------
 # Docker
 #-----------------------------------------------------------
 
@@ -40,7 +48,7 @@ lc: logs-client
 
 # Build and up docker containers
 build:
-	docker-compose up -d --build
+	docker-compose build --build-arg USER_ID=$(BUILD_USER_ID) --build-arg GROUP_ID=$(BUILD_GROUP_ID)
 
 # Build containers with no cache option
 build-no-cache:
@@ -221,7 +229,7 @@ autoload:
 	docker-compose exec php composer dump-autoload
 
 # Install the environment
-install: build install-laravel env-api migrate install-nuxt env-client restart
+install: build up install-laravel env-api migrate install-nuxt env-client restart
 
 
 #-----------------------------------------------------------
@@ -253,7 +261,6 @@ install-laravel:
 	mkdir api
 	docker-compose up -d
 	docker-compose exec php composer create-project --prefer-dist laravel/laravel .
-	sudo chown ${USER}:${USER} -R api
 	sudo chmod -R 777 api/bootstrap/cache
 	sudo chmod -R 777 api/storage
 	sudo rm api/.env
