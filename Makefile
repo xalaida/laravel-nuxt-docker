@@ -118,10 +118,6 @@ redis:
 redis-flush:
 	docker-compose exec redis redis-cli FLUSHALL
 
-redis-install:
-	docker-compose exec php composer require predis/predis
-
-
 #-----------------------------------------------------------
 # Queue
 #-----------------------------------------------------------
