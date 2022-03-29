@@ -1,29 +1,74 @@
 version: '3'
 
-######### Services ###################################
-
 services:
-  # Server container
-  nginx:
+  #---------------------------------------------#
+  #-- Reverse proxy gateway --------------------#
+  #---------------------------------------------#
+
+  # The global gateway container
+  gateway:
     build:
-      context: docker/dev/nginx
-      dockerfile: Dockerfile
+      context: docker/dev/gateway
+      dockerfile: docker/dev/gateway/Dockerfile
+    # TODO: cast logs to the docker instance
     volumes:
-      - ./:/var/www
       - ./docker/dev/nginx/logs:/var/log/nginx
     ports:
-      # Nuxt port
-      - 8080:80
-      # Laravel port
-      - 8081:81
+      - "80:80"
     depends_on:
-      - client
-      - php
+      - client-gateway
+      - api-gateway
 
-  # PHP FastCGI Process Manager container
-  php:
+
+  #-------------------------------------------#
+  #-- Client services ------------------------#
+  #-------------------------------------------#
+
+  # The client gateway container
+  client-gateway:
     build:
-      context: docker/dev/php
+      context: docker/dev/client/gateway
+      dockerfile: Dockerfile
+    # TODO: cast logs to the docker instance
+    volumes:
+      - ./docker/dev/client/gateway/logs:/var/log/nginx
+    ports:
+      - "8080:80"
+    links:
+      - client-app
+
+  # The client application container
+  client-app:
+    build:
+      context: docker/dev/client/app
+      dockerfile: Dockerfile
+    ports:
+      - "24678:24678"
+    volumes:
+      - ./client:/var/www/client
+
+
+  #-------------------------------------------#
+  #-- API services ---------------------------#
+  #-------------------------------------------#
+
+  # The client gateway container (based on Nginx)
+  api-gateway:
+    build:
+      context: docker/dev/api/gateway
+      dockerfile: Dockerfile
+    # TODO: cast logs to the docker instance
+    volumes:
+      - ./docker/dev/api/gateway/logs:/var/log/nginx
+    ports:
+      - "8081:80"
+    links:
+      - api-app
+
+  # The api application container (based on PHP FPM)
+  api-app:
+    build:
+      context: docker/dev/api/app
       dockerfile: Dockerfile
     volumes:
       - ./api:/var/www/api
@@ -32,29 +77,29 @@ services:
       XDEBUG_CONFIG: "remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
     depends_on:
-      - postgres
-      - postgres-testing
-      - redis
-      - mailhog
+      - api-postgres
+      - api-postgres-testing
+      - api-redis
+      - api-mailhog
 
-  # Supervisor container (schedule and queue runner)
-  supervisor:
+  # The Supervisor container (schedule and queue runner)
+  api-supervisor:
     build:
-      context: docker/dev/supervisor
+      context: docker/dev/api/supervisor
       dockerfile: Dockerfile
     volumes:
       - ./:/var/www/
       - ./docker/dev/supervisor/conf.d:/etc/supervisor/conf.d
       - ./docker/dev/supervisor/logs:/var/log
     depends_on:
-      - postgres
-      - redis
-      - mailhog
+      - api-postgres
+      - api-redis
+      - api-mailhog
 
-  # PostgreSQL database container
-  postgres:
+  # The PostgreSQL container
+  api-postgres:
     build:
-      context: docker/dev/postgres
+      context: docker/dev/api/postgres
       dockerfile: Dockerfile
     volumes:
       # Database volume
@@ -62,51 +107,45 @@ services:
       # Temp volume to allow using dumps
       - ./docker/dev/postgres/dumps/:/tmp/
     ports:
-      - 54321:5432
+      - "54321:5432"
+    # TODO: make it use the .env file
     environment:
       - LC_ALL=C.UTF-8
       - POSTGRES_DB=app
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=app
 
-  # PostgreSQL testing database container
-  postgres-testing:
+  # The PostgreSQL testing container
+  api-postgres-testing:
     build:
-      context: docker/dev/postgres
+      context: docker/dev/api/postgres
       dockerfile: Dockerfile
+    # TODO: make it use the .env file
     environment:
       - LC_ALL=C.UTF-8
       - POSTGRES_DB=app
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=app
 
-  # Redis container
-  redis:
+  # The redis container
+  api-redis:
     build:
-      context: docker/dev/redis
+      context: docker/dev/api/redis
       dockerfile: Dockerfile
+    # Add one more volume for configuration
     volumes:
       - redis:/data
     ports:
-      - 63791:6379
+      - "63791:6379"
 
-  # Mailhog container (SMTP testing)
-  mailhog:
+  # The Mailhog container (SMTP testing)
+  api-mailhog:
     build:
-      context: docker/dev/mailhog
+      context: docker/dev/api/mailhog
       dockerfile: Dockerfile
     ports:
-      - 8026:8025
+      - "8026:8025"
 
-  # Client container
-  client:
-    build:
-      context: docker/dev/client
-      dockerfile: Dockerfile
-    volumes:
-      - ./client:/var/www/client
-
-######### Volumes ###################################
 
 volumes:
   database:
