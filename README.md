@@ -310,6 +310,7 @@ During the nuxt app creation select the following options:
 - At other steps you can choose an option what you want
 
 ##### TODO LIST:
+- [ ] finish command to build 'base' image
 - [ ] php 8.1
 - [ ] laravel 9
 - [ ] nuxt 3
