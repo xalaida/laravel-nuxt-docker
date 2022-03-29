@@ -16,14 +16,11 @@ up:
 
 # Shut down docker containers
 down:
-	docker-compose down
+	docker-compose down --remove-orphans
 
-# Show a status of each container
-status:
+# Show status of each container
+ps:
 	docker-compose ps
-
-# Status alias
-s: status
 
 # Show logs of each container
 logs:
@@ -31,20 +28,6 @@ logs:
 
 # Restart all containers
 restart: down up
-
-# Restart the client container
-restart-client:
-	docker-compose restart client
-
-# Restart the client container alias
-rc: restart-client
-
-# Show the client logs
-logs-client:
-	docker-compose logs client
-
-# Show the client logs alias
-lc: logs-client
 
 # Build and up docker containers
 build:
@@ -64,6 +47,40 @@ php:
 # Run terminal of the client container
 client:
 	docker-compose exec client /bin/sh
+
+
+#-----------------------------------------------------------
+# Client
+#-----------------------------------------------------------
+
+# Build the client containers
+client-build:
+	docker-compose build client-gateway client-app
+
+# Run the client containers
+client-up:
+	docker-compose up -d client-gateway client-app
+
+# Restart the client containers
+client-restart:
+	docker-compose restart client-gateway client-app
+
+# Restart the client application container
+client-app-restart:
+	docker-compose restart client-app
+
+# The alias to restart the client application container
+car: client-app-restart
+
+# The alias to restart the client containers
+cr: client-restart
+
+# Show client logs
+client-logs:
+	docker-compose logs client-gateway client-app
+
+# The alias to show client logs
+cl: client-logs
 
 
 #-----------------------------------------------------------
@@ -236,10 +253,13 @@ install: build up install-laravel env-api migrate install-nuxt env-client restar
 git-undo:
 	git reset --soft HEAD~1
 
-# Make a Work In Progress commit
+# Make the "Work In Progress" commit
 git-wip:
 	git add .
 	git commit -m "WIP"
+
+# The alias to make the "Work In Progress" commit
+wip: git-wip
 
 # Export the codebase as app.zip archive
 git-export:
@@ -247,7 +267,7 @@ git-export:
 
 
 #-----------------------------------------------------------
-# Frameworks installation
+# Installation
 #-----------------------------------------------------------
 
 # Laravel
@@ -264,7 +284,7 @@ install-laravel:
 	docker-compose exec php php artisan key:generate --ansi
 	docker-compose exec php php artisan --version
 
-# Nuxt
+# Install Nuxt version 2
 install-nuxt:
 	docker-compose down
 	sudo rm -rf client
@@ -272,8 +292,14 @@ install-nuxt:
 	sudo chown -R ${UID}:${GID} client
 	cp .env.client client/.env
 	sed -i "1i require('dotenv').config()" client/nuxt.config.js
-	docker-compose up -d
-	docker-compose exec client yarn info nuxt version
+
+# Install Nuxt version 3
+install-nuxt3:
+	docker-compose down
+	sudo rm -rf client
+	docker-compose run client-app npx nuxi init ../client
+	sudo chown -R ${UID}:${GID} client
+	cp .env.client client/.env
 
 
 #-----------------------------------------------------------
