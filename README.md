@@ -310,6 +310,12 @@ During the nuxt app creation select the following options:
 - At other steps you can choose an option what you want
 
 ##### TODO LIST:
+- [ ] laravel 9
+- [ ] nuxt 3
+- [ ] laravel octane
+- [ ] install.sh
+- [ ] laravel-echo
+- [ ] subdomains vs ports vs prefixes
 - [ ] use PECL redis extension instead of predis/predis package
 - [ ] mysql branch
 - [ ] prod build (http2 + ssl)
