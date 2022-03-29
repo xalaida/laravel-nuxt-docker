@@ -1,9 +1,13 @@
 # Image
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
+# Starting from scratch
+RUN apt-get clean \
+    && apt-get -y autoremove \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 # Update dependencies
-RUN && apt-get update \
-    # Zip
+    && apt-get update \
+# Zip
     && apt-get install -y libzip-dev zip && docker-php-ext-install zip \
 # Git
     && apt-get install -y git \
@@ -32,4 +36,8 @@ RUN && apt-get update \
     && docker-php-ext-enable redis \
 # Process Control
     && docker-php-ext-install pcntl \
-    && docker-php-ext-enable pcntl
+    && docker-php-ext-enable pcntl \
+# Clean up
+    && apt-get clean \
+    && apt-get -y autoremove \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
