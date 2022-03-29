@@ -9,7 +9,7 @@ services:
   gateway:
     build:
       context: docker/dev/gateway
-      dockerfile: docker/dev/gateway/Dockerfile
+      dockerfile: Dockerfile
     # TODO: cast logs to the docker instance
     volumes:
       - ./docker/dev/nginx/logs:/var/log/nginx
