@@ -26,3 +26,6 @@ COPY php.ini /usr/local/etc/php/php.ini
 
 # Set up work directory
 WORKDIR /var/www/api
+
+# Export octane port
+EXPOSE 8000

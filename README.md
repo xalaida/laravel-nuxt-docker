@@ -315,6 +315,7 @@ During the nuxt app creation select the following options:
 - Install swoole pecl extension
 - Switch PHP FPM to PHP CLI
 - Update nginx config
+- This command works: php artisan octane:start --host=0.0.0.0 --port=8000 (install --watch dependencies)
 
 ##### TODO LIST:
 - [ ] finish command to build 'base' image

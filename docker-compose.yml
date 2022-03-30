@@ -76,6 +76,8 @@ services:
       # If you down want to use xDebug, set remote_enable=0
       XDEBUG_CONFIG: "remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
+    ports:
+      - "8000:8000"
     depends_on:
       - api-postgres
       - api-postgres-testing
