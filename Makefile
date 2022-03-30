@@ -59,7 +59,16 @@ api-base-build:
 
 # Build the API images
 api-build: api-base-build
-	docker-composer build
+	docker-compose build api-gateway api-app api-postgres api-redis api-queue api-schedule api-mailhog api-postgres-testing
+
+# Run the API containers
+api-up:
+	docker-compose up -d api-gateway api-app api-postgres api-redis api-queue api-schedule api-mailhog api-postgres-testing
+
+# Set up permissions for Laravel cache and storage folders
+api-permissions:
+	sudo chmod -R 777 api/bootstrap/cache
+	sudo chmod -R 777 api/storage
 
 
 #-----------------------------------------------------------
@@ -234,14 +243,6 @@ env-api:
 env-client:
 	cp .env.client client/.env
 
-# Add permissions for Laravel cache and storage folders
-permissions:
-	sudo chmod -R 777 api/bootstrap/cache
-	sudo chmod -R 777 api/storage
-
-# Permissions alias
-perm: permissions
-
 # Generate a Laravel app key
 key:
 	docker-compose exec php php artisan key:generate --ansi
@@ -288,20 +289,24 @@ install-laravel:
 	docker-compose down
 	sudo rm -rf api
 	mkdir api
-	docker-compose up -d
-	docker-compose exec php composer create-project --prefer-dist laravel/laravel .
+	#docker-compose up -d
+	docker-compose run --rm api-app composer create-project --prefer-dist laravel/laravel .
 	sudo chmod -R 777 api/bootstrap/cache
 	sudo chmod -R 777 api/storage
-	sudo rm api/.env
-	cp .env.api api/.env
-	docker-compose exec php php artisan key:generate --ansi
-	docker-compose exec php php artisan --version
+	#sudo rm api/.env
+	#cp .env.api api/.env
+	#docker-compose exec php php artisan key:generate --ansi
+	#docker-compose exec php php artisan --version
+
+# Install Laravel Breeze
+install-breeze:
+	docker-compose run --rm api-app composer require laravel/breeze --dev
 
 # Install Nuxt version 2
 install-nuxt:
 	docker-compose down
 	sudo rm -rf client
-	docker-compose run client yarn create nuxt-app ../client
+	docker-compose run --rm client-app yarn create nuxt-app ../client
 	sudo chown -R ${UID}:${GID} client
 	cp .env.client client/.env
 	sed -i "1i require('dotenv').config()" client/nuxt.config.js
@@ -310,7 +315,7 @@ install-nuxt:
 install-nuxt3:
 	docker-compose down
 	sudo rm -rf client
-	docker-compose run client-app npx nuxi init ../client
+	docker-compose run --rm client-app npx nuxi init ../client
 	sudo chown -R ${UID}:${GID} client
 	cp .env.client client/.env
 
