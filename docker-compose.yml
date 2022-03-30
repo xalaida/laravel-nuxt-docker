@@ -82,29 +82,13 @@ services:
       - api-redis
       - api-mailhog
 
-  # The Supervisor container (schedule and queue runner)
-  api-supervisor:
-    build:
-      context: docker/dev/api/supervisor
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/var/www/
-      - ./docker/dev/supervisor/conf.d:/etc/supervisor/conf.d
-      - ./docker/dev/supervisor/logs:/var/log
-    depends_on:
-      - api-postgres
-      - api-redis
-      - api-mailhog
-
   # The PostgreSQL container
   api-postgres:
     build:
       context: docker/dev/api/postgres
       dockerfile: Dockerfile
     volumes:
-      # Database volume
-      - database:/var/lib/postgresql/data
-      # Temp volume to allow using dumps
+      - postgres:/var/lib/postgresql/data
       - ./docker/dev/postgres/dumps/:/tmp/
     ports:
       - "54321:5432"
@@ -115,7 +99,7 @@ services:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=app
 
-  # The PostgreSQL testing container
+  # The PostgreSQL container for testing
   api-postgres-testing:
     build:
       context: docker/dev/api/postgres
@@ -127,7 +111,7 @@ services:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=app
 
-  # The redis container
+  # The Redis container
   api-redis:
     build:
       context: docker/dev/api/redis
@@ -137,6 +121,28 @@ services:
       - redis:/data
     ports:
       - "63791:6379"
+
+  # The queue container
+  api-queue:
+    build:
+      context: docker/dev/api/queue
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/var/www/api
+    links:
+      - api-redis
+      - api-postgres
+
+  # The schedule container
+  api-schedule:
+    build:
+      context: docker/dev/api/schedule
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/var/www/api
+    links:
+      - api-redis
+      - api-postgres
 
   # The Mailhog container (SMTP testing)
   api-mailhog:
@@ -148,7 +154,7 @@ services:
 
 
 volumes:
-  database:
+  postgres:
     driver: local
   redis:
     driver: local

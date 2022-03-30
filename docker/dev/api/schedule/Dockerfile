@@ -7,19 +7,20 @@ RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 # Update dependencies
     && apt-get update \
-# xDebug
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
+# Crontab
+    && apt-get install -y cron \
 # Clean up
     && apt-get clean \
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Composer
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
-# PHP configuration
-COPY php.ini /usr/local/etc/php/php.ini
+# Set up a cron configuration file
+COPY ./cron.d/crontab /etc/cron.d/crontab
+RUN chmod 644 /etc/cron.d/crontab
+RUN crontab /etc/cron.d/crontab
 
 # Set up work directory
 WORKDIR /var/www/api
+
+# Command that runs with the container
+CMD ["cron", "-f"]

@@ -311,6 +311,7 @@ During the nuxt app creation select the following options:
 
 ##### TODO LIST:
 - [ ] finish command to build 'base' image
+- [ ] add command to set up queue as horizon
 - [ ] user permissions to api-app container: https://faun.pub/set-current-host-user-for-docker-container-4e521cef9ffc
 - [ ] add possibility to specify tags for build
 - [ ] php 8.1

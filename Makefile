@@ -50,6 +50,19 @@ client:
 
 
 #-----------------------------------------------------------
+# API
+#-----------------------------------------------------------
+
+# Build the base API image
+api-base-build:
+	docker build docker/dev/api/base -t api-base
+
+# Build the API images
+api-build: api-base-build
+	docker-composer build
+
+
+#-----------------------------------------------------------
 # Client
 #-----------------------------------------------------------
 
