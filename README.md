@@ -309,6 +309,13 @@ During the nuxt app creation select the following options:
     - [x] DotEnv
 - At other steps you can choose an option what you want
 
+
+### Swoole
+
+- Install swoole pecl extension
+- Switch PHP FPM to PHP CLI
+- Update nginx config
+
 ##### TODO LIST:
 - [ ] finish command to build 'base' image
 - [ ] add command to set up queue as horizon

@@ -10,6 +10,9 @@ RUN apt-get clean \
 # xDebug
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
+# Swoole
+    && pecl install swoole \
+    && docker-php-ext-enable swoole \
 # Clean up
     && apt-get clean \
     && apt-get -y autoremove \
