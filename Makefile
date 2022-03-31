@@ -65,6 +65,9 @@ api-build: api-base-build
 api-up:
 	docker-compose up -d api-gateway api-app api-postgres api-redis api-queue api-schedule api-mailhog api-postgres-testing
 
+# Restart the API containers
+api-restart: down api-up
+
 # Set up permissions for Laravel cache and storage folders
 api-permissions:
 	sudo chmod -R 777 api/bootstrap/cache
