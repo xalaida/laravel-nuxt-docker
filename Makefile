@@ -324,17 +324,17 @@ install-nuxt3:
 
 
 #-----------------------------------------------------------
-# Clearing
+# Free up space (danger zone)
 #-----------------------------------------------------------
 
-# Shut down and remove all volumes
-remove-volumes:
+# Shut down docker contains and remove their volumes.
+docker-remove-volumes:
 	docker-compose down --volumes
 
-# Remove all existing networks (useful if network already exists with the same attributes)
-prune-networks:
+# Remove all existing networks.
+docker-prune-networks:
 	docker network prune
 
-# Clear cache
-prune-a:
-	docker system prune -a
+# Remove all unused containers, networks, images and volumes.
+docker-prune-all:
+	docker system prune --all --volumes
