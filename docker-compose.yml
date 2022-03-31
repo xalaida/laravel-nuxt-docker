@@ -10,7 +10,6 @@ services:
     build:
       context: docker/dev/gateway
       dockerfile: Dockerfile
-    # TODO: cast logs to the docker instance
     volumes:
       - ./docker/dev/nginx/logs:/var/log/nginx
     ports:
@@ -29,7 +28,6 @@ services:
     build:
       context: docker/dev/client/gateway
       dockerfile: Dockerfile
-    # TODO: cast logs to the docker instance
     volumes:
       - ./docker/dev/client/gateway/logs:/var/log/nginx
     ports:
@@ -90,7 +88,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - postgres:/var/lib/postgresql/data
-      - ./docker/dev/postgres/dumps/:/tmp/
+      - ./docker/dev/api/postgres/dumps/:/tmp/
     ports:
       - "54321:5432"
     # TODO: make it use the .env file
