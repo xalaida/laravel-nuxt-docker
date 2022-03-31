@@ -328,6 +328,9 @@ During the nuxt app creation select the following options:
 - [ ] laravel octane
 - [ ] install.sh
 - [ ] laravel-echo
+- [ ] add php-storm base config
+- [ ] add healthchecks to other containers
+- [ ] add make command for logs
 - [ ] subdomains vs ports vs prefixes
 - [ ] make nginx pass access and error logs to the docker instance
 - [ ] use PECL redis extension instead of predis/predis package
