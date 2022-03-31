@@ -29,3 +29,10 @@ WORKDIR /var/www/api
 
 # Export octane port
 EXPOSE 8000
+
+# Run the octane service
+CMD ["php", "artisan", "octane:start", "--host=0.0.0.0", "--port=8000"]
+
+# The health check configuration
+HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=3 \
+    CMD php artisan octane:status || exit 1
