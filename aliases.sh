@@ -1,8 +1,8 @@
-# Execute commands from any container
+# Execute command from specified container.
 alias from='docker-compose exec'
 
-# Change owner for current user
-alias own='sudo chown -R $(id -u):$(id -g)'
+# Execute command from specified container from the current user.
+alias owning='docker-compose exec --user "$(id -u):$(id -g)"'
 
 # Run artisan commands
 alias artisan='docker-compose exec --user "$(id -u):$(id -g)" php php artisan'
