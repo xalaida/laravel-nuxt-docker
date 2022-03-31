@@ -57,9 +57,8 @@ services:
     build:
       context: docker/dev/api/gateway
       dockerfile: Dockerfile
-    # TODO: cast logs to the docker instance
     volumes:
-      - ./docker/dev/api/gateway/logs:/var/log/nginx
+      - ./api:/var/www/api
     ports:
       - "8081:80"
     links:
@@ -77,7 +76,7 @@ services:
       XDEBUG_CONFIG: "remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
     ports:
-      - "8000:8000"
+      - "8888:8000"
     depends_on:
       - api-postgres
       - api-postgres-testing
