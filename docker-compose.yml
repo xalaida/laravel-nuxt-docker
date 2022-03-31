@@ -37,8 +37,9 @@ services:
       context: docker/dev/client/app
       dockerfile: Dockerfile
     ports:
+      # Direct Nuxt port
       - "3333:3000"
-      # TODO: Check if its needed
+      # Nuxt dev WebSocket port
       - "24678:24678"
     volumes:
       - ./client:/var/www/client

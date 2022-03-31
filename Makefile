@@ -10,11 +10,11 @@ GID=$(shell id -g)
 # Docker
 #-----------------------------------------------------------
 
-# Wake up docker containers
+# Run docker containers
 up:
 	docker-compose up -d
 
-# Shut down docker containers
+# Stop docker containers
 down:
 	docker-compose down --remove-orphans
 
@@ -87,8 +87,7 @@ client-up:
 	docker-compose up -d client-gateway client-app
 
 # Restart the client containers
-client-restart:
-	docker-compose restart client-gateway client-app
+client-restart: down client-up
 
 # Restart the client application container
 client-app-restart:
