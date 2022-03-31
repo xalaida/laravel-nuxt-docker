@@ -319,7 +319,11 @@ During the nuxt app creation select the following options:
 
 ##### TODO LIST:
 - [ ] configure permissions for api-app container 
-  - [ ] user permissions to api-app container: https://faun.pub/set-current-host-user-for-docker-container-4e521cef9ffc
+  - https://serversforhackers.com/c/dckr-file-permissions
+  - https://faun.pub/set-current-host-user-for-docker-container-4e521cef9ffc
+  - https://github.com/laradock/laradock/blob/master/workspace/Dockerfile#L40
+  - https://medium.com/redbubble/running-a-docker-container-as-a-non-root-user-7d2e00f8ee15
+  - https://ntsim.uk/posts/file-permissisions-when-developing-with-docker
 - [ ] configure permissions for client-app container 
 - [ ] add command to set up queue as horizon
 - [ ] add possibility to specify tags for build
