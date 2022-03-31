@@ -10,8 +10,6 @@ services:
     build:
       context: docker/dev/gateway
       dockerfile: Dockerfile
-    volumes:
-      - ./docker/dev/nginx/logs:/var/log/nginx
     ports:
       - "80:80"
     depends_on:
@@ -28,8 +26,6 @@ services:
     build:
       context: docker/dev/client/gateway
       dockerfile: Dockerfile
-    volumes:
-      - ./docker/dev/client/gateway/logs:/var/log/nginx
     ports:
       - "8080:80"
     links:
@@ -143,7 +139,7 @@ services:
       - api-redis
       - api-postgres
 
-  # The Mailhog container (SMTP testing)
+  # The Mailhog container
   api-mailhog:
     build:
       context: docker/dev/api/mailhog
