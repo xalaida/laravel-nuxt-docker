@@ -1,4 +1,4 @@
-## Dockerized starter template for Laravel + Nuxt.JS project.
+## Dockerized template for Laravel + Nuxt.JS project.
 
 ## Overview
 Look at one of the following topics to learn more about the project
@@ -318,20 +318,21 @@ During the nuxt app creation select the following options:
 - This command works: php artisan octane:start --host=0.0.0.0 --port=8000 (install --watch dependencies)
 
 ##### TODO LIST:
-- [ ] finish command to build 'base' image
+- [ ] configure permissions for api-app container 
+  - [ ] user permissions to api-app container: https://faun.pub/set-current-host-user-for-docker-container-4e521cef9ffc
+- [ ] configure permissions for client-app container 
 - [ ] add command to set up queue as horizon
-- [ ] user permissions to api-app container: https://faun.pub/set-current-host-user-for-docker-container-4e521cef9ffc
 - [ ] add possibility to specify tags for build
-- [ ] php 8.1
 - [ ] laravel 9
 - [ ] nuxt 3
 - [ ] laravel octane
-- [ ] install.sh
+- [ ] install.sh (--horizon --octane --mysql --nuxt2 --nuxt3)
 - [ ] laravel-echo
 - [ ] add php-storm base config
 - [ ] add healthchecks to other containers
 - [ ] add make command for logs
 - [ ] subdomains vs ports vs prefixes
+- [ ] check other version updates (postgres, redis, etc)
 - [ ] make nginx pass access and error logs to the docker instance
 - [ ] use PECL redis extension instead of predis/predis package
 - [ ] mysql branch
