@@ -4,6 +4,9 @@ FROM node:17-alpine
 # Install git
 RUN apk add --no-cache git
 
+# Install nuxi package
+RUN npm install -g nuxi
+
 # Set up work directory
 WORKDIR /var/www/client
 
@@ -16,5 +19,5 @@ EXPOSE 3000
 # Export the Vite websocket port
 EXPOSE 24678
 
-# Init command
-CMD ["sh", "-c", "yarn install && yarn dev -o"]
+# Run the Nuxt service
+CMD ["yarn", "dev", "-o"]

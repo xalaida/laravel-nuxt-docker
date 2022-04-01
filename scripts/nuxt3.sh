@@ -11,4 +11,11 @@ docker-compose run \
   npx nuxi init ../client
 
 # Set ownership of the app to the current user
-sudo chown -R $(id -u):$(id -g) ./client
+sudo chown -R "$(id -u)":"$(id -g)" ./client
+
+# Install base packages
+docker-compose run \
+  --rm \
+  --user "$(id -u)":"$(id -g)" \
+  client-app \
+  yarn install
