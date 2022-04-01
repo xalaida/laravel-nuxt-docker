@@ -32,7 +32,7 @@ ENV NODE_PATH /usr/lib/node_modules
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # PHP configuration
-COPY php.ini /usr/local/etc/php/php.ini
+COPY ./php/php.ini /usr/local/etc/php/php.ini
 
 # Clean up
 RUN apt-get clean \
