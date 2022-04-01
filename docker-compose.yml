@@ -5,7 +5,7 @@ services:
   #-- Reverse proxy gateway --------------------#
   #---------------------------------------------#
 
-  # The global gateway container
+  # The global gateway container (based on Nginx)
   gateway:
     build:
       context: docker/dev/gateway
@@ -21,7 +21,7 @@ services:
   #-- Client services ------------------------#
   #-------------------------------------------#
 
-  # The client gateway container
+  # The client gateway container (based on Nginx)
   client-gateway:
     build:
       context: docker/dev/client/gateway

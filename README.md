@@ -332,6 +332,10 @@ During the nuxt app creation select the following options:
 - [ ] laravel octane
 - [ ] install.sh (--horizon --octane --mysql --nuxt2 --nuxt3)
 - [ ] laravel-echo
+- [ ] handle static files
+- [ ] add github actions (testing, etc)
+- [ ] probably left only one gateway (and tune it for max perf by increasing events for prod)
+- [ ] probably left only one gateway (and tune it for max perf by increasing events for prod)
 - [ ] add php-storm base config
 - [ ] add healthchecks to other containers
 - [ ] add make command for logs
