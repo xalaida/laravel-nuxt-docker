@@ -2,11 +2,13 @@
 docker-compose down
 
 # Remove client directory
-rm -rf ./../client
+sudo rm -rf ./client
 
-# Install Nuxt
-docker-compose run --rm client-app npx nuxi init ../client
+# Init a new Nuxt app
+docker-compose run \
+  --rm \
+  client-app \
+  npx nuxi init ../client
 
-# Copy .env file
-cp ./../docker/dev/client/.env ./../client/.env
-echo "Added environment file."
+# Set ownership of the app to the current user
+sudo chown -R $(id -u):$(id -g) ./client
