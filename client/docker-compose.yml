@@ -6,22 +6,26 @@ services:
     build:
       context: ./.docker/dev/app
       dockerfile: Dockerfile
+    environment:
+      HOST: 0.0.0.0
     volumes:
       - ./:/var/www/html
     hostname: client
     ports:
-      # Direct Nuxt port
+      # The Nuxt app port
       - "3000:3000"
-      # Nuxt dev WebSocket port
+      # The Vite port for WebSocket
       - "24678:24678"
     networks:
       - client
       - api
 
 networks:
+  # The client network
   client:
     driver: bridge
 
+  # The external API network
   api:
     external:
       name: api
