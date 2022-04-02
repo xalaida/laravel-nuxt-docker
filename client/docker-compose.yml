@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  # The client application container
+  client-app:
+    build:
+      context: ./.docker/dev/app
+      dockerfile: Dockerfile
+    ports:
+      # Direct Nuxt port
+      - "3000:3000"
+      # Nuxt dev WebSocket port
+      - "24678:24678"
+    volumes:
+      - ./:/var/www/
+    # Allow using same endpoint in NODE (SSR) and BROWSER
+  #    extra_hosts:
+  #      - "api.app.local:host-gateway"
