@@ -2,12 +2,13 @@ version: '3.8'
 
 services:
   # The client application container
-  client-app:
+  app:
     build:
       context: ./.docker/dev/app
       dockerfile: Dockerfile
     volumes:
       - ./:/var/www/html
+    hostname: client
     ports:
       # Direct Nuxt port
       - "3000:3000"
@@ -23,4 +24,4 @@ networks:
 
   api:
     external:
-      name: api_network
+      name: api
