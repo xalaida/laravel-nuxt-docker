@@ -1,0 +1,2 @@
+# Image
+FROM mailhog/mailhog

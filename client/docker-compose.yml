@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   # The client application container
@@ -6,13 +6,21 @@ services:
     build:
       context: ./.docker/dev/app
       dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
     ports:
       # Direct Nuxt port
       - "3000:3000"
       # Nuxt dev WebSocket port
       - "24678:24678"
-    volumes:
-      - ./:/var/www/
-    # Allow using same endpoint in NODE (SSR) and BROWSER
-  #    extra_hosts:
-  #      - "api.app.local:host-gateway"
+    networks:
+      - client
+      - api
+
+networks:
+  client:
+    driver: bridge
+
+  api:
+    external:
+      name: api_network

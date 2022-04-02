@@ -8,7 +8,7 @@ RUN apk add --no-cache git
 RUN npm install -g nuxi
 
 # Set up work directory
-WORKDIR /var/www/
+WORKDIR /var/www/html
 
 # Configure host
 ENV HOST 0.0.0.0
