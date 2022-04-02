@@ -98,6 +98,66 @@ make down
 docker-compose down
 ```
 
+## Nuxt 2
+
+To configure axios, put the following code to the `nuxt.config.js` file
+
+```
+publicRuntimeConfig: {
+  axios: {
+    browserBaseURL: process.env.API_URL_BROWSER
+  }
+},
+
+privateRuntimeConfig: {
+  axios: {
+    baseURL: process.env.API_URL_SERVER
+  }
+},
+```
+
+## Nuxt 3
+
+To fetch data from the Laravel API, you can create the composable fetch `./composable/apiFetch.js`:
+
+```ts
+import type { FetchOptions } from 'ohmyfetch'
+
+export const useApiFetch = (path: string, opts?: FetchOptions) => {
+  const config = useRuntimeConfig()
+
+  return $fetch(path, {
+    baseURL: process.server ? config.apiUrlServer : config.apiUrlBrowser,
+    ...(opts && { ...opts })
+  })
+}
+```
+
+Then, update the configuration file `nuxt.config.ts`:
+
+```ts
+import { defineNuxtConfig } from 'nuxt3'
+
+export default defineNuxtConfig({
+  publicRuntimeConfig: {
+      apiUrlBrowser: process.env.API_URL_BROWSER,
+  },
+
+  privateRuntimeConfig: {
+    apiUrlServer: process.env.API_URL_SERVER,
+  }
+})
+
+```
+
+Now, in page file, you can use it as following:
+
+```vue
+<script setup>
+const data = await useApiFetch('posts')
+</script>
+```
+
 ## Nuxt
 Your application is available at the [http://localhost:8080](http://localhost:8080) url.
 
@@ -309,21 +369,7 @@ During the nuxt app creation select the following options:
     - [x] DotEnv
 - At other steps you can choose an option what you want
 
-
-### Swoole
-
-- Install swoole pecl extension
-- Switch PHP FPM to PHP CLI
-- Update nginx config
-- This command works: php artisan octane:start --host=0.0.0.0 --port=8000 (install --watch dependencies)
-
 ##### TODO LIST:
-- [ ] configure permissions for api-app container 
-  - https://serversforhackers.com/c/dckr-file-permissions
-  - https://faun.pub/set-current-host-user-for-docker-container-4e521cef9ffc
-  - https://github.com/laradock/laradock/blob/master/workspace/Dockerfile#L40
-  - https://medium.com/redbubble/running-a-docker-container-as-a-non-root-user-7d2e00f8ee15
-  - https://ntsim.uk/posts/file-permissisions-when-developing-with-docker
 - [ ] configure permissions for client-app container 
 - [ ] add command to set up queue as horizon
 - [ ] add possibility to specify tags for build
@@ -334,7 +380,6 @@ During the nuxt app creation select the following options:
 - [ ] laravel-echo
 - [ ] handle static files
 - [ ] add github actions (testing, etc)
-- [ ] probably left only one gateway (and tune it for max perf by increasing events for prod)
 - [ ] probably left only one gateway (and tune it for max perf by increasing events for prod)
 - [ ] add php-storm base config
 - [ ] add healthchecks to other containers

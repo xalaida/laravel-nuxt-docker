@@ -66,7 +66,8 @@ api-up:
 	docker-compose up -d api-gateway api-app api-postgres api-redis api-queue api-schedule api-mailhog api-postgres-testing
 
 # Restart the API containers
-api-restart: down api-up
+api-restart:
+	docker-compose restart api-gateway api-app api-postgres api-redis api-queue api-schedule api-mailhog api-postgres-testing
 
 # Set up permissions for Laravel cache and storage folders
 api-permissions:
@@ -87,7 +88,8 @@ client-up:
 	docker-compose up -d client-gateway client-app
 
 # Restart the client containers
-client-restart: down client-up
+client-restart:
+	docker-compose restart client-gateway client-app
 
 # Restart the client application container
 client-app-restart:

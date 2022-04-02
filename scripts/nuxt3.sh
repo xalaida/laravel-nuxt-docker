@@ -16,6 +16,7 @@ sudo chown -R "$(id -u)":"$(id -g)" ./client
 # Install base packages
 docker-compose run \
   --rm \
+  -it \
   --user "$(id -u)":"$(id -g)" \
   client-app \
   yarn install

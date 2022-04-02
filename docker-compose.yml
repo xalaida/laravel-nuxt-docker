@@ -43,13 +43,16 @@ services:
       - "24678:24678"
     volumes:
       - ./client:/var/www/client
+    # Allow using same endpoint in NODE (SSR) and BROWSER
+#    extra_hosts:
+#      - "api.app.local:host-gateway"
 
 
   #-------------------------------------------#
   #-- API services ---------------------------#
   #-------------------------------------------#
 
-  # The client gateway container (based on Nginx)
+  # The API gateway container (based on Nginx)
   api-gateway:
     build:
       context: docker/dev/api/gateway
@@ -61,7 +64,7 @@ services:
     links:
       - api-app
 
-  # The api application container (based on PHP FPM)
+  # The API application container (based on PHP FPM)
   api-app:
     build:
       context: docker/dev/api/app
