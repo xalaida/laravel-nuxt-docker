@@ -7,7 +7,7 @@ services:
       context: ./.docker/dev/app
       dockerfile: Dockerfile
     environment:
-      # If you down want to use xDebug, set remote_enable=0
+      # TODO: configure this
       XDEBUG_CONFIG: "remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
     volumes:
@@ -58,10 +58,10 @@ services:
       dockerfile: Dockerfile
     # TODO: make it use the .env file
     environment:
-      - LC_ALL=C.UTF-8
-      - POSTGRES_DB=app
-      - POSTGRES_USER=app
-      - POSTGRES_PASSWORD=app
+      LC_ALL: C.UTF-8
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
     volumes:
       - postgres:/var/lib/postgresql/data
       - ./.docker/dev/postgres/dumps/:/tmp/
@@ -77,10 +77,10 @@ services:
       dockerfile: Dockerfile
     # TODO: make it use the .env file
     environment:
-      - LC_ALL=C.UTF-8
-      - POSTGRES_DB=app
-      - POSTGRES_USER=app
-      - POSTGRES_PASSWORD=app
+      LC_ALL: C.UTF-8
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
     networks:
       - api
 
