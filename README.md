@@ -1,7 +1,14 @@
-## Dockerized template for Laravel + Nuxt.JS project.
+# Dockerized template for your next Laravel and Nuxt project.
+
+Well tested on Ubuntu 18.04, 19.10 and 20.04.
+
+The following image demonstrates a request path going through the environment.
+
+![Schema](schema.drawio.png)
 
 ## Overview
-Look at one of the following topics to learn more about the project
+
+Look at one of the following topics to learn more about the template
 
 * [Stack](#stack-includes)
 * [Structure](#about-the-structure)
@@ -23,51 +30,124 @@ Look at one of the following topics to learn more about the project
 * [Reinstallation](#reinstallation-frameworks)
 
 ## Stack includes
-* Laravel (auto install latest version)
-* Nuxt.JS (auto install latest version)
-* PostgreSQL 13.2
-* Nginx 1.18.0
-* Redis 6.2
-* Supervisor (queues, schedule commands, etc.)
-* Mailhog (SMTP testing)
 
-#### Also
-* Bash aliases for simple cli using
-* A lot of useful **make** commands
-* A separate testing database
-
-## Prerequisites
-- Docker-compose
-- Make tool
-
-Well tested on Ubuntu 18.04, 19.10 and 20.04.
+* API
+  * Laravel (latest version)
+  * Octane
+  * PostgreSQL 13 (and separate database for testing)
+  * Redis 6
+  * Mailhog
+* Client
+  * Nuxt 3 (latest version)
 
 ## About the structure
+
 Laravel API and Nuxt are totally separate from each other and there are some reasons why I don't mix them up.
 - First, throwing two frameworks together is a guaranteed mess in the future.
-- API should be the only one layer of coupling. 
+- API should be the only one layer of coupling.
 - You can host them on the different servers.
-- You can even split them into separate repositories if (when) the project will grow.  
-- You can even add a third project, for example, a mobile APP, which will use the same API also.
+- You can even split them into separate repositories if (when) the project will grow.
+- You can even add a third project, for example, a mobile APP, which will use the same API as well.
 
-## Installation
-**1. Clone or download the repository and enter its folder**
-```
+## Getting Started
+
+Clone or download the repository and enter its directory:
+
+```bash
 git clone https://github.com/nevadskiy/laravel-nuxt-docker.git app
 cd app
 ```
 
-**2. Run the installation script (it may take up to 10 minutes)**
+Then, install both API and client apps.
+
+## API
+
+Here will be placed your Laravel app.
+
+### Installation
+
+First, you need to build API containers and init a new Laravel app. 
+
+It will create the `api` network, that will be used by the `client` app.
+
+To build and install a new Laravel app, execute the `install.sh` script from the `/api` directory:
+
+```bash
+cd api
+./install.sh
 ```
-make install
+
+It will install a Laravel app along with [Octane](https://laravel.com/docs/octane) package and [Breeze](https://laravel.com/docs/starter-kits#breeze-and-next) API scaffolding.
+
+Next, you can run the API app.
+
+### Usage
+
+#### Start
+
+To start containers, run the command:
+
+```bash
+# Make command
+make up
+
+# Raw command
+docker-compose up -d
 ```
 
-**3. That's it.** 
+Now, you can open [http://localhost:8000](http://localhost:8000) URL in your browser.
 
-Open [http://localhost:8080](http://localhost:8080) url in your browser. 
+#### Stop
 
-_If you see the 502 error page, just wait a bit when ```yarn install && yarn dev``` process will be finished (Check the status with the command ```docker-compose logs client```)_
+To stop containers, run the command:
 
+```bash
+# Make command
+make down
+
+# Raw command
+docker-compose down
+```
+
+#### Makefile commands
+
+There are a lot of useful **make** commands in the `Makefile`, that will make your development process much easier.
+
+For example, to migrate the database, execute the command:
+
+```bash
+make db:migrate
+```
+
+Feel free to explore [it](./Makefile) and edit according to your needs.
+
+#### Bash aliases
+
+Also, there is a set of bash aliases which you can apply using the command:
+
+```bash
+source aliases.sh
+```
+
+Now, to run any artisan command, you can use:
+
+```bash
+artisan make:model Product
+```
+
+#### Logs
+
+All laravel logs are forwarded to the docker system using the `stdout` channel.
+
+See the latest logs, running the command:
+
+```bash
+docker-compose logs app
+```
+
+## Client
+
+Continue later...
 
 ## Basic usage
 Your base url is ```http://localhost:8080```. All requests to Laravel API must be sent using to the url starting with `/api` prefix. Nginx server will proxy all requests with ```/api``` prefix to the node static server which serves the Nuxt. 
