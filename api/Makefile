@@ -118,8 +118,8 @@ composer\:update:
 cu: composer\:update
 
 # Show outdated composer dependencies
-composer:\outdated:
-	docker-compose exec yarn outdated
+composer\:outdated:
+	docker-compose exec app yarn outdated
 
 # PHP composer autoload command
 composer\:autoload:
@@ -157,16 +157,3 @@ rebuild:
 permissions:
 	sudo chmod -R 777 bootstrap/cache
 	sudo chmod -R 777 storage
-
-
-#-----------------------------------------------------------
-# Free up space (danger zone)
-#-----------------------------------------------------------
-
-# Remove all docker containers, networks, images and volumes
-docker-prune-all:
-	docker system prune --all --volumes
-
-# Remove all existing networks
-docker-prune-networks:
-	docker network prune
