@@ -2,7 +2,7 @@
 docker-compose build
 
 # Init a new Nuxt app
-docker-compose run --rm app npx nuxi init src
+docker-compose run --rm --user "$(id -u)":"$(id -g)" app npx nuxi init src
 
 # Set ownership of the app to the current user
 chown -R "$(id -u)":"$(id -g)" ./src
