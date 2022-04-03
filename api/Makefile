@@ -19,11 +19,11 @@ restart: down up
 
 # Show logs of each container
 logs:
-	docker-compose logs
+	docker-compose logs --tail=500
 
 # Show following logs of each container
 fl:
-	docker-compose logs -f
+	docker-compose logs -f --tail=500
 
 
 #-----------------------------------------------------------
