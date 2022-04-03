@@ -17,18 +17,18 @@ RUN pecl install xdebug \
 RUN pecl install swoole \
     && docker-php-ext-enable swoole
 
-# Install Node (v16 LTS) & NPM
+# Install Node (v16 LTS) & NPM (required by Octane)
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g npm
 
-# Install Chokidar (file watcher used by Octane)
+# Install Chokidar (required by Octane)
 RUN npm install --g chokidar
 
-# Specify the node path (allow to require chokidar as global)
+# Specify the node path (allow including chokidar globally)
 ENV NODE_PATH /usr/lib/node_modules
 
-# Composer
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # PHP configuration

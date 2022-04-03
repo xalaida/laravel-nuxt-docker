@@ -56,12 +56,10 @@ services:
     build:
       context: ./.docker/dev/postgres
       dockerfile: Dockerfile
-    # TODO: make it use the .env file
     environment:
-      LC_ALL: C.UTF-8
-      POSTGRES_DB: app
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: app
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres:/var/lib/postgresql/data
       - ./.docker/dev/postgres/dumps/:/tmp/
@@ -75,12 +73,10 @@ services:
     build:
       context: ./.docker/dev/postgres
       dockerfile: Dockerfile
-    # TODO: make it use the .env file
     environment:
-      LC_ALL: C.UTF-8
-      POSTGRES_DB: app
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: app
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     networks:
       - api
 
