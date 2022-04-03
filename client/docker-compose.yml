@@ -14,7 +14,7 @@ services:
     ports:
       # The Nuxt app port
       - "3000:3000"
-      # The Vite port for WebSocket (Only Nuxt 3)
+      # The Vite port for WebSocket
       - "24678:24678"
     networks:
       - client
