@@ -50,7 +50,7 @@ yi: yarn\:install
 yarn\:upgrade:
 	docker-compose exec app yarn upgrade
 
-# Alias to update yarn dependencies
+# Alias to upgrade yarn dependencies
 yu: yarn\:upgrade
 
 # Show outdated yarn dependencies

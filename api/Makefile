@@ -133,9 +133,11 @@ composer\:autoload:
 # Redis
 #-----------------------------------------------------------
 
+# Enter into the redis container
 redis:
 	docker-compose exec redis redis-cli
 
+# Flush the redis state
 redis-flush:
 	docker-compose exec redis redis-cli FLUSHALL
 
