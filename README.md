@@ -54,7 +54,7 @@ cd api
 
 It will install a Laravel app along with [Octane](https://laravel.com/docs/octane) package and [Breeze](https://laravel.com/docs/starter-kits#breeze-and-next) API scaffolding.
 
-Now, you can start the API app.
+Now you can start the API app.
 
 ### Usage
 
@@ -70,7 +70,7 @@ make up
 docker-compose up -d
 ```
 
-Now, you can open [http://localhost:8000](http://localhost:8000) URL in your browser.
+Now you can open [http://localhost:8000](http://localhost:8000) URL in your browser.
 
 #### Stop
 
@@ -86,15 +86,15 @@ docker-compose down
 
 #### Makefile commands
 
-There are a lot of useful **make** commands in the `Makefile`, that will make your development process much easier.
+There are a lot of useful **make** commands in the [Makefile](./api/Makefile), that will make your development process much easier.
 
-For example, to migrate the database, execute the command:
+For example, to migrate the database execute the command:
 
 ```bash
 make migrate
 ```
 
-Feel free to explore [it](./api/Makefile) and edit according to your needs.
+Feel free to explore it and edit according to your needs.
 
 #### Bash aliases
 
@@ -104,7 +104,7 @@ Also, there is a set of bash aliases which you can apply using the command:
 source aliases.sh
 ```
 
-Now, to run any artisan command, you can use:
+Now to run any artisan command you can use:
 
 ```bash
 artisan make:model Product
@@ -122,7 +122,7 @@ docker-compose logs app
 
 #### Storage
 
-To use Laravel storage with a local disk, create a symlink using command:
+To use Laravel storage with a local disk, create a symlink using the command:
 
 ```bash
 # Make command
@@ -134,7 +134,7 @@ docker-compose exec app php artisan storage:link --relative
 
 #### MailHog
 
-If you want to check how all sent mail look, just go to [http://localhost:8026](http://localhost:8026).
+If you want to check how sent mails look, just go to [http://localhost:8026](http://localhost:8026).
 
 [MailHog](https://github.com/mailhog/mailhog) is an email testing tool for developers.
 
