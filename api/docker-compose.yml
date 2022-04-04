@@ -110,6 +110,7 @@ volumes:
     driver: local
 
 networks:
+  # The external API network
   api:
-    name: api
-    driver: bridge
+    external:
+      name: api

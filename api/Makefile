@@ -144,6 +144,10 @@ redis-flush:
 # Installation
 #-----------------------------------------------------------
 
+# Create shared API network
+network:
+	docker network create api
+
 # Build containers
 build: build-base
 	docker-compose build

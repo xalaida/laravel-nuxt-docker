@@ -43,11 +43,9 @@ Here will be placed your Laravel app.
 
 ### Installation
 
-First, you need to build API containers and init a new Laravel app. 
+First, you need to create shared network, build API containers and init a new Laravel app. 
 
-It will create the `api` network, that will be used by the `client` app.
-
-To build and install a new Laravel app, execute the `install.sh` script from the `/api` directory:
+To do it, execute the `install.sh` script from the `/api` directory:
 
 ```bash
 cd api
@@ -56,7 +54,7 @@ cd api
 
 It will install a Laravel app along with [Octane](https://laravel.com/docs/octane) package and [Breeze](https://laravel.com/docs/starter-kits#breeze-and-next) API scaffolding.
 
-Next, you can run the API app.
+Now, you can start the API app.
 
 ### Usage
 

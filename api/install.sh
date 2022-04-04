@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Create shared API network
+docker network create api
+
 # Build base container
 docker build ./.docker/dev/base -t api-base
 
