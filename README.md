@@ -222,7 +222,7 @@ const { data } = await useApiFetch('/products')
 </script>
 ```
 
-##To Do list:
+## To Do list:
 
 - [ ] add stub for mysql
 - [ ] add stub for nuxt 2
@@ -239,8 +239,10 @@ const { data } = await useApiFetch('/products')
 - [ ] prod
   - [ ] proxy gateway
   - [ ] certbot
-  - [ ] tagging to dockerhub
+  - [ ] pushing tags dockerhub
   - [ ] http2, brotli/gzip, ssl
+  - [ ] handling static files
+  - [ ] remove public/index.php
 
 ##### Init laravel from sail
 
