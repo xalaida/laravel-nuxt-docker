@@ -1,4 +1,4 @@
-# Execute command from the api-app container by the current user
+# Execute command from the app container by the current user
 alias api='docker-compose exec --user "$(id -u):$(id -g)" app'
 
 # Execute command from specified container
