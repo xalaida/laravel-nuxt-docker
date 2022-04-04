@@ -2,33 +2,6 @@
 
 Well tested on Ubuntu 18.04, 19.10 and 20.04.
 
-The following image demonstrates a request path going through the environment.
-
-![Schema](schema.drawio.png)
-
-## Overview
-
-Look at one of the following topics to learn more about the template
-
-* [Stack](#stack-includes)
-* [Structure](#about-the-structure)
-* [Installation](#installation)
-* [Basic usage](#basic-usage)
-    * [Manual installation](#manual-installation)
-* [Environment](#environment)
-* [Nuxt](#nuxt)
-* [Laravel](#laravel)
-    * [Artisan](#artisan)
-    * [File storage](#file-storage)
-* [Makefile](#makefile)
-* [Aliases](#aliases)
-* [Database](#database)
-* [Redis](#redis)
-* [Mailhog](#mailhog)
-* [Logs](#logs)
-* [Running commands](#running-commands-from-containers)
-* [Reinstallation](#reinstallation-frameworks)
-
 ## Stack includes
 
 * API
@@ -40,14 +13,18 @@ Look at one of the following topics to learn more about the template
 * Client
   * Nuxt 3 (latest version)
 
-## About the structure
+## Description
+
+The following image demonstrates a request path going through the environment.
+
+![Schema](schema.drawio.png)
 
 Laravel API and Nuxt are totally separate from each other and there are some reasons why I don't mix them up.
 - First, throwing two frameworks together is a guaranteed mess in the future.
 - API should be the only one layer of coupling.
 - You can host them on the different servers.
 - You can even split them into separate repositories if (when) the project will grow.
-- You can even add a third project, for example, a mobile APP, which will use the same API as well.
+- You can even add a third project, for example, a mobile app (or a separate Nuxt app for admin panel, for example), which will use the same API as well.
 
 ## Getting Started
 
@@ -116,10 +93,10 @@ There are a lot of useful **make** commands in the `Makefile`, that will make yo
 For example, to migrate the database, execute the command:
 
 ```bash
-make db:migrate
+make migrate
 ```
 
-Feel free to explore [it](./Makefile) and edit according to your needs.
+Feel free to explore [it](./api/Makefile) and edit according to your needs.
 
 #### Bash aliases
 
@@ -145,60 +122,86 @@ See the latest logs, running the command:
 docker-compose logs app
 ```
 
+#### Storage
+
+To use Laravel storage with a local disk, create a symlink using command:
+
+```bash
+# Make command
+make storage
+
+# Raw command
+docker-compose exec app php artisan storage:link --relative
+```
+
+#### MailHog
+
+If you want to check how all sent mail look, just go to [http://localhost:8026](http://localhost:8026).
+
+[MailHog](https://github.com/mailhog/MailHog) is an email testing tool for developers.
+
 ## Client
 
-Continue later...
+Here will be placed your Laravel app.
 
-## Basic usage
-Your base url is ```http://localhost:8080```. All requests to Laravel API must be sent using to the url starting with `/api` prefix. Nginx server will proxy all requests with ```/api``` prefix to the node static server which serves the Nuxt. 
+## Installation
 
-There is also available [http://localhost:8081](http://localhost:8081) url which is handled by Laravel and should be used for testing purposes only.
+To build and install a new Nuxt app, execute the `install.sh` script from the `/client` directory:
 
-You **don't** need to configure the api to allow cross origin requests because all requests are proxied through the Nginx.
-
-The following image demonstrates a request path going through the environment.
-![Schema](docker/schema.png)
-
-## Environment
-To up all containers, run the command:
+```bash
+cd client
+./install.sh
 ```
+
+### Usage
+
+#### Start
+
+To start containers, run the command:
+
+```bash
 # Make command
 make up
 
-# Full command
+# Raw command
 docker-compose up -d
 ```
 
-To shut down all containers, run the command:
-```
+Now, you can open [http://localhost:3000](http://localhost:3000) URL in your browser.
+
+#### Stop
+
+To stop containers, run the command:
+
+```bash
 # Make command
 make down
 
-# Full command
+# Raw command
 docker-compose down
 ```
 
-## Nuxt 2
+#### Fetch API data
 
-To configure axios, put the following code to the `nuxt.config.js` file
+To fetch data from the Laravel API, you have to use different endpoints when requesting data from the browser and during the SSR process from the Node server instance.
 
-```
-publicRuntimeConfig: {
-  axios: {
-    browserBaseURL: process.env.API_URL_BROWSER
+The `.env` file already contains those endpoints, so you can use the following `nuxt.config.ts` file:
+
+```ts
+import { defineNuxtConfig } from 'nuxt3'
+
+export default defineNuxtConfig({
+  publicRuntimeConfig: {
+    apiUrlBrowser: process.env.API_URL_BROWSER,
+  },
+
+  privateRuntimeConfig: {
+    apiUrlServer: process.env.API_URL_SERVER,
   }
-},
-
-privateRuntimeConfig: {
-  axios: {
-    baseURL: process.env.API_URL_SERVER
-  }
-},
+})
 ```
 
-## Nuxt 3
-
-To fetch data from the Laravel API, you can create the composable fetch `./composable/apiFetch.js`:
+Then, you can create something like this composable function `/composables/apiFetch.ts`:
 
 ```ts
 import type { FetchOptions } from 'ohmyfetch'
@@ -213,263 +216,30 @@ export const useApiFetch = (path: string, opts?: FetchOptions) => {
 }
 ```
 
-Then, update the configuration file `nuxt.config.ts`:
-
-```ts
-import { defineNuxtConfig } from 'nuxt3'
-
-export default defineNuxtConfig({
-  publicRuntimeConfig: {
-      apiUrlBrowser: process.env.API_URL_BROWSER,
-  },
-
-  privateRuntimeConfig: {
-    apiUrlServer: process.env.API_URL_SERVER,
-  }
-})
-
-```
-
-Now, in page file, you can use it as following:
+Now in the component file you can use it as following:
 
 ```vue
 <script setup>
-const data = await useApiFetch('posts')
+const { data } = await useApiFetch('/products')
 </script>
 ```
 
-## Nuxt
-Your application is available at the [http://localhost:8080](http://localhost:8080) url.
+##To Do list:
 
-Take a look at `client/.env` file. There are two variables:
-```
-API_URL=http://nginx:80
-API_URL_BROWSER=http://localhost:8080
-```
-`API_URL` is the url where Nuxt sends requests during SSR process and is equal to the Nginx url inside the docker network. Take a look at the [image above](#basic-usage).
-`API_URL_BROWSER` is the base application url for browsers.
-
-To make them work, ensure you have the import dotenv statement at the very top in the nuxt.config.js file 
-```
-require('dotenv').config()
-
-export default {    
-  // Nuxt configuration
-}
-```
-
-## Requests
-Example of API request:
-```
-this.$axios.post('/api/register', { 
-    email: this.email, 
-    password: this.password 
-});
-```
-
-Async data
-```
-async asyncData ({ app }) {
-    const [subjectsResponse, booksResponse] = await Promise.all([
-      app.$axios.$get('/api/subjects'),
-      app.$axios.$get('/api/books')
-    ])
-
-    return {
-      subjects: subjectsResponse.data,
-      books: booksResponse.data
-    }
-},
-```
-
-#### Dependencies
-If you update or install node dependencies, you should restart the Nuxt process, which is executed automatically by the client container:
-```
-# Make command
-make rc
-
-# Full command
-docker-compose restart client
-```
-
-## Laravel
-Laravel API is available at the [http://localhost:8080/api](http://localhost:8080/api) url.   
-
-There is also available [http://localhost:8081](http://localhost:8081) url which is handled by Laravel and should be used for testing purposes only.
-
-#### Artisan
-Artisan commands can be used like this
-```
-docker-compose exec php php artisan migrate
-```
-
-If you want to generate a new controller or any laravel class, all commands should be executed from the current user like this, which grants all needed file permissions
-```
-docker-compose exec --user "$(id -u):$(id -g)" php php artisan make:controller HomeController
-```
-
-However, to make the workflow a bit simpler, there is the _aliases.sh_ file, which allows to do the same work in this way
-```
-artisan make:controller HomeController
-```
-[More about aliases.sh](#Aliases)
-
-#### File storage
-Nginx will proxy all requests with the `/storage` path prefix to the Laravel storage, so you can easily access it.
-Just make sure you run the `artisan storage:link` command (Runs automatically during the `make install` process).
-
-## Makefile
-There are a lot of useful make commands you can use. 
-All of them you should run from the project directory where `Makefile` is located.
-
-Examples:
-```
-# Up docker containers
-make up
-
-# Apply the migrations
-make db-migrate
-
-# Run tests
-make test
-
-# Down docker containers
-make down
-```
-
-Feel free to explore it and add your commands if you need them.
-
-## Aliases
-Also, there is the _aliases.sh_ file which you can apply with command:
-```
-source aliases.sh
-```
-_Note that you should always run this command when you open the new terminal instance._
-
-It helps to execute commands from different containers a bit simpler:
-
-For example, instead of
-```
-docker-compose exec postgres pg_dump
-```
-
-You can use the alias `from`:
-```
-from postgres pg_dump
-```
-
-But the big power is `artisan` alias
-
-If you want to generate a new controller or any Laravel class, all commands should be executed from the current user, which grants all needed file permissions
-```
-docker-compose exec --user "$(id -u):$(id -g)" php php artisan make:model Post
-```
-
-The `artisan` alias allows to do the same like this:
-```
-artisan make:model Post
-``` 
-
-## Database
-If you want to connect to PostgreSQL database from an external tool, for example _Sequel Pro_ or _Navicat_, use the following parameters
-```
-HOST: localhost
-PORT: 54321
-DB: app
-USER: app
-PASSWORD: app   
-```
-
-Also, you can connect to DB with CLI using docker container:
-```
-// Connect to container bash cli
-docker-compose exec postgres bash
-    // Then connect to DB cli 
-    psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-```
-
-For example, if you want to export dump file, use the command
-```
-docker-compose exec postgres pg_dump ${POSTGRES_USER} -d ${POSTGRES_DB} > docker/postgres/dumps/dump.sql
-```
-
-To import file into the database, put your file to docker/postgres/dumps folder, it mounts into /tmp folder inside container
-```
-// Connect to container bash cli
-docker-compose exec postgres bash
-    // Then connect to DB cli 
-    psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} < /tmp/dump.sql
-```
-
-## Redis
-To connect to redis cli, use the command:
-```
-docker-compose exec redis redis-cli
-```
-
-If you want to connect with external GUI tool, use the port ```54321```
-
-## Mailhog
-If you want to check how all sent mail look, just go to [http://localhost:8026](http://localhost:8026).
-It is the test mail catcher tool for SMTP testing. All sent mails will be stored here.
-
-## Logs
-All **_nginx_** logs are available inside the _docker/nginx/logs_ directory.
-
-All **_supervisor_** logs are available inside the _docker/supervisor/logs_ directory.
-
-To view docker containers logs, use the command:
-```
-# All containers
-docker-compose logs
-
-# Concrete container
-docker-compose logs <container>
-```
-
-## Running commands from containers
-You can run commands from inside containers' cli. To enter into the container run the following command:
-```
-# PHP
-docker-compose exec php bash
-
-# NODE
-docker-compose exec client /bin/sh
-```
-
-During the nuxt app creation select the following options:
-- Choose the package manager
-    - [x] Yarn
-- Choose custom server framework
-    - [x] None (Recommended)
-- Choose rendering mode
-    - [x] Universal (SSR)
-- Choose Nuxt.js modules 
-    - [x] Axios
-    - [x] DotEnv
-- At other steps you can choose an option what you want
-
-##### TODO LIST:
-- [ ] configure permissions for client-app container 
-- [ ] add command to set up queue as horizon
-- [ ] add possibility to specify tags for build
-- [ ] laravel 9
-- [ ] nuxt 3
-- [ ] laravel octane
-- [ ] install.sh (--horizon --octane --mysql --nuxt2 --nuxt3)
+- [ ] add stub for mysql
+- [ ] add stub for nuxt 2
+- [ ] add stub to switch queue into horizon
 - [ ] laravel-echo
-- [ ] handle static files
+- [ ] selenium (laravel dusk)
+- [ ] add s3 container, probably minio
+- [ ] laravel sail option
+- [ ] laradock option
 - [ ] add github actions (testing, etc)
-- [ ] probably left only one gateway (and tune it for max perf by increasing events for prod)
 - [ ] add php-storm base config
 - [ ] add healthchecks to other containers
-- [ ] add make command for logs
 - [ ] subdomains vs ports vs prefixes
-- [ ] check other version updates (postgres, redis, etc)
-- [ ] make nginx pass access and error logs to the docker instance
-- [ ] use PECL redis extension instead of predis/predis package
-- [ ] mysql branch
-- [ ] prod build (http2 + ssl)
-- [ ] laravel-echo-server container for websocket integration
-- [ ] selenium container and instructions about testing
-- [ ] add a project starter readme.md file
+- [ ] prod
+  - [ ] proxy gateway
+  - [ ] certbot
+  - [ ] tagging to dockerhub
+  - [ ] http2, brotli/gzip, ssl
