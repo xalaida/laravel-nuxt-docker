@@ -241,3 +241,25 @@ const { data } = await useApiFetch('/products')
   - [ ] certbot
   - [ ] tagging to dockerhub
   - [ ] http2, brotli/gzip, ssl
+
+##### Init laravel from sail
+
+```bash
+docker run --rm -it \
+  -u "$(id -u)":"$(id -g)" \
+  -v "$(pwd)":/var/www/html \
+  -w /var/www/html \
+  laravelsail/php81-composer:latest \
+  composer create-project --prefer-dist laravel/laravel src
+```
+
+##### Install sail package
+
+```bash
+docker run --rm -it \
+  -u "$(id -u)":"$(id -g)" \
+  -v "$(pwd)":/var/www/html \
+  -w /var/www/html/src \
+  laravelsail/php81-composer:latest \
+  php artisan sail:install
+```
