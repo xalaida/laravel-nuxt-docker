@@ -57,7 +57,7 @@ db\:rollback:
 db\:seed:
 	docker-compose exec app php artisan db:seed
 
-# Migrate the database wi
+# Fresh the database state
 db\:fresh:
 	docker-compose exec app php artisan migrate:fresh
 
