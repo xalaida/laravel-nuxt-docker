@@ -224,6 +224,7 @@ const { data } = await useApiFetch('/products')
 
 ## To Do list:
 
+- [ ] xDebug and .idea configuration
 - [ ] add stub for mysql
 - [ ] add stub for nuxt 2
 - [ ] add stub to switch queue into horizon

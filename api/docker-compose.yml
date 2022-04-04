@@ -93,7 +93,7 @@ services:
     networks:
       - api
 
-  # The Mailhog container
+  # The MailHog container
   mailhog:
     build:
       context: ./.docker/dev/mailhog
