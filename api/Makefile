@@ -46,6 +46,9 @@ cache\:clear:
 db\:migrate:
 	docker-compose exec app php artisan migrate
 
+# Alias to migrate the database
+migrate: db\:migrate
+
 # Rollback the database
 db\:rollback:
 	docker-compose exec app php artisan migrate:rollback
