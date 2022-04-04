@@ -25,7 +25,7 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
 # Install Chokidar (required by Octane)
 RUN npm install --g chokidar
 
-# Specify the node path (allow including chokidar globally)
+# Specify the node path (allow including Chokidar lib globally)
 ENV NODE_PATH /usr/lib/node_modules
 
 # Install Composer
@@ -45,7 +45,7 @@ WORKDIR /var/www/html
 # Export octane port
 EXPOSE 8000
 
-# Run the octane service
+# Run the Octane service
 CMD ["php", "artisan", "octane:start", "--server=swoole", "--host=0.0.0.0", "--port=8000", "--watch"]
 
 # The health check configuration
