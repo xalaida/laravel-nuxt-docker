@@ -9,7 +9,7 @@ Well tested on Ubuntu 18.04, 19.10 and 20.04.
   * Octane
   * PostgreSQL 13 (and separate database for testing)
   * Redis 6
-  * Mailhog
+  * MailHog
 * Client
   * Nuxt 3 (latest version)
 
@@ -39,13 +39,13 @@ Then, install both API and client apps.
 
 ## API
 
-Here will be placed your Laravel app.
+Your Laravel app will be placed in the `/api` directory.
 
 ### Installation
 
 First, you need to create shared network, build API containers and init a new Laravel app. 
 
-To do it, execute the `install.sh` script from the `/api` directory:
+To do it, execute the `install.sh` script:
 
 ```bash
 cd api
@@ -136,15 +136,15 @@ docker-compose exec app php artisan storage:link --relative
 
 If you want to check how all sent mail look, just go to [http://localhost:8026](http://localhost:8026).
 
-[MailHog](https://github.com/mailhog/MailHog) is an email testing tool for developers.
+[MailHog](https://github.com/mailhog/mailhog) is an email testing tool for developers.
 
 ## Client
 
-Here will be placed your Laravel app.
+Your Nuxt app will be placed in the `/client` directory.
 
 ## Installation
 
-To build and install a new Nuxt app, execute the `install.sh` script from the `/client` directory:
+To build and install a new Nuxt app, execute the `install.sh` script:
 
 ```bash
 cd client
