@@ -6,10 +6,6 @@ services:
     build:
       context: ./.docker/dev/app
       dockerfile: Dockerfile
-    environment:
-      # TODO: configure this
-      XDEBUG_CONFIG: "remote_enable=1"
-      PHP_IDE_CONFIG: "serverName=Docker"
     volumes:
       - ./:/var/www/html
     links:
@@ -20,6 +16,8 @@ services:
     hostname: api
     ports:
       - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - api
 

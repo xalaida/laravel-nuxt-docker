@@ -13,6 +13,9 @@ RUN apt-get update
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
+# Copy xDebug configuration file
+COPY ./php/xdebug.ini "${PHP_INI_DIR}/conf.d/xdebug.ini"
+
 # Install Swoole
 RUN pecl install swoole \
     && docker-php-ext-enable swoole
@@ -32,7 +35,7 @@ ENV NODE_PATH /usr/lib/node_modules
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # PHP configuration
-COPY ./php/php.ini /usr/local/etc/php/php.ini
+COPY ./php/php.ini "${PHP_INI_DIR}/php.ini"
 
 # Clean up
 RUN apt-get clean \
