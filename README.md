@@ -224,19 +224,15 @@ const { data } = await useApiFetch('/products')
 
 ## To Do list:
 
-- [ ] xDebug and .idea configuration
 - [ ] add stub for mysql
 - [ ] add stub for nuxt 2
 - [ ] add stub to switch queue into horizon
 - [ ] laravel-echo
 - [ ] selenium (laravel dusk)
 - [ ] add s3 container, probably minio
-- [ ] laravel sail option
-- [ ] laradock option
-- [ ] add github actions (testing, etc)
-- [ ] add php-storm base config
-- [ ] add healthchecks to other containers
-- [ ] subdomains vs ports vs prefixes
+- [ ] add github actions for testing
+- [ ] add health checks to other containers
+- [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
 - [ ] prod
   - [ ] proxy gateway
   - [ ] certbot
