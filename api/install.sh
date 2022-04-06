@@ -20,6 +20,9 @@ docker-compose run --rm app composer create-project --prefer-dist laravel/larave
 # Set ownership of the app to the current user
 sudo chown -R "$(id -u)":"$(id -g)" ./src
 
+# Remove default .env file
+rm src/.env
+
 # Move app from the src directory to the current directory
 # TODO: rewrite without terminal errors
 mv src/* src/.* .
