@@ -227,6 +227,8 @@ const { data } = await useApiFetch('/products')
 - [ ] add stub for mysql
 - [ ] add stub for nuxt 2
 - [ ] add stub to switch queue into horizon
+- [ ] add stub for php-fpm
+- [ ] add root makefile to install both apps and stop/up both apps
 - [ ] laravel-echo
 - [ ] selenium (laravel dusk)
 - [ ] add s3 container, probably minio
