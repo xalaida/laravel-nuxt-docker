@@ -9,13 +9,6 @@ RUN apt-get clean \
 # Update dependencies
 RUN apt-get update
 
-# Install xDebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-
-# Copy xDebug configuration file
-COPY ./php/xdebug.ini "${PHP_INI_DIR}/conf.d/xdebug.ini"
-
 # Install Swoole
 RUN pecl install swoole \
     && docker-php-ext-enable swoole
