@@ -1,3 +1,10 @@
+#!/bin/bash
+
+# Copy .env file
+if [ ! -f ./.env ]; then
+    cp ./.env.dev ./.env
+fi
+
 # Build the client containers
 docker-compose build
 
@@ -13,11 +20,6 @@ mv src/* src/.* .
 
 # Remove 'src directory
 rm -r src
-
-# Copy .env file
-if [ ! -f ./.env ]; then
-    cp ./.env.dev ./.env
-fi
 
 # Install packages
 docker-compose run --rm --user "$(id -u)":"$(id -g)" app yarn install

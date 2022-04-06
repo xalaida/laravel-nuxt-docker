@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Copy .env file
+if [ ! -f ./.env ]; then
+    cp ./.env.dev ./.env
+fi
+
 # Create shared API network
 docker network create api
 
@@ -21,11 +26,6 @@ mv src/* src/.* .
 
 # Remove 'src directory
 rm -r src
-
-# Copy .env file
-if [ ! -f ./.env ]; then
-    cp ./.env.dev ./.env
-fi
 
 # Generate the app key
 docker-compose run --rm app php artisan key:generate --ansi
