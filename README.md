@@ -233,22 +233,37 @@ const { data } = await useApiFetch('/products')
 - [ ] selenium (laravel dusk)
 - [ ] add s3 container, probably minio
 - [ ] add github actions for testing
+- [ ] set up volume permissions (ro, rw, etc)
+- [?] remove redis background saves
+- [ ] share `php.ini` between all api php-related containers
 - [ ] add health checks to other containers
+- [ ] remove .sh extension from bash scripts
 - [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
 - [ ] prod
+  - [ ] https://www.laradocker.com/production/#using-docker-compose
   - [ ] proxy gateway
   - [ ] certbot
   - [ ] separate .env variables for prod build
   - [ ] private registry server
   - [ ] pushing/pulling tags
+    - [ ] https://chris-vermeulen.com/laravel-in-kubernetes-part-3/
+    - [ ] https://www.koyeb.com/tutorials/dockerize-and-deploy-a-laravel-application-to-production
   - [ ] http2, brotli/gzip, ssl config
   - [ ] handling static files
+  - [ ] opcache + jit
+  - [ ] add .dockerignore
+  - [ ] provide .env API_KEY during first prod installation 
+  - [ ] add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
+  - [ ] volume storage 
+  - [ ] add possibility to open redis and postgres connections outside of docker network conditionally on runtime (using env variables)
+  - [ ] add stats command: https://docs.docker.com/config/containers/runmetrics/
   - [?] remove public/index.php
   - [ ] configure proper timeouts to handle big traffic
   - [ ] allow custom ssl certs (provide volume or directory for them)
-  - [ ] docker swarm
+  - [ ] docker swarm deployment
+  - [ ] .git deployment
   - [ ] deploy.sh script
-  - [ ] grafana (and forward logs into it)
+  - [ ] grafana vs prometheus monitoring tool (and forward logs into it)
 
 ##### Init laravel from sail
 
