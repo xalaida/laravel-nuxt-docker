@@ -239,8 +239,9 @@ const { data } = await useApiFetch('/products')
   - [ ] proxy gateway
   - [ ] certbot
   - [ ] separate .env variables for prod build
-  - [ ] pushing tags dockerhub
-  - [ ] http2, brotli/gzip, ssl
+  - [ ] private registry server
+  - [ ] pushing/pulling tags
+  - [ ] http2, brotli/gzip, ssl config
   - [ ] handling static files
   - [?] remove public/index.php
   - [ ] configure proper timeouts to handle big traffic
