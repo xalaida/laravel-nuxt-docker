@@ -62,6 +62,10 @@ yarn\:outdated:
 # Installation
 #-----------------------------------------------------------
 
+# Create shared client network
+network:
+	docker network create client
+
 # Build containers
 build:
 	docker-compose build

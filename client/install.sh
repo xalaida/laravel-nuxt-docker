@@ -5,6 +5,9 @@ if [ ! -f ./.env ]; then
     cp ./.env.dev ./.env
 fi
 
+# Create shared client network
+docker network create client
+
 # Build the client containers
 docker-compose build
 
