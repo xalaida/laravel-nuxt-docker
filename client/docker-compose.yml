@@ -23,6 +23,7 @@ services:
 networks:
   # The client network
   client:
+    name: client
     driver: bridge
 
   # The external API network
