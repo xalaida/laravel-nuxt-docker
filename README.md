@@ -238,10 +238,16 @@ const { data } = await useApiFetch('/products')
 - [ ] prod
   - [ ] proxy gateway
   - [ ] certbot
+  - [ ] separate .env variables for prod build
   - [ ] pushing tags dockerhub
   - [ ] http2, brotli/gzip, ssl
   - [ ] handling static files
-  - [ ] remove public/index.php
+  - [?] remove public/index.php
+  - [ ] configure proper timeouts to handle big traffic
+  - [ ] allow custom ssl certs (provide volume or directory for them)
+  - [ ] docker swarm
+  - [ ] deploy.sh script
+  - [ ] grafana (and forward logs into it)
 
 ##### Init laravel from sail
 
