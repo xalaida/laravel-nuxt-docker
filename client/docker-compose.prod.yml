@@ -4,20 +4,19 @@ services:
   # The client application container
   app:
     build:
-      context: ./.docker/prod/app
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/prod/app/Dockerfile
     hostname: client
     networks:
       - client
       - api
+    restart: always
 
 networks:
-  # The client network
   client:
-    name: client
-    driver: bridge
+    external:
+      name: client
 
-  # The external API network
   api:
     external:
       name: api
