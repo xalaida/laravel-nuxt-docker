@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # The client application container
+  app:
+    build:
+      context: ./.docker/prod/app
+      dockerfile: Dockerfile
+    hostname: client
+    networks:
+      - client
+      - api
+
+networks:
+  # The client network
+  client:
+    name: client
+    driver: bridge
+
+  # The external API network
+  api:
+    external:
+      name: api
