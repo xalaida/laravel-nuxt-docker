@@ -23,6 +23,9 @@ RUN apt-get clean \
 # Set up work directory
 WORKDIR /var/www/html
 
+# Specify the host variable
+ENV HOST 0.0.0.0
+
 # Expose the Nuxt port
 EXPOSE 3000
 

@@ -6,8 +6,6 @@ services:
     build:
       context: ./.docker/dev/app
       dockerfile: Dockerfile
-    environment:
-      HOST: 0.0.0.0
     volumes:
       - ./:/var/www/html
     hostname: client
