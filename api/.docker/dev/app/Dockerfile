@@ -35,10 +35,10 @@ RUN apt-get clean \
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Set up work directory
+# Set up the working directory
 WORKDIR /var/www/html
 
-# Export octane port
+# Export Octane port
 EXPOSE 8000
 
 # Run the Octane service
