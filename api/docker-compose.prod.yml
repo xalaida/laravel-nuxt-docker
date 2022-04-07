@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # The API application container
+  app:
+    build:
+      context: ./.docker/dev/app
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+    links:
+      - postgres
+      - postgres-testing
+      - redis
+      - mailhog
+    hostname: api
+    ports:
+      - "8000:8000"
+    networks:
+      - api
+    restart: always
+
+  # The queue container
+  queue:
+    build:
+      context: ./.docker/dev/queue
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+    links:
+      - postgres
+      - redis
+      - mailhog
+    networks:
+      - api
+    restart: always
+
+  # The schedule container
+  schedule:
+    build:
+      context: ./.docker/dev/schedule
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+    links:
+      - postgres
+      - redis
+      - mailhog
+    networks:
+      - api
+    restart: always
+
+  # The PostgreSQL container
+  postgres:
+    build:
+      context: ./.docker/dev/postgres
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./.docker/dev/postgres/dumps/:/tmp/
+    ports:
+      - "54321:5432"
+    networks:
+      - api
+    restart: always
+
+  # The Redis container
+  redis:
+    build:
+      context: ./.docker/dev/redis
+      dockerfile: Dockerfile
+    # TODO: Add one more volume for configuration
+    volumes:
+      - redis:/data
+    ports:
+      - "63791:6379"
+    networks:
+      - api
+    restart: always
+
+volumes:
+  postgres:
+    driver: local
+  redis:
+    driver: local
+
+networks:
+  api:
+    external:
+      name: api
