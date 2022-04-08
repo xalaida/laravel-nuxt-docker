@@ -234,10 +234,11 @@ const { data } = await useApiFetch('/products')
 - [ ] add s3 container, probably minio
 - [ ] add github actions for testing
 - [ ] set up volume permissions (ro, rw, etc)
-- [?] remove redis background saves
+- [?] remove redis background saves (provide redis conf similar as nginx conf)
 - [ ] share `php.ini` between all api php-related containers
 - [ ] add health checks to other containers
 - [ ] remove .sh extension from bash scripts
+- [ ] fix queue stop signal: https://stackoverflow.com/a/63851444/8041541
 - [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
 - [ ] prod
   - [ ] https://www.laradocker.com/production/#using-docker-compose
@@ -260,6 +261,8 @@ const { data } = await useApiFetch('/products')
   - [?] remove public/index.php
   - [ ] configure proper timeouts to handle big traffic
   - [ ] allow custom ssl certs (provide volume or directory for them)
+  - [ ] use last commit hash instead of 'latest' image tag
+  - [ ] registry server: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
   - [ ] docker swarm deployment
   - [ ] .git deployment
   - [ ] deploy.sh script

@@ -32,7 +32,7 @@ COPY ./.docker/prod/app/php/php.ini "${PHP_INI_DIR}/php.ini"
 # Copy environment variables (TODO: add possibility to provide .env.prod.secrets instead when available)
 COPY .env.prod .env
 
-# Set up file ownership
+# Set up file ownership (TODO: optimize this part, slow exec)
 RUN chown -R www-data:www-data .
 
 # Set up file permissions
