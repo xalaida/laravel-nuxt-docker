@@ -138,7 +138,7 @@ redis:
 	docker-compose exec redis redis-cli
 
 # Flush the redis state
-redis-flush:
+redis\:flush:
 	docker-compose exec redis redis-cli FLUSHALL
 
 
@@ -151,11 +151,11 @@ network:
 	docker network create api
 
 # Build containers
-build: build-base
+build: build\:base
 	docker-compose build
 
 # Build the base app image
-build-base:
+build\:base:
 	docker build ./.docker/dev/base -t api-base
 
 # Build containers without cache
@@ -166,3 +166,32 @@ rebuild:
 permissions:
 	sudo chmod -R 777 bootstrap/cache
 	sudo chmod -R 777 storage
+
+
+#-----------------------------------------------------------
+# Production
+#-----------------------------------------------------------
+
+# Create the 'api' docker network
+prod\:network:
+	docker network create api
+
+# Build production containers
+prod\:build: prod\:build\:base
+	docker-compose -f docker-compose.prod.yml build
+
+# Build the base app image
+prod\:build\:base:
+	docker build ./.docker/prod/base -t api-base-prod
+
+# Start production containers
+prod\:up:
+	docker-compose -f docker-compose.prod.yml up -d
+
+# Stop production containers
+prod\:down:
+	docker-compose -f docker-compose.prod.yml down --remove-orphans
+
+# Show the status of each container on production environment
+prod\:ps:
+	docker-compose -f docker-compose.prod.yml ps

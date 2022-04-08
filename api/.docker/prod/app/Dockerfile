@@ -27,7 +27,7 @@ RUN pecl install swoole \
     && docker-php-ext-enable swoole
 
 # PHP configuration (TODO: share between all php-related images)
-COPY ./php/php.ini "${PHP_INI_DIR}/php.ini"
+COPY ./.docker/prod/app/php/php.ini "${PHP_INI_DIR}/php.ini"
 
 # Copy environment variables (TODO: add possibility to provide .env.prod.secrets instead when available)
 COPY .env.prod .env
