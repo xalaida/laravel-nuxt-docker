@@ -1,16 +1,16 @@
 version: '3.8'
 
-# List of used networks
-networks:
-  # The client network
-  client:
-    name: client
-    driver: overlay
-
-  # The API network
-  api:
-    name: api
-    driver: overlay
+## List of used networks
+#networks:
+#  # The client network
+#  client:
+#    name: client
+#    driver: overlay
+#
+#  # The API network
+#  api:
+#    name: api
+#    driver: overlay
 
 # List of used networks
 services:
