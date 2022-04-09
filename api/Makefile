@@ -19,11 +19,11 @@ restart: down up
 
 # Show logs of each container
 logs:
-	docker-compose logs --tail=500
+	docker-compose logs --tail=1000
 
 # Show following logs of each container
 fl:
-	docker-compose logs -f --tail=500
+	docker-compose logs -f --tail=1000
 
 
 #-----------------------------------------------------------
@@ -172,13 +172,20 @@ permissions:
 # Production
 #-----------------------------------------------------------
 
-# Build production containers
-prod\:build: prod\:build\:base
-	docker-compose -f docker-compose.prod.yml build
+# Build all production containers
+prod\:build\:all: prod\:build\:php prod\:build\:base prod\:build
 
-# Build the base app image
+# Build the PHP image
+prod\:build\:php:
+	docker build ./.docker/prod/php -t api-php-prod
+
+# Build the base API app image
 prod\:build\:base:
-	docker build ./.docker/prod/base -t api-base-prod
+	docker build -f ./.docker/prod/base/Dockerfile -t api-base-prod .
+
+# Build production containers
+prod\:build:
+	docker-compose -f docker-compose.prod.yml build
 
 # Start production containers
 prod\:up:
@@ -192,6 +199,10 @@ prod\:down:
 prod\:ps:
 	docker-compose -f docker-compose.prod.yml ps
 
+# Show logs of each container on production environment
+prod\:logs:
+	docker-compose -f docker-compose.prod.yml logs --tail=100
+
 
 #-----------------------------------------------------------
 # Swarm
@@ -200,3 +211,15 @@ prod\:ps:
 # Init the Docker Swarm Leader node
 prod\:swarm\:init:
 	docker swarm init
+
+prod\:swarm\:deploy:
+	docker stack deploy --compose-file docker-compose.prod.yml api
+
+prod\:swarm\:services:
+	docker stack services api
+
+prod\:swarm\:ps:
+	docker stack ps api
+
+prod\:swarm\:rm:
+	docker stack rm api
