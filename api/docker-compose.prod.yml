@@ -20,7 +20,7 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
-    image: ${IMAGE_REGISTRY}/api-app:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY:-local}/api-app:${IMAGE_TAG:-latest}
     # TODO: add storage volume
     # volumes:
     #   - ./:/var/www/html
@@ -40,7 +40,7 @@ services:
     build:
       context: ./.docker/prod/queue
       dockerfile: Dockerfile
-    image: ${IMAGE_REGISTRY}/api-queue:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY:-local}/api-queue:${IMAGE_TAG:-latest}
     # TODO: add storage volume
     # volumes:
     #   - ./:/var/www/html
@@ -56,7 +56,7 @@ services:
     build:
       context: ./.docker/prod/schedule
       dockerfile: Dockerfile
-    image: ${IMAGE_REGISTRY}/api-schedule:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY:-local}/api-schedule:${IMAGE_TAG:-latest}
     # TODO: add storage volume
     # volumes:
     #   - ./:/var/www/html
@@ -72,7 +72,7 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/postgres/Dockerfile
-    image: ${IMAGE_REGISTRY}/api-postgres:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY:-local}/api-postgres:${IMAGE_TAG:-latest}
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -88,7 +88,7 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/redis/Dockerfile
-    image: ${IMAGE_REGISTRY}/api-redis:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY:-local}/api-redis:${IMAGE_TAG:-latest}
     volumes:
       - redis:/data
     networks:
