@@ -1,0 +1,5 @@
+/.git
+/vendor
+/.idea
+/.vscode
+.env
