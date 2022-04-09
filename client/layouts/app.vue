@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<header>
-			<h2>Fixed layout</h2>
+			<h2>Fixed app layout</h2>
 			<nav>
 				<ul>
 					<li>
