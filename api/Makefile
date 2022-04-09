@@ -214,10 +214,6 @@ prod\:logs:
 # Swarm
 #-----------------------------------------------------------
 
-# Init the Docker Swarm Leader node
-prod\:swarm\:init:
-	docker swarm init
-
 # Deploy the stack
 prod\:swarm\:deploy:
 	docker stack deploy --compose-file docker-compose.prod.yml api
@@ -233,3 +229,7 @@ prod\:swarm\:services:
 # List the tasks in the stack
 prod\:swarm\:ps:
 	docker stack ps api
+
+# Init the Docker Swarm Leader node
+prod\:swarm\:init:
+	docker swarm init

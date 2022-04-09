@@ -100,10 +100,6 @@ prod\:down:
 # Swarm
 #-----------------------------------------------------------
 
-# Init the Docker Swarm Leader node
-prod\:swarm\:init:
-	docker swarm init
-
 # Deploy the stack
 prod\:swarm\:deploy:
 	docker stack deploy --compose-file docker-compose.prod.yml client
@@ -119,3 +115,7 @@ prod\:swarm\:services:
 # List the tasks in the stack
 prod\:swarm\:ps:
 	docker stack ps client
+
+# Init the Docker Swarm Leader node
+prod\:swarm\:init:
+	docker swarm init
