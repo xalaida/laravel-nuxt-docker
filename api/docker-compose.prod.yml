@@ -17,12 +17,10 @@ volumes:
 services:
   # The API application container
   app:
-    image: ${IMAGE_REGISTRY}/api-app:${IMAGE_TAG:-latest}
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
-    env_file:
-      - .env.prod
+    image: ${IMAGE_REGISTRY}/api-app:${IMAGE_TAG:-latest}
     # TODO: add storage volume
     # volumes:
     #   - ./:/var/www/html
@@ -37,34 +35,37 @@ services:
       - api
     restart: always
 
-#  # The queue container
-#  queue:
-#    build:
-#      context: ./.docker/prod/queue
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./:/var/www/html
-#    links:
-#      - postgres
-#      - redis
-#    networks:
-#      - api
-#    restart: always
-#
-#  # The schedule container
-#  schedule:
-#    build:
-#      context: ./.docker/prod/schedule
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./:/var/www/html
-#    links:
-#      - postgres
-#      - redis
-#      - mailhog
-#    networks:
-#      - api
-#    restart: always
+  # The queue container
+  queue:
+    build:
+      context: ./.docker/prod/queue
+      dockerfile: Dockerfile
+    image: ${IMAGE_REGISTRY}/api-queue:${IMAGE_TAG:-latest}
+    # TODO: add storage volume
+    # volumes:
+    #   - ./:/var/www/html
+    links:
+      - postgres
+      - redis
+    networks:
+      - api
+    restart: always
+
+  # The schedule container
+  schedule:
+    build:
+      context: ./.docker/prod/schedule
+      dockerfile: Dockerfile
+    image: ${IMAGE_REGISTRY}/api-schedule:${IMAGE_TAG:-latest}
+    # TODO: add storage volume
+    # volumes:
+    #   - ./:/var/www/html
+    links:
+      - postgres
+      - redis
+    networks:
+      - api
+    restart: always
 
   # The PostgreSQL container
   postgres:
@@ -72,8 +73,6 @@ services:
       context: ./
       dockerfile: ./.docker/prod/postgres/Dockerfile
     image: ${IMAGE_REGISTRY}/api-postgres:${IMAGE_TAG:-latest}
-    env_file:
-      - .env.prod
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -90,8 +89,6 @@ services:
       context: ./
       dockerfile: ./.docker/prod/redis/Dockerfile
     image: ${IMAGE_REGISTRY}/api-redis:${IMAGE_TAG:-latest}
-    env_file:
-      - .env.prod
     volumes:
       - redis:/data
     networks:
