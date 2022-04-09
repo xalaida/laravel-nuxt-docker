@@ -2,6 +2,7 @@ version: '3.8'
 
 # List of used networks
 networks:
+  # The API network
   api:
     name: api
     driver: overlay

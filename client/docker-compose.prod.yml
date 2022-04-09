@@ -2,14 +2,17 @@ version: '3.8'
 
 # List of used networks
 networks:
+  # The client network
   client:
-    driver: overlay
     name: client
-
-  api:
     driver: overlay
-    name: api
 
+  # The API network
+  api:
+    name: api
+    driver: overlay
+
+# List of used services
 services:
   # The client application container
   app:

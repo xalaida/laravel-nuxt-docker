@@ -1,5 +1,18 @@
-version: '3'
+version: '3.8'
 
+# List of used networks
+networks:
+  # The client network
+  client:
+    name: client
+    driver: overlay
+
+  # The API network
+  api:
+    name: api
+    driver: overlay
+
+# List of used networks
 services:
   # The gateway proxy container
   proxy:
@@ -26,12 +39,3 @@ services:
 #      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:rw
 #      - ./.docker/prod/certbot/ssl:/etc/letsencrypt:rw
 #    restart: unless-stopped
-
-networks:
-  api:
-    external:
-      name: api
-
-  client:
-    external:
-      name: client
