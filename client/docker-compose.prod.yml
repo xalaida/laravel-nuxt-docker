@@ -21,4 +21,4 @@ services:
     networks:
       - client
       - api
-    restart: always
+    restart: unless-stopped

@@ -33,7 +33,7 @@ services:
       - "8000:8000"
     networks:
       - api
-    restart: always
+    restart: unless-stopped
 
   # The queue container
   queue:
@@ -49,7 +49,7 @@ services:
       - redis
     networks:
       - api
-    restart: always
+    restart: unless-stopped
 
   # The schedule container
   schedule:
@@ -65,7 +65,7 @@ services:
       - redis
     networks:
       - api
-    restart: always
+    restart: unless-stopped
 
   # The PostgreSQL container
   postgres:
@@ -81,7 +81,7 @@ services:
       - postgres:/var/lib/postgresql/data
     networks:
       - api
-    restart: always
+    restart: unless-stopped
 
   # The Redis container
   redis:
@@ -93,4 +93,4 @@ services:
       - redis:/data
     networks:
       - api
-    restart: always
+    restart: unless-stopped
