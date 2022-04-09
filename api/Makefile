@@ -151,7 +151,7 @@ network:
 	docker network create api
 
 # Build containers
-build:\all: build\:base build
+build\:all: build\:base build
 
 # Build the base app image
 build\:base:
