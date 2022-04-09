@@ -1,58 +1,47 @@
-# TODO: probably use same image for both prod and dev
+# Builder image
+FROM api-php-prod:latest as builder
 
-# Image
-FROM php:8.1-cli
+# Set up the working directory
+WORKDIR /var/www/html
 
-# Starting from scratch
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Copy all files into the container
+COPY . .
 
-# Update dependencies
-RUN apt-get update
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-# Install Zip
-RUN apt-get install -y libzip-dev zip && docker-php-ext-install zip
+# Install composer dependencies
+RUN composer install --no-dev --no-interaction --optimize-autoloader
 
-# Install Git
-RUN apt-get install -y git
+# Serving image
+FROM api-php-prod:latest
 
-# Install Curl
-RUN apt-get install -y libcurl3-dev curl && docker-php-ext-install curl
+# Set up the working directory
+WORKDIR /var/www/html
 
-# Install EXIF
-RUN docker-php-ext-install exif
+# Copy files from builder
+COPY --from=builder /var/www/html .
 
-# Install GD
-RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
-    && docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ && docker-php-ext-install gd
+# Copy environment variables (TODO: copy before the actual build)
+COPY ./.env.prod .env
 
-# Install PostgreSQL
-RUN apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
+# PHP configuration
+COPY ./.docker/prod/base/php/php.ini "${PHP_INI_DIR}/php.ini"
 
-# Install PostgreSQL client (allows to back up database)
-RUN apt-get install -y lsb-release wget gnupg \
-    && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
-    && echo "deb https://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
-    && apt-get update && apt-get install -y postgresql-client-13
+# Optimizing configuration loading
+RUN php artisan config:cache
 
-# Install BC Math
-RUN docker-php-ext-install bcmath
+# Optimizing route loading
+RUN php artisan route:cache
 
-# Install internationalization functions
-RUN apt-get install -y zlib1g-dev libicu-dev g++ \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-install intl
+# Optimizing view loading
+RUN php artisan view:cache
 
-# Install Redis extension
-RUN pecl install redis \
-    && docker-php-ext-enable redis
-
-# Install Process Control extenstion
-RUN docker-php-ext-install pcntl \
-    && docker-php-ext-enable pcntl
-
-# Clean up
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Set up file ownership
+RUN chown -R www-data:www-data bootstrap/cache
+RUN chown -R www-data:www-data storage
+# TODO: optimize this part, slow exec
+# RUN chown -R www-data:www-data .
+# Set up file permissions
+# RUN chmod 755 -R storage
+# RUN chmod 755 -R storage bootstrap/cache
