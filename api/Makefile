@@ -207,7 +207,7 @@ prod\:ps:
 
 # Show logs of each container on production environment
 prod\:logs:
-	docker-compose -f docker-compose.prod.yml logs --tail=100
+	docker-compose -f docker-compose.prod.yml logs --tail=1000
 
 
 #-----------------------------------------------------------
