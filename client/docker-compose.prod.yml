@@ -16,6 +16,7 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
+    image: ${IMAGE_REGISTRY}/client-app:${IMAGE_TAG:-latest}
     hostname: client
     networks:
       - client
