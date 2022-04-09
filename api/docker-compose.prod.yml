@@ -21,6 +21,8 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
+    env_file:
+      - .env.prod
     # TODO: add storage volume
     # volumes:
     #   - ./:/var/www/html
@@ -70,6 +72,8 @@ services:
       context: ./
       dockerfile: ./.docker/prod/postgres/Dockerfile
     image: ${IMAGE_REGISTRY}/api-postgres:${IMAGE_TAG:-latest}
+    env_file:
+      - .env.prod
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -84,8 +88,10 @@ services:
   redis:
     build:
       context: ./
-      dockerfile: ./.docker/prod/postgres/Dockerfile
+      dockerfile: ./.docker/prod/redis/Dockerfile
     image: ${IMAGE_REGISTRY}/api-redis:${IMAGE_TAG:-latest}
+    env_file:
+      - .env.prod
     volumes:
       - redis:/data
     networks:

@@ -33,7 +33,8 @@ COPY ./.docker/prod/app/php/php.ini "${PHP_INI_DIR}/php.ini"
 COPY ./.env.prod .env
 
 # Set up file ownership (TODO: optimize this part, slow exec)
-RUN chown -R www-data:www-data .
+RUN #chown -R www-data:www-data .
+RUN chown -R storage bootstrap/cache
 
 # Set up file permissions
 RUN chmod 755 -R storage bootstrap/cache
