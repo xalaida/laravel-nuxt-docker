@@ -3,8 +3,8 @@ version: '3.8'
 # List of used networks
 networks:
   api:
-    external:
-      name: api
+    name: api
+    driver: overlay
 
 # List of used volumes
 volumes:
