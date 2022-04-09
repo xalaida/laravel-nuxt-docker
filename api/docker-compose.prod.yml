@@ -79,6 +79,7 @@ services:
 
   # The Redis container
   redis:
+    image: api-redis
     build:
       context: ./
       dockerfile: ./.docker/prod/redis/Dockerfile
