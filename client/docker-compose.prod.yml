@@ -10,7 +10,7 @@ networks:
   # The API network
   api:
     name: api
-    driver: overlay
+    external: true
 
 # List of used services
 services:
