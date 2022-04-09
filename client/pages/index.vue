@@ -1,5 +1,9 @@
 <template>
-	<NuxtLayout>
-		<h1>Home page</h1>
-	</NuxtLayout>
+	<h1>Home page</h1>
 </template>
+
+<script setup>
+definePageMeta({
+  layout: "default",
+});
+</script>
