@@ -17,6 +17,7 @@ volumes:
 services:
   # The API application container
   app:
+    image: api-app
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
@@ -64,6 +65,7 @@ services:
 
   # The PostgreSQL container
   postgres:
+    image: api-postgres
     build:
       context: ./
       dockerfile: ./.docker/prod/postgres/Dockerfile
