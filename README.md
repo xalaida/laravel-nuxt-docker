@@ -265,6 +265,7 @@ const { data } = await useApiFetch('/products')
   - [ ] registry server: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
   - [ ] docker swarm deployment
   - [ ] .git deployment
+  - [ ] add IMAGE_REGISTRY and IMAGE_TAG to the base api images 
   - [ ] deploy.sh script using ssh secrets
   - [ ] docker-compose deploy (no registry, no swarm, only git)
   - [ ] grafana vs prometheus monitoring tool (and forward logs into it)
