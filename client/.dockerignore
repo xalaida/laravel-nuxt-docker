@@ -2,8 +2,8 @@
 /.vscode
 /.git
 /.docker
+/node_modules
 /tests
-/vendor
 .dockerignore
 .editorconfig
 .env
