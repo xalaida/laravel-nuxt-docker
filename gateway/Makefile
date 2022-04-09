@@ -14,6 +14,10 @@ prod\:up:
 prod\:down:
 	docker-compose -f docker-compose.prod.yml down --remove-orphans
 
+# Restart production containers
+prod\:restart:
+	docker-compose -f docker-compose.prod.yml restart
+
 
 #-----------------------------------------------------------
 # Swarm

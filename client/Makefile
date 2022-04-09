@@ -97,9 +97,9 @@ prod\:down:
 
 # Restart the gateway
 prod\:gateway\:restart:
-	cd ../gateway; docker-compose restart
+	cd ../gateway; make prod:restart
 
-# Upgrade prod
+# Upgrade prod environment
 prod\:upgrade: prod\:build prod\:up prod\:gateway\:restart
 
 
