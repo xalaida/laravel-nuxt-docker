@@ -1,5 +1,15 @@
 version: '3.8'
 
+# List of used networks
+networks:
+  client:
+    driver: overlay
+    name: client
+
+  api:
+    driver: overlay
+    name: api
+
 services:
   # The client application container
   app:
@@ -11,12 +21,3 @@ services:
       - client
       - api
     restart: always
-
-networks:
-  client:
-    external:
-      name: client
-
-  api:
-    external:
-      name: api
