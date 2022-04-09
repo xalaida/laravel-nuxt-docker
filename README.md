@@ -245,30 +245,29 @@ const { data } = await useApiFetch('/products')
   - [ ] proxy gateway
   - [ ] certbot
   - [ ] separate .env variables for prod build
-  - [ ] private registry server
-  - [ ] pushing/pulling tags
-    - [ ] https://chris-vermeulen.com/laravel-in-kubernetes-part-3/
-    - [ ] https://www.koyeb.com/tutorials/dockerize-and-deploy-a-laravel-application-to-production
   - [ ] http2, brotli/gzip, ssl config
   - [ ] handling static files
   - [ ] opcache + jit
   - [ ] add .dockerignore
   - [ ] provide .env API_KEY during first prod installation 
   - [ ] add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
-  - [ ] volume storage 
+  - [ ] volume storage
   - [ ] add possibility to open redis and postgres connections outside of docker network conditionally on runtime (using env variables)
   - [ ] add stats command: https://docs.docker.com/config/containers/runmetrics/
   - [?] remove public/index.php
   - [ ] configure proper timeouts to handle big traffic
   - [ ] allow custom ssl certs (provide volume or directory for them)
   - [ ] use last commit hash instead of 'latest' image tag
-  - [ ] registry server: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
-  - [ ] docker swarm deployment
-  - [ ] .git deployment
   - [ ] add IMAGE_REGISTRY and IMAGE_TAG to the base api images 
   - [ ] deploy.sh script using ssh secrets
   - [ ] docker-compose deploy (no registry, no swarm, only git)
   - [ ] grafana vs prometheus monitoring tool (and forward logs into it)
+  - [ ] docker swarm deployment
+    - https://docs.docker.com/engine/swarm/stack-deploy/ 
+  - [ ] private registry server (pushing/pulling tags)
+    - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
+    - https://chris-vermeulen.com/laravel-in-kubernetes-part-3/
+    - https://www.koyeb.com/tutorials/dockerize-and-deploy-a-laravel-application-to-production
 
 ##### Init laravel from sail
 
