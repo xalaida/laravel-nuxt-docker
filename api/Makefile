@@ -172,10 +172,6 @@ permissions:
 # Production
 #-----------------------------------------------------------
 
-# Create the 'api' docker network
-prod\:network:
-	docker network create api
-
 # Build production containers
 prod\:build: prod\:build\:base
 	docker-compose -f docker-compose.prod.yml build
@@ -195,3 +191,12 @@ prod\:down:
 # Show the status of each container on production environment
 prod\:ps:
 	docker-compose -f docker-compose.prod.yml ps
+
+
+#-----------------------------------------------------------
+# Swarm
+#-----------------------------------------------------------
+
+# Init the Docker Swarm Leader node
+prod\:swarm\:init:
+	docker swarm init
