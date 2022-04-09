@@ -94,3 +94,28 @@ prod\:up:
 # Stop production containers
 prod\:down:
 	docker-compose -f docker-compose.prod.yml down --remove-orphans
+
+
+#-----------------------------------------------------------
+# Swarm
+#-----------------------------------------------------------
+
+# Init the Docker Swarm Leader node
+prod\:swarm\:init:
+	docker swarm init
+
+# Deploy the stack
+prod\:swarm\:deploy:
+	docker stack deploy --compose-file docker-compose.prod.yml client
+
+# Remove/stop the stack
+prod\:swarm\:rm:
+	docker stack rm client
+
+# List of stack services
+prod\:swarm\:services:
+	docker stack services client
+
+# List the tasks in the stack
+prod\:swarm\:ps:
+	docker stack ps client

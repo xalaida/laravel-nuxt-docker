@@ -218,14 +218,18 @@ prod\:logs:
 prod\:swarm\:init:
 	docker swarm init
 
+# Deploy the stack
 prod\:swarm\:deploy:
 	docker stack deploy --compose-file docker-compose.prod.yml api
 
+# Remove/stop the stack
+prod\:swarm\:rm:
+	docker stack rm api
+
+# List of stack services
 prod\:swarm\:services:
 	docker stack services api
 
+# List the tasks in the stack
 prod\:swarm\:ps:
 	docker stack ps api
-
-prod\:swarm\:rm:
-	docker stack rm api
