@@ -19,6 +19,7 @@ services:
     build:
       context: ./.docker/prod/proxy
       dockerfile: Dockerfile
+    image: ${IMAGE_REGISTRY:-local}/gateway-proxy:${IMAGE_TAG:-latest}
 #    volumes:
 #      - ./.docker/prod/certbot/ssl:/etc/nginx/ssl:ro
 #      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:ro
