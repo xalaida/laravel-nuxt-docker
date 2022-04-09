@@ -1,5 +1,5 @@
 # Image
-FROM api-base-prod:latest
+FROM api-base:latest
 
 # Starting from scratch
 RUN apt-get clean \
