@@ -9,7 +9,7 @@ fi
 docker network create api
 
 # Build base container
-docker build ./.docker/dev/base -t api-base
+docker build -f ./.docker/dev/base/Dockerfile -t api-base-dev .
 
 # Build the API containers
 docker-compose build

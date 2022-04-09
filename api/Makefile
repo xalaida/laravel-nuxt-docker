@@ -151,12 +151,15 @@ network:
 	docker network create api
 
 # Build containers
-build: build\:base
-	docker-compose build
+build:\all: build\:base build
 
 # Build the base app image
 build\:base:
-	docker build ./.docker/dev/base -t api-base
+	docker build -f ./.docker/dev/base/Dockerfile -t api-base-dev .
+
+# Build containers
+build:
+	docker-compose build
 
 # Build containers without cache
 rebuild:
@@ -177,11 +180,11 @@ prod\:build\:all: prod\:build\:php prod\:build\:base prod\:build
 
 # Build the PHP image
 prod\:build\:php:
-	docker build ./.docker/prod/php -t api-php-prod
+	docker build -f ./.docker/prod/php/Dockerfile -t api-php .
 
 # Build the base API app image
 prod\:build\:base:
-	docker build -f ./.docker/prod/base/Dockerfile -t api-base-prod .
+	docker build -f ./.docker/prod/base/Dockerfile -t api-base .
 
 # Build production containers
 prod\:build:
@@ -190,6 +193,9 @@ prod\:build:
 # Start production containers
 prod\:up:
 	docker-compose -f docker-compose.prod.yml up -d
+
+# Build and start production containers
+prod\:build-up: prod\:build\:all prod\:up
 
 # Stop production containers
 prod\:down:
