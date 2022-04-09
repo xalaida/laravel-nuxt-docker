@@ -95,6 +95,13 @@ prod\:up:
 prod\:down:
 	docker-compose -f docker-compose.prod.yml down --remove-orphans
 
+# Restart the gateway
+prod\:gateway\:restart:
+	cd ../gateway; docker-compose restart
+
+# Upgrade prod
+prod\:upgrade: prod\:build prod\:up prod\:gateway\:restart
+
 
 #-----------------------------------------------------------
 # Swarm
