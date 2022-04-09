@@ -150,7 +150,7 @@ redis\:flush:
 network:
 	docker network create api
 
-# Build containers
+# Build all containers
 build\:all: build\:base build
 
 # Build the base app image
