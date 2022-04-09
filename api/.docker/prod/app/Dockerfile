@@ -1,5 +1,5 @@
 # Builder image
-FROM api-base-prod:latest
+FROM api-base:latest
 
 # Set up the working directory
 WORKDIR /var/www/html

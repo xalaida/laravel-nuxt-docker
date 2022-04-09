@@ -1,5 +1,5 @@
 # Builder image
-FROM api-php-prod:latest as builder
+FROM api-php:latest as builder
 
 # Set up the working directory
 WORKDIR /var/www/html
@@ -14,7 +14,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN composer install --no-dev --no-interaction --optimize-autoloader
 
 # Serving image
-FROM api-php-prod:latest
+FROM api-php:latest
 
 # Set up the working directory
 WORKDIR /var/www/html
