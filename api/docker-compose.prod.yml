@@ -17,7 +17,7 @@ volumes:
 services:
   # The API application container
   app:
-    image: api-app
+    image: ${REGISTRY}/api-app:${IMAGE_TAG:-latest}
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
@@ -65,10 +65,7 @@ services:
 
   # The PostgreSQL container
   postgres:
-    image: api-postgres
-    build:
-      context: ./
-      dockerfile: ./.docker/prod/postgres/Dockerfile
+    image: postgres:13
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -81,10 +78,7 @@ services:
 
   # The Redis container
   redis:
-    image: api-redis
-    build:
-      context: ./
-      dockerfile: ./.docker/prod/redis/Dockerfile
+    image: redis:6
     volumes:
       - redis:/data
     networks:
