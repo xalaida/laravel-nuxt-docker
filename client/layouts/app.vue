@@ -10,6 +10,9 @@
 					<li>
 						<NuxtLink to="/about">About</NuxtLink>
 					</li>
+					<li>
+						<NuxtLink to="/about">News</NuxtLink>
+					</li>
 				</ul>
 			</nav>
 		</header>
