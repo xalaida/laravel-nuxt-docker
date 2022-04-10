@@ -7,14 +7,44 @@ networks:
 volumes:
   prometheus_storage:
     driver: local
+  grafana_storage:
+    driver: local
 
 services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana_storage:/var/lib/grafana
+    links:
+      - prometheus
+    ports:
+      - "3333:3000"
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  #  grafana:
+  #    image: grafana/grafana:8.4.4
+  #    container_name: grafana
+  #    volumes:
+  #      - grafana_data:/var/lib/grafana
+  #      - ./grafana/provisioning:/etc/grafana/provisioning
+  #    environment:
+  #      - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
+  #      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+  #      - GF_USERS_ALLOW_SIGN_UP=false
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
       - ./prometheus:/etc/prometheus:ro
       - prometheus_storage:/prometheus:rw
+    links:
+      - node-exporter
+      - cadvisor
     ports:
       - "9090:9090"
     networks:
@@ -58,21 +88,3 @@ services:
     networks:
       - monitoring
     restart: unless-stopped
-
-#  grafana:
-#    image: grafana/grafana:8.4.4
-#    container_name: grafana
-#    volumes:
-#      - grafana_data:/var/lib/grafana
-#      - ./grafana/provisioning:/etc/grafana/provisioning
-#    environment:
-#      - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
-#      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
-#      - GF_USERS_ALLOW_SIGN_UP=false
-#    restart: unless-stopped
-#    expose:
-#      - 3000
-#    networks:
-#      - monitor-net
-#    labels:
-#      org.label-schema.group: "monitoring"
