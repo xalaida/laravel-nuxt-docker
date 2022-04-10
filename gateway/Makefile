@@ -4,19 +4,19 @@
 
 # Build production containers
 build:
-	docker-compose -f docker-compose.prod.yml build
+	docker-compose build
 
 # Start production containers
 up:
-	docker-compose -f docker-compose.prod.yml up -d
+	docker-compose up -d
 
 # Stop production containers
 down:
-	docker-compose -f docker-compose.prod.yml down --remove-orphans
+	docker-compose down --remove-orphans
 
 # Restart production containers
 restart:
-	docker-compose -f docker-compose.prod.yml restart
+	docker-compose restart
 
 
 #-----------------------------------------------------------
