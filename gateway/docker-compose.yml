@@ -7,15 +7,15 @@ networks:
     name: client
     external: true
 
-  # The API network
-  api:
-    name: api
-    external: true
-
-  # The monitoring network
-  monitoring:
-    name: monitoring
-    external: true
+#  # The API network
+#  api:
+#    name: api
+#    external: true
+#
+#  # The monitoring network
+#  monitoring:
+#    name: monitoring
+#    external: true
 
 # List of used networks
 services:
