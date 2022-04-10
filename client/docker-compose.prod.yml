@@ -7,10 +7,10 @@ networks:
     name: client
     driver: overlay
 
-  # The API network
-  api:
-    name: api
-    external: true
+#  # The API network
+#  api:
+#    name: api
+#    external: true
 
 # List of used services
 services:
