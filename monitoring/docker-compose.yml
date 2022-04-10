@@ -89,6 +89,5 @@ services:
     networks:
       - monitoring
     command:
-      - -nginx.scrape-uri
-      - http://reverse-proxy:8888/status
+      - 'nginx.scrape_uri=http://reverse-proxy:8001/status'
     restart: unless-stopped

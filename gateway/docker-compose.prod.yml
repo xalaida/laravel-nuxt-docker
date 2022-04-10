@@ -30,11 +30,11 @@ services:
 #      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:ro
     hostname: reverse-proxy
     expose:
-      - 8888
+      - 8001
     ports:
       - "443:443"
       - "80:80"
-      - "8888:8888"
+      - "8001:8001"
     networks:
       - api
       - client
