@@ -18,6 +18,10 @@ down:
 restart:
 	docker-compose restart
 
+# Show status of each container
+ps:
+	docker-compose ps
+
 
 #-----------------------------------------------------------
 # Swarm
