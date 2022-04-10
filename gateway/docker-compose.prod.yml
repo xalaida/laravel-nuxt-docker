@@ -12,14 +12,19 @@ networks:
     name: api
     external: true
 
+  # The monitoring network
+  monitoring:
+    name: monitoring
+    external: true
+
 # List of used networks
 services:
   # The gateway proxy container
-  proxy:
+  reverse-proxy:
     build:
-      context: ./.docker/prod/proxy
+      context: ./.docker/prod/reverse-proxy
       dockerfile: Dockerfile
-    image: ${IMAGE_REGISTRY:-local}/gateway-proxy:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY:-local}/gateway-reverse-proxy:${IMAGE_TAG:-latest}
 #    volumes:
 #      - ./.docker/prod/certbot/ssl:/etc/nginx/ssl:ro
 #      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:ro
