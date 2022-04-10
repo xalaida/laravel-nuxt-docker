@@ -37,8 +37,8 @@ services:
       - "80:80"
     networks:
       - api
-      - client
-      - monitoring
+#      - client
+#      - monitoring
     restart: unless-stopped
 
 #  # The certbot container
