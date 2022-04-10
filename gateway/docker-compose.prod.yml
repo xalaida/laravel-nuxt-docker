@@ -28,14 +28,17 @@ services:
 #    volumes:
 #      - ./.docker/prod/certbot/ssl:/etc/nginx/ssl:ro
 #      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:ro
-    expose:
-      - 8888
+#    hostname: reverse-proxy
+#    expose:
+#      - 8888
     ports:
       - "443:443"
       - "80:80"
+#      - "8888:8888"
     networks:
       - api
       - client
+      - monitoring
     restart: unless-stopped
 
 #  # The certbot container
