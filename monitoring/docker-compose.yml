@@ -28,17 +28,6 @@ services:
       - monitoring
     restart: unless-stopped
 
-  #  grafana:
-  #    image: grafana/grafana:8.4.4
-  #    container_name: grafana
-  #    volumes:
-  #      - grafana_data:/var/lib/grafana
-  #      - ./grafana/provisioning:/etc/grafana/provisioning
-  #    environment:
-  #      - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
-  #      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
-  #      - GF_USERS_ALLOW_SIGN_UP=false
-
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -48,8 +37,8 @@ services:
     links:
       - node-exporter
       - cadvisor
-    ports:
-      - "9090:9090"
+    expose:
+      - 9090
     networks:
       - monitoring
     command:
@@ -64,9 +53,8 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-    # TODO: disable forwarded ports
-    ports:
-      - "9100:9100"
+    expose:
+      - 9100
     networks:
       - monitoring
     command:
@@ -85,9 +73,8 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-    # TODO: disable forwarded ports
-    ports:
-      - "8080:8080"
+    expose:
+      - 8080
     networks:
       - monitoring
     restart: unless-stopped
