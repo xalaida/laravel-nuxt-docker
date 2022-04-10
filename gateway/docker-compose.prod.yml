@@ -28,13 +28,11 @@ services:
 #    volumes:
 #      - ./.docker/prod/certbot/ssl:/etc/nginx/ssl:ro
 #      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:ro
-    hostname: reverse-proxy
     expose:
       - 8001
     ports:
       - "443:443"
       - "80:80"
-      - "8001:8001"
     networks:
       - api
       - client
