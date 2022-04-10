@@ -36,8 +36,8 @@ services:
       - "443:443"
       - "80:80"
     networks:
-      - api
-#      - client
+#      - api
+      - client
 #      - monitoring
     restart: unless-stopped
 
