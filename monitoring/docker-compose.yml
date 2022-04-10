@@ -2,7 +2,8 @@ version: '3.8'
 
 networks:
   monitoring:
-    driver: bridge
+    name: monitoring
+    driver: overlay
 
 volumes:
   prometheus_storage:
@@ -77,4 +78,17 @@ services:
       - 8080
     networks:
       - monitoring
+    restart: unless-stopped
+
+  # Metrics of Nginx
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: nginx-exporter
+    expose:
+      - 9113
+    networks:
+      - monitoring
+    command:
+      - -nginx.scrape-uri
+      - http://reverse-proxy:8888/status
     restart: unless-stopped
