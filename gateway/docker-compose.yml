@@ -29,8 +29,8 @@ services:
 #      - ./.docker/prod/certbot/ssl:/etc/nginx/ssl:ro
 #      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:ro
     expose:
-      - 443
-      - 80
+#      - 443
+#      - 80
       - 8001
     ports:
       - "443:443"
