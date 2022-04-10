@@ -242,11 +242,11 @@ const { data } = await useApiFetch('/products')
 - [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
 - [ ] prod
   - [ ] https://www.laradocker.com/production/#using-docker-compose
-  - [ ] proxy gateway
   - [ ] certbot
   - [ ] separate .env variables for prod build
   - [ ] http2, brotli/gzip, ssl config
   - [ ] handling static files
+  - [ ] rename .prod dockerfile as default dockerfile and define current dockerfile in .env variable docker-compose -f ${COMPOSE_FILE}
   - [ ] opcache + jit
   - [ ] add .dockerignore
   - [ ] provide .env API_KEY during first prod installation 
