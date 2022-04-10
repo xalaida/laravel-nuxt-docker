@@ -37,10 +37,10 @@ services:
     networks:
       - monitoring
     command:
-#      - '--path.procfs=/host/proc'
-#      - '--path.sysfs=/host/sys'
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
       - '--path.rootfs=/rootfs'
-#      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     restart: unless-stopped
 
   # Metrics of running Docker containers
@@ -52,24 +52,12 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-#    depends_on:
-#      - redis
     # TODO: disable forwarded ports
     ports:
       - "8080:8080"
     networks:
       - monitoring
     restart: unless-stopped
-
-#  # Redis cache for cadvisor
-#  redis:
-#    image: redis:latest
-#    container_name: redis
-#    ports:
-#      - "6379:6379"
-#    networks:
-#      - monitoring
-#    restart: unless-stopped
 
 #  grafana:
 #    image: grafana/grafana:8.4.4
