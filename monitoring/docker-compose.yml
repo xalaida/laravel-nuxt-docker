@@ -13,32 +13,63 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./prometheus:/etc/prometheus
-      - prometheus_storage:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--web.enable-lifecycle'
+      - ./prometheus:/etc/prometheus:ro
+      - prometheus_storage:/prometheus:rw
     ports:
       - "9090:9090"
     networks:
       - monitoring
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'
     restart: unless-stopped
 
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
     volumes:
-#      - /proc:/host/proc:ro
-#      - /sys:/host/sys:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
       - /:/rootfs:ro
+    # TODO: disable forwarded ports
+    ports:
+      - "9100:9100"
+    networks:
+      - monitoring
     command:
 #      - '--path.procfs=/host/proc'
 #      - '--path.sysfs=/host/sys'
       - '--path.rootfs=/rootfs'
 #      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+
+  # Metrics of running Docker containers
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+#    depends_on:
+#      - redis
+    # TODO: disable forwarded ports
+    ports:
+      - "8080:8080"
     networks:
       - monitoring
     restart: unless-stopped
+
+#  # Redis cache for cadvisor
+#  redis:
+#    image: redis:latest
+#    container_name: redis
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - monitoring
+#    restart: unless-stopped
 
 #  grafana:
 #    image: grafana/grafana:8.4.4
