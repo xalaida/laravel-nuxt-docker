@@ -175,6 +175,9 @@ permissions:
 # Production
 #-----------------------------------------------------------
 
+# Build and start production containers
+prod\:upgrade: prod\:build\:all prod\:up prod\:gateway\:restart
+
 # Build all production containers
 prod\:build\:all: prod\:build\:php prod\:build\:base prod\:build
 
@@ -208,6 +211,10 @@ prod\:ps:
 # Show logs of each container on production environment
 prod\:logs:
 	docker-compose -f docker-compose.prod.yml logs --tail=1000
+
+# Restart the gateway
+prod\:gateway\:restart:
+	cd ../gateway; make prod:restart
 
 
 #-----------------------------------------------------------

@@ -79,9 +79,8 @@ rebuild:
 # Production
 #-----------------------------------------------------------
 
-# Create the 'client' docker network
-prod\:network:
-	docker network create client
+# Upgrade prod environment
+prod\:upgrade: prod\:build prod\:up prod\:gateway\:restart
 
 # Build production containers
 prod\:build:
@@ -91,6 +90,9 @@ prod\:build:
 prod\:up:
 	docker-compose -f docker-compose.prod.yml up -d
 
+# Build and start production containers
+prod\:build-up: prod\:build prod\:up
+
 # Stop production containers
 prod\:down:
 	docker-compose -f docker-compose.prod.yml down --remove-orphans
@@ -98,9 +100,6 @@ prod\:down:
 # Restart the gateway
 prod\:gateway\:restart:
 	cd ../gateway; make prod:restart
-
-# Upgrade prod environment
-prod\:upgrade: prod\:build prod\:up prod\:gateway\:restart
 
 
 #-----------------------------------------------------------
