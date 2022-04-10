@@ -7,12 +7,46 @@ networks:
     name: client
     external: true
 
+  # The API network
+  api:
+    name: api
+    external: true
+
+  # The monitoring network
+  monitoring:
+    name: monitoring
+    external: true
+
+# List of used networks
 services:
-  nginx-proxy:
-    image: nginxproxy/nginx-proxy
+  # The gateway proxy container
+  reverse-proxy:
+    build:
+      context: ./.docker/prod/reverse-proxy
+      dockerfile: Dockerfile
+    image: ${IMAGE_REGISTRY:-local}/gateway-reverse-proxy:${IMAGE_TAG:-latest}
+#    volumes:
+#      - ./.docker/prod/certbot/ssl:/etc/nginx/ssl:ro
+#      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:ro
+    expose:
+      - 443
+      - 80
+      - 8001
     ports:
+      - "443:443"
       - "80:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
+      - api
       - client
+      - monitoring
+    restart: unless-stopped
+
+#  # The certbot container
+#  certbot:
+#    build:
+#      context: docker/prod/certbot/app
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:rw
+#      - ./.docker/prod/certbot/ssl:/etc/letsencrypt:rw
+#    restart: unless-stopped

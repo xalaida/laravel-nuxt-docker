@@ -1,21 +1,21 @@
 #-----------------------------------------------------------
-# Production
+# Containers
 #-----------------------------------------------------------
 
 # Build production containers
-prod\:build:
+build:
 	docker-compose -f docker-compose.prod.yml build
 
 # Start production containers
-prod\:up:
+up:
 	docker-compose -f docker-compose.prod.yml up -d
 
 # Stop production containers
-prod\:down:
+down:
 	docker-compose -f docker-compose.prod.yml down --remove-orphans
 
 # Restart production containers
-prod\:restart:
+restart:
 	docker-compose -f docker-compose.prod.yml restart
 
 
@@ -24,21 +24,17 @@ prod\:restart:
 #-----------------------------------------------------------
 
 # Deploy the stack
-prod\:swarm\:deploy:
-	docker stack deploy --compose-file docker-compose.prod.yml gateway
+swarm\:deploy:
+	docker stack deploy --compose-file docker-compose.yml gateway
 
 # Remove/stop the stack
-prod\:swarm\:rm:
+swarm\:rm:
 	docker stack rm gateway
 
 # List of stack services
-prod\:swarm\:services:
+swarm\:services:
 	docker stack services gateway
 
 # List the tasks in the stack
-prod\:swarm\:ps:
+swarm\:ps:
 	docker stack ps gateway
-
-# Init the Docker Swarm Leader node
-prod\:swarm\:init:
-	docker swarm init
