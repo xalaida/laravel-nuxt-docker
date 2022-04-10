@@ -1,5 +1,12 @@
 version: '3.8'
 
+# List of used networks
+networks:
+  # The client network
+  client:
+    name: client
+    external: true
+
 services:
   nginx-proxy:
     image: nginxproxy/nginx-proxy
@@ -7,3 +14,5 @@ services:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - client
