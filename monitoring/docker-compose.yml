@@ -38,6 +38,7 @@ services:
     links:
       - node-exporter
       - cadvisor
+      - nginx-exporter
     expose:
       - 9090
     networks:
@@ -86,6 +87,8 @@ services:
     container_name: nginx-exporter
     expose:
       - 9113
+    ports:
+      - "9113:9113"
     networks:
       - monitoring
     command:
