@@ -99,7 +99,7 @@ prod\:down:
 
 # Restart the gateway
 prod\:gateway\:restart:
-	cd ../gateway; make prod:restart
+	cd ../gateway; make restart
 
 
 #-----------------------------------------------------------

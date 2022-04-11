@@ -22,6 +22,10 @@ restart:
 ps:
 	docker-compose ps
 
+# Show logs of each container
+logs:
+	docker-compose logs
+
 
 #-----------------------------------------------------------
 # Swarm
