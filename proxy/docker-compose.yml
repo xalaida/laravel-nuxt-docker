@@ -20,11 +20,14 @@ services:
       - 'vhost:/etc/nginx/vhost.d'
       - 'html:/usr/share/nginx/html'
       - '/var/run/docker.sock:/tmp/docker.sock:ro'
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: true
     ports:
       - "80:80"
       - "443:443"
     networks:
       - gateway
+    restart: always
 
   acme-companion:
     container_name: nginx-proxy-acme
@@ -37,3 +40,4 @@ services:
     environment:
       DEFAULT_EMAIL: ${DEFAULT_EMAIL}
     image: nginxproxy/acme-companion
+    restart: always
