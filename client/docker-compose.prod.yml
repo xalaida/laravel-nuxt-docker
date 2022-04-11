@@ -1,20 +1,15 @@
 version: '3.8'
 
-# List of used networks
 networks:
-  # The client network
   client:
     name: client
     driver: overlay
 
-#  # The API network
-#  api:
-#    name: api
-#    external: true
+  gateway:
+    name: gateway
+    external: true
 
-# List of used services
 services:
-  # The client application container
   app:
     build:
       context: ./
@@ -30,5 +25,5 @@ services:
       - "3000:3000"
     networks:
       - client
-#      - api
+      - gateway
     restart: unless-stopped
