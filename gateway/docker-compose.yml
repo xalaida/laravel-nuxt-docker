@@ -21,12 +21,11 @@ services:
       context: ./.docker/prod/reverse-proxy
       dockerfile: Dockerfile
     image: ${IMAGE_REGISTRY:-local}/gateway-reverse-proxy:${IMAGE_TAG:-latest}
-#    volumes:
-#      - ./.docker/prod/certbot/ssl:/etc/nginx/ssl:ro
-#      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:ro
+    volumes:
+      - ./.docker/prod/reverse-proxy/ssl:/etc/nginx/ssl:ro
+      - ./.docker/prod/reverse-proxy/acme:/var/www/acme:ro
     expose:
 #      - 443
-#      - 80
       - 8001
     ports:
       - "443:443"
@@ -37,12 +36,11 @@ services:
 #      - monitoring
     restart: unless-stopped
 
-#  # The certbot container
-#  certbot:
-#    build:
-#      context: docker/prod/certbot/app
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./.docker/prod/certbot/acme-challenge:/var/www/acme-challenge:rw
-#      - ./.docker/prod/certbot/ssl:/etc/letsencrypt:rw
-#    restart: unless-stopped
+  certbot:
+    build:
+      context: ./.docker/prod/certbot
+      dockerfile: Dockerfile
+    volumes:
+      - ./.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw
+      - ./.docker/prod/reverse-proxy/acme:/var/www/acme:rw
+    restart: unless-stopped
