@@ -2,8 +2,12 @@
 # SSL
 #-----------------------------------------------------------
 
+# Show the list of registered certificates
+ssl\:ls:
+	docker-compose run --rm --entrypoint "certbot certificates" certbot
+
 # Generate a 4096-bit DH parameter file
-dhparam:
+ssl\:dh:
 	sudo openssl dhparam -out ./.docker/prod/reverse-proxy/ssl/dhparam.pem 2048
 
 

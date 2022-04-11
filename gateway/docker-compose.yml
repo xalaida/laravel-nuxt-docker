@@ -43,4 +43,3 @@ services:
     volumes:
       - ./.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw
       - ./.docker/prod/reverse-proxy/acme:/var/www/acme:rw
-    restart: unless-stopped
