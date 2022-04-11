@@ -2,9 +2,9 @@
 # SSL
 #-----------------------------------------------------------
 
-# Generate a 2048 bit DH Param file
+# Generate a 4096-bit DH parameter file
 dhparam:
-	sudo openssl dhparam -out ./.docker/prod/reverse-proxy/ssl/dhparam-2048.pem 2048
+	sudo openssl dhparam -out ./.docker/prod/reverse-proxy/ssl/dhparam.pem 2048
 
 
 #-----------------------------------------------------------
