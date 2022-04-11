@@ -20,9 +20,9 @@ services:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
     image: ${IMAGE_REGISTRY:-local}/client-app:${IMAGE_TAG:-latest}
-#    environment:
-#      VIRTUAL_HOST: ${VIRTUAL_HOST}
-#      VIRTUAL_PORT: 3000
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PROTO: https
     hostname: client
     expose:
       - 3000

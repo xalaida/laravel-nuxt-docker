@@ -35,5 +35,5 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
       - 'acme:/etc/acme.sh'
     environment:
-      - DEFAULT_EMAIL=${DEFAULT_EMAIL}
+      DEFAULT_EMAIL: ${DEFAULT_EMAIL}
     image: nginxproxy/acme-companion
