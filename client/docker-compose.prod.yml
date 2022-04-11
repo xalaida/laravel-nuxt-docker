@@ -17,6 +17,7 @@ services:
     image: ${IMAGE_REGISTRY:-local}/client-app:${IMAGE_TAG:-latest}
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PORT: 3000
       VIRTUAL_PROTO: https
     hostname: client
     expose:
