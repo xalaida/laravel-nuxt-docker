@@ -42,3 +42,12 @@ swarm\:services:
 # List the tasks in the stack
 swarm\:ps:
 	docker stack ps gateway
+
+
+#-----------------------------------------------------------
+# Bench
+#-----------------------------------------------------------
+
+# Run benchmarking over the gateway (requires Apache Bench tool: apt-get install -y apache2-utils)
+bench:
+	ab -c 50 -n 5000 http://localhost/
