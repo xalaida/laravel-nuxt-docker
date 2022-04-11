@@ -1,8 +1,7 @@
 # Image
 FROM nginx:1.21
 
-# Add nginx default configuration
+# Add nginx configurations
 COPY ./nginx.conf /etc/nginx/nginx.conf
-
-# Copy sites configurations
 COPY ./sites-enabled /etc/nginx/sites-enabled
+COPY ./snippets /etc/nginx/snippets
