@@ -35,6 +35,10 @@ ps:
 logs:
 	docker-compose logs
 
+# Reload the Nginx service
+reload:
+	docker-compose exec reverse-proxy nginx -s reload
+
 
 #-----------------------------------------------------------
 # Swarm

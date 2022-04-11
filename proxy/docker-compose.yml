@@ -30,6 +30,7 @@ services:
     restart: always
 
   acme-companion:
+    image: nginxproxy/acme-companion:latest
     container_name: nginx-proxy-acme
     volumes:
       - 'certs:/etc/nginx/certs'
@@ -39,5 +40,4 @@ services:
       - 'acme:/etc/acme.sh'
     environment:
       DEFAULT_EMAIL: ${DEFAULT_EMAIL}
-    image: nginxproxy/acme-companion
     restart: always
