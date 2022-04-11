@@ -1,4 +1,41 @@
 #-----------------------------------------------------------
+# Containers
+#-----------------------------------------------------------
+
+# Build and run containers
+upgrade:
+	docker-compose up -d --build --force-recreate
+
+# Build containers
+build:
+	docker-compose build
+
+# Run containers
+up:
+	docker-compose up -d
+
+# Stop containers
+down:
+	docker-compose down --remove-orphans
+
+# Restart containers
+restart:
+	docker-compose restart
+
+# Show container statuses
+ps:
+	docker-compose ps
+
+# Show container logs
+logs:
+	docker-compose logs
+
+# Reload the Nginx service
+reload:
+	docker-compose exec reverse-proxy nginx -s reload
+
+
+#-----------------------------------------------------------
 # SSL
 #-----------------------------------------------------------
 
@@ -9,39 +46,6 @@ ssl\:ls:
 # Generate a 4096-bit DH parameter file
 ssl\:dh:
 	sudo openssl dhparam -out ./.docker/prod/reverse-proxy/ssl/dhparam.pem 2048
-
-
-#-----------------------------------------------------------
-# Containers
-#-----------------------------------------------------------
-
-# Build production containers
-build:
-	docker-compose build
-
-# Start production containers
-up:
-	docker-compose up -d
-
-# Stop production containers
-down:
-	docker-compose down --remove-orphans
-
-# Restart production containers
-restart:
-	docker-compose restart
-
-# Show status of each container
-ps:
-	docker-compose ps
-
-# Show logs of each container
-logs:
-	docker-compose logs
-
-# Reload the Nginx service
-reload:
-	docker-compose exec reverse-proxy nginx -s reload
 
 
 #-----------------------------------------------------------
