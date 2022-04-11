@@ -32,12 +32,14 @@ services:
   acme-companion:
     image: nginxproxy/acme-companion:latest
     container_name: nginx-proxy-acme
+    environment:
+      DEFAULT_EMAIL: ${DEFAULT_EMAIL}
     volumes:
       - 'certs:/etc/nginx/certs'
       - 'vhost:/etc/nginx/vhost.d'
       - 'html:/usr/share/nginx/html'
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
       - 'acme:/etc/acme.sh'
-    environment:
-      DEFAULT_EMAIL: ${DEFAULT_EMAIL}
+    networks:
+      - gateway
     restart: always
