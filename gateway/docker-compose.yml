@@ -1,8 +1,6 @@
 version: '3.8'
 
-# List of used networks
 networks:
-  # The client network
   client:
     name: client
     external: true
@@ -17,9 +15,7 @@ networks:
 #    name: monitoring
 #    external: true
 
-# List of used networks
 services:
-  # The gateway proxy container
   reverse-proxy:
     build:
       context: ./.docker/prod/reverse-proxy
