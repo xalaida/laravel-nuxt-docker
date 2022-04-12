@@ -28,7 +28,6 @@ server {
     location / {
         expires $expires;
         include /etc/nginx/snippets/proxy.conf;
-        include /etc/nginx/snippets/proxy.conf;
         proxy_pass http://client:3000;
     }
 

@@ -7,6 +7,8 @@
 - [ ] www redirect to non-www
 - [ ] add stub samples for different hosts (laravel, nuxt, etc)
 - [ ] add conf templates
+- [ ] configure nginx logging (forward into /std/err, add logrotate)
+- [ ] forward letsencrypt logs
 - [ ] refactor nginx reloading
   - [ ] get reverse-proxy container name from ENV variable
   - [ ] reload nginx using 'exec nginx -s reload' syntax
