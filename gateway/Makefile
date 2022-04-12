@@ -1,3 +1,6 @@
+# Include .env variables
+include .env
+
 #-----------------------------------------------------------
 # App
 #-----------------------------------------------------------
@@ -62,6 +65,38 @@ ssl\:ls:
 # Generate a 4096-bit DH parameter file
 ssl\:dh:
 	sudo openssl dhparam -out ./.docker/prod/reverse-proxy/ssl/dhparam.pem 2048
+
+# Issue SSL certificates according to the .env parameters
+ssl:
+	docker run \
+		--rm \
+		--interactive \
+		--tty \
+		--volume ${CURDIR}/.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw \
+		--volume ${CURDIR}/.docker/prod/reverse-proxy/acme:/var/www/acme:rw \
+		certbot/certbot \
+		certonly --webroot --webroot-path /var/www/acme \
+		--non-interactive \
+		--agree-tos \
+		--domains ${CERTBOT_DOMAINS} \
+		--email ${CERTBOT_EMAIL}
+		--staging
+
+# Issue SSL certificates according to the .env parameters
+ssl\:test:
+	docker run \
+		--rm \
+		--interactive \
+		--tty \
+		--volume ${CURDIR}/.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw \
+		--volume ${CURDIR}/.docker/prod/reverse-proxy/acme:/var/www/acme:rw \
+		certbot/certbot \
+		certonly --webroot --webroot-path /var/www/acme \
+		--non-interactive \
+		--agree-tos \
+		--domains ${CERTBOT_DOMAINS} \
+		--email ${CERTBOT_EMAIL}
+		--dry-run
 
 
 #-----------------------------------------------------------
