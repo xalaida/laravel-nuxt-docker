@@ -6,6 +6,10 @@
 upgrade:
 	docker-compose up -d --build --force-recreate
 
+# Reload the Nginx service
+reload:
+	docker-compose exec reverse-proxy nginx -s reload
+
 # Build containers
 build:
 	docker-compose build
@@ -34,13 +38,17 @@ logs:
 fl:
 	docker-compose logs -f
 
-# Reload the Nginx service
-reload:
-	docker-compose exec reverse-proxy nginx -s reload
-
 # Create the gateway network
 network:
 	docker network create gateway
+
+# Copy development environment variables
+dev\:env:
+	cp ./.env.dev ./.env
+
+# Copy production environment variables
+prod\:env:
+	cp ./.env.prod ./.env
 
 
 #-----------------------------------------------------------
