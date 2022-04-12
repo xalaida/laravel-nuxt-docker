@@ -1,1 +1,1 @@
-nginx -s reload
+/usr/sbin/nginx -s reload
