@@ -74,6 +74,7 @@ ssl:
 		--tty \
 		--volume ${CURDIR}/.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw \
 		--volume ${CURDIR}/.docker/prod/reverse-proxy/acme:/var/www/acme:rw \
+		--publish 80:80
 		certbot/certbot \
 		certonly --webroot --webroot-path /var/www/acme \
 		--non-interactive \
