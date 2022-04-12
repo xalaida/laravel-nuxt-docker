@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo 'Start renewing certificates'
-certbot renew --webroot-path /var/www/acme --staging --force-renewal
+certbot renew --webroot --webroot-path /var/www/acme --force-renewal --staging
 
 #echo 'Restarting gateway service'
 
