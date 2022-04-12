@@ -22,13 +22,14 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
-    # TODO: add storage volume
-    # volumes:
-    #   - ./:/var/www/html
+    volumes:
+      - ./storage:/var/www/html/storage
     links:
       - postgres
       - redis
     hostname: api
+    expose:
+      - 8000
     networks:
       - gateway
       - api
@@ -39,9 +40,8 @@ services:
     build:
       context: ./.docker/prod/queue
       dockerfile: Dockerfile
-    # TODO: add storage volume
-    # volumes:
-    #   - ./:/var/www/html
+    volumes:
+      - ./storage:/var/www/html/storage
     links:
       - postgres
       - redis
@@ -54,9 +54,8 @@ services:
     build:
       context: ./.docker/prod/schedule
       dockerfile: Dockerfile
-    # TODO: add storage volume
-    # volumes:
-    #   - ./:/var/www/html
+    volumes:
+      - ./storage:/var/www/html/storage
     links:
       - postgres
       - redis
