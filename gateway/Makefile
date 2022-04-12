@@ -1,5 +1,5 @@
-# Include .env variables
-include .env
+# Include file with .env variables if exists
+-include .env
 
 #-----------------------------------------------------------
 # App
