@@ -80,7 +80,7 @@ rebuild:
 #-----------------------------------------------------------
 
 # Upgrade prod environment
-prod\:upgrade: prod\:build prod\:up prod\:gateway\:restart
+prod\:upgrade: prod\:build prod\:up gateway\:reload
 
 # Build production containers
 prod\:build:
@@ -97,9 +97,9 @@ prod\:build-up: prod\:build prod\:up
 prod\:down:
 	docker-compose -f docker-compose.prod.yml down --remove-orphans
 
-# Restart the gateway
-prod\:gateway\:restart:
-	cd ../gateway; make restart
+# Reload the gateway
+gateway\:reload:
+	cd ../gateway; make reload
 
 
 #-----------------------------------------------------------
