@@ -79,7 +79,7 @@ ssl:
 		--non-interactive \
 		--agree-tos \
 		--domains ${CERTBOT_DOMAINS} \
-		--email ${CERTBOT_EMAIL}
+		--email ${CERTBOT_EMAIL} \
 		--staging
 
 # Issue SSL certificates according to the .env parameters
@@ -95,7 +95,7 @@ ssl\:test:
 		--non-interactive \
 		--agree-tos \
 		--domains ${CERTBOT_DOMAINS} \
-		--email ${CERTBOT_EMAIL}
+		--email ${CERTBOT_EMAIL} \
 		--dry-run
 
 
