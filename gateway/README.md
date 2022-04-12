@@ -3,6 +3,7 @@
 - [ ] add .env variable to different hosts, staging server, dry-run, 4096-bit keys and others
 - [ ] make nginx work even when some hosts are not available
 - [ ] www redirect to non-www
+- [ ] add stub samples for different hosts (laravel, nuxt, etc)
 - [ ] refactor nginx reloading
   - [ ] get reverse-proxy container name from ENV variable
   - [ ] reload nginx using 'exec nginx -s reload' syntax
