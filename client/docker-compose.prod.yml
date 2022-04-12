@@ -1,14 +1,5 @@
 version: '3.8'
 
-networks:
-  gateway:
-    name: gateway
-    external: true
-
-  client:
-    name: client
-    driver: overlay
-
 services:
   app:
     image: ${IMAGE_REGISTRY:-local}/client-app:${IMAGE_TAG:-latest}
@@ -22,3 +13,12 @@ services:
       - gateway
       - client
     restart: unless-stopped
+
+networks:
+  gateway:
+    name: gateway
+    external: true
+
+  client:
+    name: client
+    driver: overlay
