@@ -5,6 +5,7 @@
 - [ ] generate overlay network for swarm
 - [ ] www redirect to non-www
 - [ ] add stub samples for different hosts (laravel, nuxt, etc)
+- [ ] add conf templates
 - [ ] refactor nginx reloading
   - [ ] get reverse-proxy container name from ENV variable
   - [ ] reload nginx using 'exec nginx -s reload' syntax
