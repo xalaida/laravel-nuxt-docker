@@ -73,10 +73,9 @@ ssl:
 		--interactive \
 		--tty \
 		--volume ${CURDIR}/.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw \
-		--volume ${CURDIR}/.docker/prod/reverse-proxy/acme:/var/www/acme:rw \
 		--publish 80:80 \
 		certbot/certbot \
-		certonly --webroot --webroot-path /var/www/acme \
+		certonly \
 		--non-interactive \
 		--agree-tos \
 		--domains ${CERTBOT_DOMAINS} \
@@ -91,10 +90,9 @@ ssl\:test:
 		--interactive \
 		--tty \
 		--volume ${CURDIR}/.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw \
-		--volume ${CURDIR}/.docker/prod/reverse-proxy/acme:/var/www/acme:rw \
 		--publish 80:80 \
 		certbot/certbot \
-		certonly --webroot --webroot-path /var/www/acme \
+		certonly \
 		--non-interactive \
 		--agree-tos \
 		--domains ${CERTBOT_DOMAINS} \
