@@ -7,9 +7,8 @@
 .dockerignore
 .env.*
 .editorconfig
-.editorconfig
 .gitattributes
 .gitignore
-docker-compose.prod.yml
+docker-compose.*.yml
 docker-compose.yml
 Makefile
