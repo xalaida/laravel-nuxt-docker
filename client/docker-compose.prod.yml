@@ -19,6 +19,6 @@ services:
     expose:
       - 3000
     networks:
-      - client
       - gateway
+      - client
     restart: unless-stopped
