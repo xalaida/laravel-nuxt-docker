@@ -1,11 +1,9 @@
 # TODO
 
 - [ ] add .env variable to different hosts, staging server, dry-run, 4096-bit keys and others
-- [ ] make nginx work even when some hosts are not available
 - [ ] generate overlay network for swarm
 - [ ] www redirect to non-www
-- [ ] add stub samples for different hosts (laravel, nuxt, etc)
-- [ ] add conf templates
+- [ ] add possibility to automatically generate conf from stub (default nginx template engine very often breaks with variables inside strings)
 - [ ] configure nginx logging (forward into /std/err, add logrotate)
 - [ ] forward letsencrypt logs
 - [ ] add staging env variable
