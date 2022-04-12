@@ -1,6 +1,10 @@
 #-----------------------------------------------------------
-# Containers
+# App
 #-----------------------------------------------------------
+
+# Create the gateway network
+network:
+	docker network create gateway
 
 # Build and run containers
 upgrade:

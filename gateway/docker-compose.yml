@@ -1,19 +1,9 @@
 version: '3.8'
 
 networks:
-  client:
-    name: client
+  gateway:
+    name: gateway
     external: true
-
-#  # The API network
-#  api:
-#    name: api
-#    external: true
-#
-#  # The monitoring network
-#  monitoring:
-#    name: monitoring
-#    external: true
 
 services:
   reverse-proxy:
@@ -25,15 +15,12 @@ services:
       - ./.docker/prod/reverse-proxy/ssl:/etc/nginx/ssl:ro
       - ./.docker/prod/reverse-proxy/acme:/var/www/acme:ro
     expose:
-#      - 443
       - 8001
     ports:
       - "443:443"
       - "80:80"
     networks:
-#      - api
-      - client
-#      - monitoring
+      - gateway
     restart: unless-stopped
 
   certbot:
