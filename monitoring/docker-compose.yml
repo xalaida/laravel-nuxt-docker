@@ -1,6 +1,10 @@
 version: '3.8'
 
 networks:
+  gateway:
+    name: gateway
+    external: true
+
   monitoring:
     name: monitoring
     driver: overlay
@@ -8,6 +12,7 @@ networks:
 volumes:
   prometheus_storage:
     driver: local
+
   grafana_storage:
     driver: local
 
