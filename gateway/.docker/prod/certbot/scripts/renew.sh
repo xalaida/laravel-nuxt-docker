@@ -1,8 +1,7 @@
 #!/bin/sh
 
 echo 'Start renewing certificates'
-
-certbot renew --dry-run
+certbot renew --webroot-path /var/www/acme --staging
 
 echo 'Restarting gateway service'
 

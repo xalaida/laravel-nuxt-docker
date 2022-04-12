@@ -32,10 +32,10 @@ server {
     }
 
     # API path proxy
-    #location /api {
-    #    expires $expires;
-    #    include /etc/nginx/snippets/proxy.conf;
-    #    rewrite ^/api/(.*)$ /$1 break;
-    #    proxy_pass http://api:8000;
-    #}
+    location /api {
+        # expires $expires;
+        include /etc/nginx/snippets/proxy.conf;
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://api:8000;
+    }
 }

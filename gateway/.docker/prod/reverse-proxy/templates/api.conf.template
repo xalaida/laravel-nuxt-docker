@@ -2,7 +2,7 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
 
-    server_name api.${NGINX_HOST};
+    server_name ${NGINX_API_HOST};
 
     # SSL certificates
     ssl_certificate /etc/nginx/ssl/live/${NGINX_HOST}/fullchain.pem;
@@ -14,7 +14,7 @@ server {
     # Security headers
     include /etc/nginx/snippets/security.conf;
 
-    # Client proxy
+    # API proxy
     location / {
         # expires $expires;
         include /etc/nginx/snippets/proxy.conf;
