@@ -1,21 +1,5 @@
 version: '3.8'
 
-networks:
-  gateway:
-    name: gateway
-    external: true
-
-  api:
-    name: api
-    driver: overlay
-
-volumes:
-  postgres:
-    driver: local
-
-  redis:
-    driver: local
-
 services:
   app:
     image: ${IMAGE_REGISTRY:-local}/api-app:${IMAGE_TAG:-latest}
@@ -88,3 +72,19 @@ services:
     networks:
       - api
     restart: unless-stopped
+
+networks:
+  gateway:
+    name: gateway
+    external: true
+
+  api:
+    name: api
+    driver: overlay
+
+volumes:
+  postgres:
+    driver: local
+
+  redis:
+    driver: local

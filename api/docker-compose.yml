@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # The API application container
   app:
     build:
       context: ./.docker/dev/app
@@ -19,7 +18,6 @@ services:
     networks:
       - api
 
-  # The queue container
   queue:
     build:
       context: ./.docker/dev/queue
@@ -33,7 +31,6 @@ services:
     networks:
       - api
 
-  # The schedule container
   schedule:
     build:
       context: ./.docker/dev/schedule
@@ -47,7 +44,6 @@ services:
     networks:
       - api
 
-  # The PostgreSQL container
   postgres:
     build:
       context: ./.docker/dev/postgres
@@ -64,7 +60,6 @@ services:
     networks:
       - api
 
-  # The PostgreSQL container for testing
   postgres-testing:
     build:
       context: ./.docker/dev/postgres
@@ -76,12 +71,11 @@ services:
     networks:
       - api
 
-  # The Redis container
   redis:
     build:
       context: ./.docker/dev/redis
       dockerfile: Dockerfile
-    # TODO: Add one more volume for configuration
+    # TODO: Add one more volume for configuration (disable background saves)
     volumes:
       - redis:/data
     ports:
@@ -89,7 +83,6 @@ services:
     networks:
       - api
 
-  # The MailHog container
   mailhog:
     build:
       context: ./.docker/dev/mailhog
@@ -102,6 +95,7 @@ services:
 volumes:
   postgres:
     driver: local
+
   redis:
     driver: local
 
