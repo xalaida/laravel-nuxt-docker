@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] add possibility to generate certificate without breaking nginx server (site configs should be passed when certificates will be issued) (probably make another 'acme' container)
 - [ ] add .env variable to different hosts, staging server, dry-run, 4096-bit keys and others
 - [ ] make nginx work even when some hosts are not available
 - [ ] generate overlay network for swarm

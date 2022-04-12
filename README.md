@@ -237,7 +237,7 @@ const { data } = await useApiFetch('/products')
 - [?] remove redis background saves (provide redis conf similar as nginx conf)
 - [ ] share `php.ini` between all api php-related containers
 - [ ] add health checks to other containers
-- [ ] remove .sh extension from bash scripts
+- [ ] add env variable to prod git branch and command to update app from git & rebuild (deploy script)
 - [ ] fix queue stop signal: https://stackoverflow.com/a/63851444/8041541
 - [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
 - [ ] prod
