@@ -146,9 +146,13 @@ redis\:flush:
 # Installation
 #-----------------------------------------------------------
 
-# Create shared API network
-network:
-	docker network create api
+# Copy development environment variables
+dev\:env:
+	cp ./.env.dev ./.env
+
+# Copy production environment variables
+prod\:env:
+	cp ./.env.prod ./.env
 
 # Build all containers
 build\:all: build\:base build
