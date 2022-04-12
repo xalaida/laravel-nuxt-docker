@@ -5,8 +5,9 @@
 /node_modules
 /tests
 .dockerignore
+.env.*
 .editorconfig
-.env
+.editorconfig
 .gitattributes
 .gitignore
 docker-compose.prod.yml
