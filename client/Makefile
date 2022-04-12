@@ -62,9 +62,9 @@ yarn\:outdated:
 # Installation
 #-----------------------------------------------------------
 
-# Create shared client network
-network:
-	docker network create client
+# Create shared gateway network
+gateway:
+	docker network create gateway
 
 # Build containers
 build:
