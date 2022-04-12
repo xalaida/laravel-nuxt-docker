@@ -290,3 +290,18 @@ docker run --rm -it \
   laravelsail/php81-composer:latest \
   php artisan sail:install
 ```
+
+
+# Deploy
+
+## Single host & Docker Compose & Git
+
+The simplest solution to deploy apps on same host is only using Docker Compose and Git.
+
+To do that, you need to use some `proxy` in front of `client` and `api` apps.
+
+There are a lot of solutions you can use, for example few of them:
+
+- Traefik
+- https://github.com/NginxProxyManager/nginx-proxy-manager
+- https://github.com/nginx-proxy/nginx-proxy
