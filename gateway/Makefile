@@ -2,10 +2,6 @@
 # App
 #-----------------------------------------------------------
 
-# Create the gateway network
-network:
-	docker network create gateway
-
 # Build and run containers
 upgrade:
 	docker-compose up -d --build --force-recreate
@@ -34,9 +30,17 @@ ps:
 logs:
 	docker-compose logs
 
+# Show container logs with following flag
+fl:
+	docker-compose logs -f
+
 # Reload the Nginx service
 reload:
 	docker-compose exec reverse-proxy nginx -s reload
+
+# Create the gateway network
+network:
+	docker network create gateway
 
 
 #-----------------------------------------------------------
@@ -50,6 +54,15 @@ ssl\:ls:
 # Generate a 4096-bit DH parameter file
 ssl\:dh:
 	sudo openssl dhparam -out ./.docker/prod/reverse-proxy/ssl/dhparam.pem 2048
+
+
+#-----------------------------------------------------------
+# Bench
+#-----------------------------------------------------------
+
+# Run benchmarking over the gateway (requires Apache Bench tool: apt-get install -y apache2-utils)
+bench:
+	ab -c 50 -n 5000 http://localhost/
 
 
 #-----------------------------------------------------------
@@ -71,12 +84,3 @@ swarm\:services:
 # List the tasks in the stack
 swarm\:ps:
 	docker stack ps gateway
-
-
-#-----------------------------------------------------------
-# Bench
-#-----------------------------------------------------------
-
-# Run benchmarking over the gateway (requires Apache Bench tool: apt-get install -y apache2-utils)
-bench:
-	ab -c 50 -n 5000 http://localhost/

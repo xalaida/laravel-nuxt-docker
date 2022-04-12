@@ -7,12 +7,15 @@ networks:
 
 services:
   reverse-proxy:
+    container_name: reverse-proxy
     build:
       context: ./.docker/prod/reverse-proxy
       dockerfile: Dockerfile
     image: ${IMAGE_REGISTRY:-local}/gateway-reverse-proxy:${IMAGE_TAG:-latest}
     volumes:
+      # SSL certificates folder (created by certbot service)
       - ./.docker/prod/reverse-proxy/ssl:/etc/nginx/ssl:ro
+      # ACME challenge folder (created by certbot service)
       - ./.docker/prod/reverse-proxy/acme:/var/www/acme:ro
     expose:
       - 8001
@@ -24,9 +27,15 @@ services:
     restart: unless-stopped
 
   certbot:
+    container_name: certbot
     build:
       context: ./.docker/prod/certbot
       dockerfile: Dockerfile
+    image: ${IMAGE_REGISTRY:-local}/gateway-certbot:${IMAGE_TAG:-latest}
     volumes:
+      # SSL certificates folder
       - ./.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw
+      # ACME challenge folder
       - ./.docker/prod/reverse-proxy/acme:/var/www/acme:rw
+      # Docker Unix Socket (required by Docker Engine API to restart proxy container after renewal)
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'

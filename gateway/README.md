@@ -1,18 +1,14 @@
 # TODO
 
-- [ ] add hook to automatically reload nginx proxy container 
-- [ ] add .env variable to different hosts, staging server and others
-- [ ] set up crontab
-- [ ] add possibility to generate 4096-bit key (from env variable)
-- [ ] add install.sh script that copies .env file which is not ignored by git
+- [ ] add .env variable to different hosts, staging server, dry-run, 4096-bit keys and others
 - [ ] make nginx work even when some hosts are not available
-- [ ] add dev env
-- [ ] use 'gateway' network (add make command to create it)
 - [ ] www redirect to non-www
-- [ ] test ssl config:
-  - https://securityheaders.com
-  - https://www.ssllabs.com/ssltest 
-  - https://www.humankode.com/ssl/how-to-set-up-free-ssl-certificates-from-lets-encrypt-using-docker-and-nginx
+- [ ] refactor nginx reloading
+  - [ ] get reverse-proxy container name from ENV variable
+  - [ ] reload nginx using 'exec nginx -s reload' syntax
+  - [ ] reload using certbot hooks
+- [ ] add dev env
+- [ ] add install.sh --dev script
 
 Sources:
 - https://github.com/ebarault/letsencrypt-autorenew-docker

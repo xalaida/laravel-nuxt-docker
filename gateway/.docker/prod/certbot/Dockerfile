@@ -1,6 +1,10 @@
 # Image
 FROM certbot/certbot:latest
 
+# Install Curl
+RUN apk add --update curl && \
+    rm -rf /var/cache/apk/*
+
 # Copy & enable cron configuration file
 COPY ./crontab /etc/cron.d/crontab
 RUN crontab /etc/cron.d/crontab
