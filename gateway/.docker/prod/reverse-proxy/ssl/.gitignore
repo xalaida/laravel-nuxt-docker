@@ -1,2 +1,4 @@
 *
+!/renewal-hooks
+!/renewal-hooks/**
 !.gitignore
