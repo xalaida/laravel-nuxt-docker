@@ -6,4 +6,5 @@ certbot renew \
     --webroot \
     --webroot-path /var/www/acme \
     --force-renewal \
+    --post-hook /scripts/nginx-reload.sh \
     --staging
