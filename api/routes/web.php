@@ -13,12 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return ['Laravel' => app()->version()];
-});
+Route::view('/', 'index');
 
-Route::get('/info', function () {
-    xdebug_info();
+Route::get('/version', function () {
+    return ['Laravel' => app()->version()];
 });
 
 require __DIR__.'/auth.php';
