@@ -3,10 +3,10 @@
 - [ ] add install.sh
     - network
     - make .env
-    - build
     - generate ssl certificates
     - generate dh params
     - generate templates from stubs
+    - build
     - run
 - [ ] www redirect to non-www
 - [ ] add staging env variable
@@ -16,18 +16,8 @@
 - [ ] forward letsencrypt logs
 - [ ] add dev env
     - filling /etc/hosts
+    - generate local cert (?)
 
-## Certbot commands 
-
-Issue certificate
-
-```
-docker-compose run --rm certbot certonly --agree-tos --no-eff-email --webroot --webroot-path /var/www/acme -d example@domain.com
-
-certonly --webroot --register-unsafely-without-email --agree-tos --webroot-path=/data/letsencrypt --staging -d example.com -d www.example.com
-
-certbot certonly --standalone -d ${DOMAINNAME} --text --agree-tos --email you@example.com --rsa-key-size 4096 --verbose
-```
 
 ## Sources
 
