@@ -20,6 +20,10 @@ build:
 # Build and restart containers
 update: build up
 
+# Force the update process
+update\:force:
+	docker-compose -f ${COMPOSE_FILE} up -d --build --force-recreate
+
 # Show list of running containers
 ps:
 	docker-compose -f ${COMPOSE_FILE} ps
