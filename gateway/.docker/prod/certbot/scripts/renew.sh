@@ -6,4 +6,4 @@ certbot renew \
     --webroot \
     --webroot-path /var/www/acme \
     --force-renewal \
-    --staging \
+    --staging
