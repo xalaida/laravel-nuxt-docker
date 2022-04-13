@@ -92,10 +92,9 @@ services:
     container_name: nginx-exporter
     expose:
       - 9113
-    ports:
-      - "9113:9113"
     networks:
       - monitoring
+      - gateway
     command:
       - '-nginx.scrape-uri=http://reverse-proxy:8001/status'
     restart: unless-stopped
