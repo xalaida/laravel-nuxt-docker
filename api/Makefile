@@ -1,29 +1,55 @@
 #-----------------------------------------------------------
-# Docker
+# Control
 #-----------------------------------------------------------
+
+# Include file with .env variables if exists
+-include .env
 
 # Start containers
 up:
-	docker-compose up -d
+	docker-compose -f ${COMPOSE_FILE} up -d
 
 # Stop containers
 down:
-	docker-compose down --remove-orphans
+	docker-compose -f ${COMPOSE_FILE} down --remove-orphans
 
-# Show the status of each container
+# Build containers
+build:
+	docker-compose -f ${COMPOSE_FILE} build
+
+# Build and restart containers
+update: build up
+
+# Force the update process
+update\:force:
+	docker-compose -f ${COMPOSE_FILE} up -d --build --force-recreate
+
+# Show list of running containers
 ps:
-	docker-compose ps
+	docker-compose -f ${COMPOSE_FILE} ps
 
 # Restart containers
-restart: down up
+restart:
+	docker-compose -f ${COMPOSE_FILE} restart
 
-# Show logs of each container
+# Reboot containers
+reboot: down up
+
+# View output from containers
 logs:
-	docker-compose logs --tail=1000
+	docker-compose -f ${COMPOSE_FILE} logs
 
-# Show following logs of each container
+# Show logs of running containers with following output
 fl:
-	docker-compose logs -f --tail=1000
+	docker-compose -f ${COMPOSE_FILE} logs -f
+
+# Init variables for development environment
+env\:dev:
+	cp ./.env.dev ./.env
+
+# Init variables for production environment
+env\:prod:
+	cp ./.env.prod ./.env
 
 
 #-----------------------------------------------------------
@@ -32,50 +58,72 @@ fl:
 
 # Enter into the app container
 app:
-	docker-compose exec app bash
+	docker-compose -f ${COMPOSE_FILE} exec app bash
 
 # Run the tinker service
 tinker:
-	docker-compose exec app php artisan tinker
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan tinker
 
 # Clear the app cache
 cache\:clear:
-	docker-compose exec app php artisan cache:clear
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan cache:clear
 
 # Migrate the database
 db\:migrate:
-	docker-compose exec app php artisan migrate
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate
 
 # Alias to migrate the database
 migrate: db\:migrate
 
 # Rollback the database
 db\:rollback:
-	docker-compose exec app php artisan migrate:rollback
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate:rollback
 
 # Seed the database
 db\:seed:
-	docker-compose exec app php artisan db:seed
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan db:seed
 
 # Fresh the database state
 db\:fresh:
-	docker-compose exec app php artisan migrate:fresh
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate:fresh
 
 # Dump database into file
 db\:dump:
-	docker-compose exec postgres pg_dump -U ${DB_USERNAME} -d ${DB_DATABASE} > ./.docker/postgres/dumps/dump.sql
+	docker-compose -f ${COMPOSE_FILE} exec postgres pg_dump -U ${DB_USERNAME} -d ${DB_DATABASE} > ./.docker/postgres/dumps/dump.sql
 
-# Restart the queue process
+# Restart the queue process (TODO: check if it works, probably queue container should listen signals)
 queue\:restart:
-	docker-compose exec app php artisan queue:restart
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan queue:restart
 
 # Generate the app key
 key:
-	docker-compose exec app php artisan key:generate --ansi
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan key:generate --ansi
 
 # Generate a symlink to the storage directory
 storage:
-	docker-compose exec app php artisan storage:link --relative
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan storage:link --relative
+
+# Install composer dependencies
+composer\:install:
+	docker-compose -f ${COMPOSE_FILE} exec app composer install
+
+# Alias to install composer dependencies
+ci: composer\:install
+
+# Update composer dependencies
+composer\:update:
+	docker-compose -f ${COMPOSE_FILE} exec app composer update
+
+# Alias to update composer dependencies
+cu: composer\:update
+
+# Show outdated composer dependencies
+composer\:outdated:
+	docker-compose -f ${COMPOSE_FILE} exec app yarn outdated
+
+# PHP composer autoload command
+composer\:autoload:
+	docker-compose -f ${COMPOSE_FILE} exec app composer dump-autoload
 
 
 #-----------------------------------------------------------
@@ -84,49 +132,22 @@ storage:
 
 # Run phpunit tests
 test:
-	docker-compose exec app ./vendor/bin/phpunit --order-by=defects --stop-on-defect
+	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpunit --order-by=defects --stop-on-defect
 
 # Alias to run phpunit tests
 t: test
 
 # Run phpunit tests with coverage
 coverage:
-	docker-compose exec app ./vendor/bin/phpunit --coverage-html ./.coverage
+	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpunit --coverage-html ./.coverage
 
 # Run dusk tests
 dusk:
-	docker-compose exec app php artisan dusk
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan dusk
 
 # Generate metrics
 metrics:
-	docker-compose exec app ./vendor/bin/phpmetrics --report-html=./.metrics api/app
-
-
-#-----------------------------------------------------------
-# Dependencies
-#-----------------------------------------------------------
-
-# Install composer dependencies
-composer\:install:
-	docker-compose exec app composer install
-
-# Alias to install composer dependencies
-ci: composer\:install
-
-# Update composer dependencies
-composer\:update:
-	docker-compose exec app composer update
-
-# Alias to update composer dependencies
-cu: composer\:update
-
-# Show outdated composer dependencies
-composer\:outdated:
-	docker-compose exec app yarn outdated
-
-# PHP composer autoload command
-composer\:autoload:
-	docker-compose exec app composer dump-autoload
+	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpmetrics --report-html=./.metrics api/app
 
 
 #-----------------------------------------------------------
@@ -135,24 +156,16 @@ composer\:autoload:
 
 # Enter into the redis container
 redis:
-	docker-compose exec redis redis-cli
+	docker-compose -f ${COMPOSE_FILE} exec redis redis-cli
 
 # Flush the redis state
 redis\:flush:
-	docker-compose exec redis redis-cli FLUSHALL
+	docker-compose -f ${COMPOSE_FILE} exec redis redis-cli FLUSHALL
 
 
 #-----------------------------------------------------------
 # Installation
 #-----------------------------------------------------------
-
-# Copy development environment variables
-dev\:env:
-	cp ./.env.dev ./.env
-
-# Copy production environment variables
-prod\:env:
-	cp ./.env.prod ./.env
 
 # Build all containers
 build\:all: build\:base build
@@ -165,10 +178,6 @@ build\:base:
 build:
 	docker-compose build
 
-# Build containers without cache
-rebuild:
-	docker-compose build --no-cache
-
 # Set up permissions for cache and storage folders
 permissions:
 	sudo chmod -R 777 bootstrap/cache
@@ -176,7 +185,7 @@ permissions:
 
 
 #-----------------------------------------------------------
-# Production
+# Production (TODO: make it common with default commands)
 #-----------------------------------------------------------
 
 # Build and start production containers
@@ -195,26 +204,14 @@ prod\:build\:base:
 
 # Build production containers
 prod\:build:
-	docker-compose -f docker-compose.prod.yml build
+	docker-compose -f docker-compose.yml build
 
 # Start production containers
 prod\:up:
-	docker-compose -f docker-compose.prod.yml up -d
+	docker-compose -f docker-compose.yml up -d
 
 # Build and start production containers
 prod\:build-up: prod\:build\:all prod\:up
-
-# Stop production containers
-prod\:down:
-	docker-compose -f docker-compose.prod.yml down --remove-orphans
-
-# Show the status of each container on production environment
-prod\:ps:
-	docker-compose -f docker-compose.prod.yml ps
-
-# Show logs of each container on production environment
-prod\:logs:
-	docker-compose -f docker-compose.prod.yml logs --tail=1000
 
 # Reload the gateway
 gateway\:reload:
@@ -226,21 +223,21 @@ gateway\:reload:
 #-----------------------------------------------------------
 
 # Deploy the stack
-prod\:swarm\:deploy:
-	docker stack deploy --compose-file docker-compose.prod.yml api
+swarm\:deploy:
+	docker stack deploy --compose-file docker-compose.yml api
 
 # Remove/stop the stack
-prod\:swarm\:rm:
+swarm\:rm:
 	docker stack rm api
 
 # List of stack services
-prod\:swarm\:services:
+swarm\:services:
 	docker stack services api
 
 # List the tasks in the stack
-prod\:swarm\:ps:
+swarm\:ps:
 	docker stack ps api
 
 # Init the Docker Swarm Leader node
-prod\:swarm\:init:
+swarm\:init:
 	docker swarm init

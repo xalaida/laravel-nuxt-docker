@@ -2,95 +2,76 @@ version: '3.8'
 
 services:
   app:
+    image: ${IMAGE_REGISTRY:-local}/api-app:${IMAGE_TAG:-latest}
     build:
-      context: ./.docker/dev/app
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/prod/app/Dockerfile
     volumes:
-      - ./:/var/www/html
+      - ./storage:/var/www/html/storage
     links:
       - postgres
-      - postgres-testing
       - redis
-      - mailhog
     hostname: api
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
     networks:
       - api
+      - gateway
+    restart: unless-stopped
 
   queue:
+    image: ${IMAGE_REGISTRY:-local}/api-queue:${IMAGE_TAG:-latest}
     build:
-      context: ./.docker/dev/queue
+      context: ./.docker/prod/queue
       dockerfile: Dockerfile
     volumes:
-      - ./:/var/www/html
+      - ./storage:/var/www/html/storage
     links:
       - postgres
       - redis
-      - mailhog
     networks:
       - api
+    restart: unless-stopped
 
   schedule:
+    image: ${IMAGE_REGISTRY:-local}/api-schedule:${IMAGE_TAG:-latest}
     build:
-      context: ./.docker/dev/schedule
+      context: ./.docker/prod/schedule
       dockerfile: Dockerfile
     volumes:
-      - ./:/var/www/html
+      - ./storage:/var/www/html/storage
     links:
       - postgres
       - redis
-      - mailhog
     networks:
       - api
+    restart: unless-stopped
 
   postgres:
+    image: ${IMAGE_REGISTRY:-local}/api-postgres:${IMAGE_TAG:-latest}
     build:
-      context: ./.docker/dev/postgres
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/prod/postgres/Dockerfile
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres:/var/lib/postgresql/data
-      - ./.docker/dev/postgres/dumps/:/tmp/
-    ports:
-      - "54321:5432"
     networks:
       - api
-
-  postgres-testing:
-    build:
-      context: ./.docker/dev/postgres
-      dockerfile: Dockerfile
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - api
+    restart: unless-stopped
 
   redis:
+    image: ${IMAGE_REGISTRY:-local}/api-redis:${IMAGE_TAG:-latest}
     build:
-      context: ./.docker/dev/redis
-      dockerfile: Dockerfile
-    # TODO: Add one more volume for configuration (disable background saves)
+      context: ./
+      dockerfile: ./.docker/prod/redis/Dockerfile
     volumes:
       - redis:/data
-    ports:
-      - "63791:6379"
     networks:
       - api
-
-  mailhog:
-    build:
-      context: ./.docker/dev/mailhog
-      dockerfile: Dockerfile
-    ports:
-      - "8026:8025"
-    networks:
-      - api
+    restart: unless-stopped
 
 volumes:
   postgres:
@@ -101,5 +82,9 @@ volumes:
 
 networks:
   api:
-    external:
-      name: api
+    name: api
+    driver: overlay
+
+  gateway:
+    name: gateway
+    external: true
