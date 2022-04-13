@@ -15,8 +15,8 @@ services:
     expose:
       - 8000
     networks:
-      - gateway
       - api
+      - gateway
     restart: unless-stopped
 
   queue:
@@ -73,18 +73,18 @@ services:
       - api
     restart: unless-stopped
 
-networks:
-  gateway:
-    name: gateway
-    external: true
-
-  api:
-    name: api
-    driver: overlay
-
 volumes:
   postgres:
     driver: local
 
   redis:
     driver: local
+
+networks:
+  api:
+    name: api
+    driver: overlay
+
+  gateway:
+    name: gateway
+    external: true
