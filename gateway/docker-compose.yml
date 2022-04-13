@@ -1,21 +1,16 @@
 version: '3.8'
 
-networks:
-  gateway:
-    name: gateway
-    external: true
-
 services:
   reverse-proxy:
     image: ${IMAGE_REGISTRY:-local}/gateway-reverse-proxy:${IMAGE_TAG:-latest}
     build:
-      context: ./.docker/prod/reverse-proxy
+      context: ./reverse-proxy
       dockerfile: Dockerfile
     volumes:
-      # SSL certificates folder (created by certbot service)
-      - ./.docker/prod/reverse-proxy/ssl:/etc/nginx/ssl:ro
-      # ACME challenge folder (created by certbot service)
-      - ./.docker/prod/reverse-proxy/acme:/var/www/acme:ro
+      # SSL certificates folder (shared with certbot service)
+      - ./reverse-proxy/ssl:/etc/nginx/ssl:ro
+      # ACME challenge folder (shared with certbot service)
+      - ./reverse-proxy/acme:/var/www/acme:ro
     expose:
       - 8001
     ports:
@@ -28,15 +23,20 @@ services:
   certbot:
     image: ${IMAGE_REGISTRY:-local}/gateway-certbot:${IMAGE_TAG:-latest}
     build:
-      context: ./.docker/prod/certbot
+      context: ./certbot
       dockerfile: Dockerfile
     environment:
       NGINX_SERVICE: reverse-proxy
     volumes:
       # SSL certificates folder
-      - ./.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw
+      - ./reverse-proxy/ssl:/etc/letsencrypt:rw
       # ACME challenge folder
-      - ./.docker/prod/reverse-proxy/acme:/var/www/acme:rw
-      # Docker Unix Socket (required by Docker Engine API to restart proxy container after renewal)
+      - ./reverse-proxy/acme:/var/www/acme:rw
+      # Docker Unix Socket (allow restarting reverse-proxy service after renewal)
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     restart: unless-stopped
+
+networks:
+  gateway:
+    name: gateway
+    external: true

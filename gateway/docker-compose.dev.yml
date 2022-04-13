@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  reverse-proxy:
+    build:
+      context: ./.docker/prod/reverse-proxy
+      dockerfile: Dockerfile
+    volumes:
+      - ./reverse-proxy/ssl:/etc/nginx/ssl:ro
+    expose:
+      - 8001
+    ports:
+      - "443:443"
+      - "80:80"
+    networks:
+      - gateway
+
+networks:
+  gateway:
+    name: gateway
+    external: true

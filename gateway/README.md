@@ -1,6 +1,7 @@
 # TODO
 
 - [ ] add install.sh
+    - network
     - make .env
     - build
     - generate ssl certificates

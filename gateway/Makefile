@@ -1,57 +1,63 @@
+#-----------------------------------------------------------
+# Control
+#-----------------------------------------------------------
+
 # Include file with .env variables if exists
 -include .env
 
-#-----------------------------------------------------------
-# App
-#-----------------------------------------------------------
-
-# Build and run containers
-update:
-	docker-compose up -d --build --force-recreate
-
-# Build containers
-build:
-	docker-compose build
-
-# Run containers
+# Start containers
 up:
-	docker-compose up -d
+	docker-compose -f ${COMPOSE_FILE} up -d
 
 # Stop containers
 down:
-	docker-compose down --remove-orphans
+	docker-compose -f ${COMPOSE_FILE} down --remove-orphans
+
+# Build containers
+build:
+	docker-compose -f ${COMPOSE_FILE} build
+
+# Build and restart containers
+update: build up
+
+# Force the update process
+update\:force:
+	docker-compose -f ${COMPOSE_FILE} up -d --build --force-recreate
+
+# Show list of running containers
+ps:
+	docker-compose -f ${COMPOSE_FILE} ps
 
 # Restart containers
 restart:
-	docker-compose restart
+	docker-compose -f ${COMPOSE_FILE} restart
 
-# Show container statuses
-ps:
-	docker-compose ps
+# Reboot containers
+reboot: down up
 
-# Show container logs
+# View output from containers
 logs:
-	docker-compose logs
+	docker-compose -f ${COMPOSE_FILE} logs
 
-# Show container logs with following flag
+# Show following logs of each container
 fl:
-	docker-compose logs -f
+	docker-compose -f ${COMPOSE_FILE} logs -f
 
-# Create the gateway network
-network:
-	docker network create gateway
+# Init variables for development environment
+env\:dev:
+	cp ./.env.dev ./.env
 
-# Make a file for environment variables
-env:
-	cp ./.env.example ./.env
+# Init variables for production environment
+env\:prod:
+	cp ./.env.prod ./.env
 
 # Reload the Nginx service
 reload:
-	docker-compose exec reverse-proxy nginx -s reload
+	docker-compose -f ${COMPOSE_FILE} exec reverse-proxy nginx -s reload
 
 # Enter the certbot bash session
 certbot:
-	docker-compose exec certbot /bin/sh
+	docker-compose -f ${COMPOSE_FILE} exec certbot /bin/sh
 
 
 #-----------------------------------------------------------
@@ -60,13 +66,13 @@ certbot:
 
 # Show the list of registered certificates
 ssl\:ls:
-	docker-compose run --rm --entrypoint "certbot certificates" certbot
+	docker-compose -f ${COMPOSE_FILE} run --rm --entrypoint "certbot certificates" certbot
 
 # Generate a 4096-bit DH parameter file
 ssl\:dh:
 	sudo openssl dhparam -out ./.docker/prod/reverse-proxy/ssl/dhparam.pem 2048
 
-# Issue SSL certificates according to the .env parameters
+# Issue SSL certificates according to the .env parameters (TODO: rewrite with certbot compose service)
 ssl:
 	docker run \
 		--rm \
@@ -83,7 +89,7 @@ ssl:
 		--standalone \
 		--staging
 
-# Issue SSL certificates according to the .env parameters
+# Issue SSL certificates according to the .env parameters (TODO: rewrite with certbot compose service)
 ssl\:test:
 	docker run \
 		--rm \

@@ -2,9 +2,9 @@
 
 certbot renew \
     --non-interactive \
-    --no-random-sleep-on-renew \
     --webroot \
     --webroot-path /var/www/acme \
-    --force-renewal \
     --post-hook /scripts/nginx-reload.sh \
-    --staging
+    # --force-renewal \
+    # --no-random-sleep-on-renew \
+    # --staging
