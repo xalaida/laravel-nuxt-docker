@@ -53,6 +53,10 @@ dev\:env:
 prod\:env:
 	cp ./.env.prod ./.env
 
+# Enter the certbot bash session
+certbot:
+	docker-compose exec certbot /bin/sh
+
 
 #-----------------------------------------------------------
 # SSL
