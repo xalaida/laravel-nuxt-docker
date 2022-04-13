@@ -80,8 +80,13 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
     expose:
       - 8080
+    ports:
+      - "8080:8080"
     networks:
       - monitoring
     restart: unless-stopped
