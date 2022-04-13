@@ -6,12 +6,8 @@
 #-----------------------------------------------------------
 
 # Build and run containers
-upgrade:
+update:
 	docker-compose up -d --build --force-recreate
-
-# Reload the Nginx service
-reload:
-	docker-compose exec reverse-proxy nginx -s reload
 
 # Build containers
 build:
@@ -52,6 +48,10 @@ dev\:env:
 # Copy production environment variables
 prod\:env:
 	cp ./.env.prod ./.env
+
+# Reload the Nginx service
+reload:
+	docker-compose exec reverse-proxy nginx -s reload
 
 # Enter the certbot bash session
 certbot:
