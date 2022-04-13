@@ -189,10 +189,10 @@ permissions:
 #-----------------------------------------------------------
 
 # Build and start production containers
-prod\:upgrade: prod\:build\:all prod\:up gateway\:reload
+prod\:upgrade: prod\:build\:all up gateway\:reload
 
 # Build all production containers
-prod\:build\:all: prod\:build\:php prod\:build\:base prod\:build
+prod\:build\:all: prod\:build\:php prod\:build\:base build
 
 # Build the PHP image
 prod\:build\:php:
@@ -202,16 +202,8 @@ prod\:build\:php:
 prod\:build\:base:
 	docker build -f ./.docker/prod/base/Dockerfile -t api-base .
 
-# Build production containers
-prod\:build:
-	docker-compose -f docker-compose.yml build
-
-# Start production containers
-prod\:up:
-	docker-compose -f docker-compose.yml up -d
-
 # Build and start production containers
-prod\:build-up: prod\:build\:all prod\:up
+prod\:build-up: prod\:build\:all up
 
 # Reload the gateway
 gateway\:reload:
