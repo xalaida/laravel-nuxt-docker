@@ -1,4 +1,4 @@
-# Run containers
+# Start containers
 up:
 	docker-compose up -d
 
@@ -10,6 +10,5 @@ down:
 build:
 	docker-compose build
 
-# Build and run containers
-build-up:
-	docker-compose up -d --build --force-recreate
+# Build and restart containers
+update: build up
