@@ -39,7 +39,7 @@ reboot: down up
 logs:
 	docker-compose -f ${COMPOSE_FILE} logs
 
-# Show following logs of each container
+# Show logs of running containers with following output
 fl:
 	docker-compose -f ${COMPOSE_FILE} logs -f
 

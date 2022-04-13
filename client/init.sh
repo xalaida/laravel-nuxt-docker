@@ -5,7 +5,7 @@ if [ ! -f ./.env ]; then
     cp ./.env.dev ./.env
 fi
 
-# Create shared gateway network
+# Create shared gateway network (TODO: create only if missing)
 docker network create gateway
 
 # Build the client containers
