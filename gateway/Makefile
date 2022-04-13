@@ -64,21 +64,13 @@ certbot:
 # SSL
 #-----------------------------------------------------------
 
-# Show the list of registered certificates
-ssl\:ls:
-	docker-compose -f ${COMPOSE_FILE} run --rm --entrypoint "certbot certificates" certbot
-
-# Generate a 4096-bit DH parameter file
-ssl\:dh:
-	sudo openssl dhparam -out ./.docker/prod/reverse-proxy/ssl/dhparam.pem 2048
-
-# Issue SSL certificates according to the .env parameters (TODO: rewrite with certbot compose service)
-ssl:
+# Issue SSL certificates according to the environment variables (TODO: use staging variable from .env)
+ssl\:cert:
 	docker run \
 		--rm \
 		--interactive \
 		--tty \
-		--volume ${CURDIR}/.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw \
+		--volume ${CURDIR}/reverse-proxy/ssl:/etc/letsencrypt:rw \
 		--publish 80:80 \
 		certbot/certbot \
 		certonly \
@@ -89,13 +81,13 @@ ssl:
 		--standalone \
 		--staging
 
-# Issue SSL certificates according to the .env parameters (TODO: rewrite with certbot compose service)
+# Issue testing SSL certificates according to the environment variables
 ssl\:test:
 	docker run \
 		--rm \
 		--interactive \
 		--tty \
-		--volume ${CURDIR}/.docker/prod/reverse-proxy/ssl:/etc/letsencrypt:rw \
+		--volume ${CURDIR}/reverse-proxy/ssl:/etc/letsencrypt:rw \
 		--publish 80:80 \
 		certbot/certbot \
 		certonly \
@@ -105,6 +97,14 @@ ssl\:test:
 		--email ${CERTBOT_EMAIL} \
 		--standalone \
 		--dry-run
+
+# Generate a 2048-bit DH parameter file
+ssl\:dh:
+	sudo openssl dhparam -out ./reverse-proxy/ssl/dhparam.pem 2048
+
+# Show the list of registered certificates
+ssl\:ls:
+	docker-compose -f ${COMPOSE_FILE} run --rm --entrypoint "certbot certificates" certbot
 
 
 #-----------------------------------------------------------
