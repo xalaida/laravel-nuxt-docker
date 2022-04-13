@@ -1,3 +1,5 @@
+#TODO: feature 'salo' app that forwards common calls
+
 # Execute command from the app container by the current user
 alias api='docker-compose exec --user "$(id -u):$(id -g)" app'
 
