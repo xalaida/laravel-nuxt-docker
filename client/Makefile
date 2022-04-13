@@ -39,6 +39,14 @@ logs:
 fl:
 	docker-compose -f ${COMPOSE_FILE} logs -f
 
+# Init variables for development environment
+env\:dev:
+	cp ./.env.dev ./.env
+
+# Init variables for production environment
+env\:prod:
+	cp ./.env.prod ./.env
+
 
 #-----------------------------------------------------------
 # App
