@@ -1,3 +1,5 @@
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://stand-with-ukraine.pp.ua)
+
 # Dockerized template for your next Laravel and Nuxt project
 
 Well tested on Ubuntu 18.04, 19.10 and 20.04.
