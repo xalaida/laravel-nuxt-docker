@@ -1,8 +1,10 @@
+#!/bin/sh
+
 # Make a 'GET' request on the docker socket
 docker_socket_get() {
     local API_PATH="${1?Missing path}"
 
-    curl -f --unix-socket /var/run/docker.sock "http://v1.41${API_PATH}"
+    curl -s -f --unix-socket /var/run/docker.sock "http://v1.41${API_PATH}"
 }
 
 # Make a 'POST' request on the docker socket
@@ -40,13 +42,6 @@ get_container_id_by_service() {
 
 # Reload the Nginx service
 reload_nginx_service() {
-    # Execution
-    if [ -z "${NGINX_SERVICE}" ]; then
-        echo "NGINX_SERVICE variable is empty. Nothing to reload."
-    else
-        reload_nginx_service
-    fi
-
     # Get container ID
     local CONTAINER_ID=$(get_container_id_by_service "${NGINX_SERVICE}")
 
@@ -54,4 +49,11 @@ reload_nginx_service() {
     docker_socket_exec "${CONTAINER_ID}" '["nginx", "-s", "reload"]'
 }
 
-reload_nginx_service
+# Execution
+if [ -z "${NGINX_SERVICE}" ]; then
+    echo "NGINX_SERVICE variable is empty. Nothing to reload."
+    return 1
+else
+    echo "Reloading Nginx Service."
+    reload_nginx_service
+fi
