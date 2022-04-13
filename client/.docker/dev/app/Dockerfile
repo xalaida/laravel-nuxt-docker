@@ -1,5 +1,5 @@
 # Image
-FROM node:16
+FROM node:16-alpine
 
 # Starting from scratch
 RUN apt-get clean \
