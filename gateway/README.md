@@ -9,12 +9,12 @@
     - run
 - [ ] www redirect to non-www
 - [ ] add staging env variable
-- [ ] add .env variable to different hosts, staging server, dry-run, 4096-bit keys and others
 - [ ] add possibility to automatically generate conf from stub (default nginx template engine very often breaks with variables inside strings)
 - [ ] generate overlay network for swarm
 - [ ] configure nginx logging (forward into /std/err, add logrotate)
 - [ ] forward letsencrypt logs
 - [ ] add dev env
+    - filling /etc/hosts
 
 ## Certbot commands 
 

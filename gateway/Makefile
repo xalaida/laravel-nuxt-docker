@@ -41,13 +41,9 @@ fl:
 network:
 	docker network create gateway
 
-# Copy development environment variables
-dev\:env:
-	cp ./.env.dev ./.env
-
-# Copy production environment variables
-prod\:env:
-	cp ./.env.prod ./.env
+# Make a file for environment variables
+env:
+	cp ./.env.example ./.env
 
 # Reload the Nginx service
 reload:
@@ -106,15 +102,6 @@ ssl\:test:
 
 
 #-----------------------------------------------------------
-# Bench
-#-----------------------------------------------------------
-
-# Run benchmarking over the gateway (requires Apache Bench tool: apt-get install -y apache2-utils)
-bench:
-	ab -c 50 -n 5000 http://localhost/
-
-
-#-----------------------------------------------------------
 # Swarm
 #-----------------------------------------------------------
 
@@ -133,3 +120,13 @@ swarm\:services:
 # List the tasks in the stack
 swarm\:ps:
 	docker stack ps gateway
+
+
+#-----------------------------------------------------------
+# Bench
+#-----------------------------------------------------------
+
+# Run benchmarking over the gateway (requires Apache Bench tool: apt-get install -y apache2-utils)
+bench:
+	ab -c 50 -n 5000 http://localhost/
+

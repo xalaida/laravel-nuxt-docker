@@ -23,8 +23,6 @@ services:
       - "80:80"
     networks:
       - gateway
-    dns:
-      - 8.8.8.8
     restart: unless-stopped
 
   certbot:
@@ -41,6 +39,4 @@ services:
       - ./.docker/prod/reverse-proxy/acme:/var/www/acme:rw
       # Docker Unix Socket (required by Docker Engine API to restart proxy container after renewal)
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
-    dns:
-      - 8.8.8.8
     restart: unless-stopped
