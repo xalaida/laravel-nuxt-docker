@@ -74,12 +74,11 @@ ssl\:cert:
 		--publish 80:80 \
 		certbot/certbot \
 		certonly \
-		--non-interactive \
-		--agree-tos \
 		--domains ${CERTBOT_DOMAINS} \
 		--email ${CERTBOT_EMAIL} \
-		--standalone \
-		--staging
+		--agree-tos \
+		--no-eff-email \
+		--standalone
 
 # Issue testing SSL certificates according to the environment variables
 ssl\:test:
@@ -91,10 +90,10 @@ ssl\:test:
 		--publish 80:80 \
 		certbot/certbot \
 		certonly \
-		--non-interactive \
-		--agree-tos \
 		--domains ${CERTBOT_DOMAINS} \
 		--email ${CERTBOT_EMAIL} \
+		--agree-tos \
+		--no-eff-email \
 		--standalone \
 		--dry-run
 
