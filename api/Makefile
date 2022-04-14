@@ -7,6 +7,7 @@
 
 # Define default values for variables
 COMPOSE_FILE ?= docker-compose.yml
+BASE_IMAGE_DOCKERFILE ?= ./.docker/prod/base/Dockerfile
 IMAGE_REGISTRY ?= local
 IMAGE_TAG ?= latest
 
@@ -26,8 +27,15 @@ down:
 build:
 	docker-compose -f ${COMPOSE_FILE} build
 
+# Build all containers
+build\:all: build\:base build
+
+# Build the base app image
+build\:base:
+	docker build --file ${BASE_IMAGE_DOCKERFILE} --tag ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG} .
+
 # Build and restart containers
-update: build up
+update: build\:all up
 
 # Force the update process
 update\:force:
@@ -100,9 +108,11 @@ db\:seed:
 db\:fresh:
 	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate:fresh
 
-# Dump database into file
+# Dump database into file (only for development environment) #TODO: replace file name with env variable
 db\:dump:
 	docker-compose -f ${COMPOSE_FILE} exec postgres pg_dump -U ${DB_USERNAME} -d ${DB_DATABASE} > ./.docker/postgres/dumps/dump.sql
+
+# TODO: add command to import db dump
 
 # Restart the queue process
 queue\:restart:
@@ -138,9 +148,14 @@ composer\:outdated:
 composer\:autoload:
 	docker-compose -f ${COMPOSE_FILE} exec app composer dump-autoload
 
+# Set up permissions for cache and storage folders
+permissions:
+	sudo chmod -R 755 bootstrap/cache
+	sudo chmod -R 755 storage
+
 
 #-----------------------------------------------------------
-# Testing
+# Testing (only for development environment)
 #-----------------------------------------------------------
 
 # Run phpunit tests (requires 'phpunit/phpunit' composer package)
@@ -177,41 +192,6 @@ redis\:flush:
 
 
 #-----------------------------------------------------------
-# Installation
-#-----------------------------------------------------------
-
-# Build all containers
-build\:all: build\:base build
-
-# Build the base app image
-build\:base:
-	docker build -f ./.docker/dev/base/Dockerfile -t api-base-dev .
-
-# Set up permissions for cache and storage folders
-permissions:
-	sudo chmod -R 777 bootstrap/cache
-	sudo chmod -R 777 storage
-
-
-#-----------------------------------------------------------
-# Production (TODO: make it common with default commands)
-#-----------------------------------------------------------
-
-# Build and start production containers
-prod\:upgrade: prod\:build\:all up gateway\:reload
-
-# Build all production containers
-prod\:build\:all: prod\:build\:base build
-
-# Build the base API app image
-prod\:build\:base:
-	docker build --file ./.docker/prod/base/Dockerfile --tag ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG} .
-
-# Build and start production containers
-prod\:build-up: prod\:build\:all up
-
-
-#-----------------------------------------------------------
 # Gateway
 #-----------------------------------------------------------
 
@@ -223,8 +203,8 @@ gateway:
 gateway\:reload:
 	cd ../gateway; make reload
 
-# Update containers within the gateway service (TODO: fix the command)
-gateway\:update: build up gateway\:reload
+# Update containers and reload the gateway service
+update\:reload: build\:all up gateway\:reload
 
 
 #-----------------------------------------------------------
