@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   app:
-    image: ${IMAGE_REGISTRY:-local}/api-app:${IMAGE_TAG:-latest}
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
+    image: ${IMAGE_REGISTRY:-local}/api-app:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
     links:
@@ -20,10 +20,10 @@ services:
     restart: unless-stopped
 
   queue:
-    image: ${IMAGE_REGISTRY:-local}/api-queue:${IMAGE_TAG:-latest}
     build:
       context: ./.docker/prod/queue
       dockerfile: Dockerfile
+    image: ${IMAGE_REGISTRY:-local}/api-queue:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
     links:
@@ -34,10 +34,10 @@ services:
     restart: unless-stopped
 
   schedule:
-    image: ${IMAGE_REGISTRY:-local}/api-schedule:${IMAGE_TAG:-latest}
     build:
       context: ./.docker/prod/schedule
       dockerfile: Dockerfile
+    image: ${IMAGE_REGISTRY:-local}/api-schedule:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
     links:
@@ -48,10 +48,10 @@ services:
     restart: unless-stopped
 
   postgres:
-    image: ${IMAGE_REGISTRY:-local}/api-postgres:${IMAGE_TAG:-latest}
     build:
       context: ./
       dockerfile: ./.docker/prod/postgres/Dockerfile
+    image: ${IMAGE_REGISTRY:-local}/api-postgres:${IMAGE_TAG:-latest}
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -63,10 +63,10 @@ services:
     restart: unless-stopped
 
   redis:
-    image: ${IMAGE_REGISTRY:-local}/api-redis:${IMAGE_TAG:-latest}
     build:
       context: ./
       dockerfile: ./.docker/prod/redis/Dockerfile
+    image: ${IMAGE_REGISTRY:-local}/api-redis:${IMAGE_TAG:-latest}
     volumes:
       - redis:/data
     networks:
