@@ -237,36 +237,32 @@ const { data } = await useApiFetch('/products')
 - [ ] add github actions for testing
 - [ ] set up volume permissions (ro, rw, etc)
 - [?] remove redis background saves (provide redis conf similar as nginx conf)
-- [ ] share `php.ini` between all api php-related containers
 - [ ] add health checks to other containers
 - [ ] add env variable to prod git branch and command to update app from git & rebuild (deploy script)
-- [ ] fix queue stop signal: https://stackoverflow.com/a/63851444/8041541
+- [ ] set up CI script
+- [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
 - [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
 - [ ] prod
   - [ ] https://www.laradocker.com/production/#using-docker-compose
-  - [ ] certbot
-  - [ ] separate .env variables for prod build
-  - [ ] http2, brotli/gzip, ssl config
   - [ ] handling static files
-  - [ ] add command for pruning old unused images
-  - [ ] rename .prod dockerfile as default dockerfile and define current dockerfile in .env variable docker-compose -f ${COMPOSE_FILE}
   - [ ] opcache + jit
-  - [ ] add .dockerignore
+  - [ ] probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
+  - [ ] check if storage file can be stored into public dir
+  - [ ] check if storage file can be stored into storage (private) dir
+  - [ ] check how relative public symlink works
   - [ ] add redis password
   - [ ] add env variable to redis mode (disable background saves)
-  - [ ] provide .env API_KEY during first prod installation 
+  - [ ] provide .env API_KEY during first prod installation
+  - [ ] add script to update containers (rebuild containers, update env, run migrations and other staff)
   - [ ] add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
-  - [ ] volume storage
   - [ ] add possibility to open redis and postgres connections outside of docker network conditionally on runtime (using env variables)
   - [ ] add stats command: https://docs.docker.com/config/containers/runmetrics/
   - [?] remove public/index.php
-  - [ ] configure proper timeouts to handle big traffic
-  - [ ] allow custom ssl certs (provide volume or directory for them)
   - [ ] use last commit hash instead of 'latest' image tag
-  - [ ] add IMAGE_REGISTRY and IMAGE_TAG to the base api images 
+  - [ ] add IMAGE_REGISTRY and IMAGE_TAG to the base api images (on dev also)
   - [ ] deploy.sh script using ssh secrets
   - [ ] docker-compose deploy (no registry, no swarm, only git)
-  - [ ] grafana vs prometheus monitoring tool (and forward logs into it)
+  - [ ] set up logging driver
   - [ ] docker swarm deployment
     - https://docs.docker.com/engine/swarm/stack-deploy/ 
   - [ ] private registry server (pushing/pulling tags)
