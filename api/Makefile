@@ -8,7 +8,7 @@
 # Define default values for variables
 COMPOSE_FILE ?= docker-compose.yml
 BASE_IMAGE_DOCKERFILE ?= ./.docker/prod/base/Dockerfile
-IMAGE_REGISTRY ?= local
+IMAGE_REGISTRY ?= prod
 IMAGE_TAG ?= latest
 
 #-----------------------------------------------------------

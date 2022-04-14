@@ -67,9 +67,6 @@ RUN apt-get clean \
 # Install Process Control extension \
     && docker-php-ext-install pcntl \
     && docker-php-ext-enable pcntl \
-# Install Swoole \
-    && pecl install swoole \
-    && docker-php-ext-enable swoole \
 # Clean up \
     && apt-get clean \
     && apt-get -y autoremove \

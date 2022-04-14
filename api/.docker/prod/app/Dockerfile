@@ -1,5 +1,19 @@
 # Image
-FROM ${IMAGE_REGISTRY:-local}/api-base:${IMAGE_TAG:-latest}
+FROM ${IMAGE_REGISTRY:-prod}/api-base:${IMAGE_TAG:-latest}
+
+# Starting from scratch
+RUN apt-get clean \
+    && apt-get -y autoremove \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+# Update dependencies
+    && apt-get update \
+# Install Swoole \
+    && pecl install swoole \
+    && docker-php-ext-enable swoole \
+# Clean up
+    && apt-get clean \
+    && apt-get -y autoremove \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set up the working directory
 WORKDIR /var/www/html

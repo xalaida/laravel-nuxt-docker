@@ -1,5 +1,8 @@
+# Arguments
+ARG IMAGE_TAG
+
 # Image
-FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
+FROM ${IMAGE_REGISTRY:-dev}/api-base:${IMAGE_TAG}
 
 # Starting from scratch
 RUN apt-get clean \

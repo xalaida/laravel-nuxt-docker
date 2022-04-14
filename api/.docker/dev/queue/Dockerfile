@@ -1,5 +1,5 @@
 # Image
-FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
+FROM ${IMAGE_REGISTRY:-dev}/api-base:${IMAGE_TAG:-latest}
 
 # Set up the working directory
 WORKDIR /var/www/html

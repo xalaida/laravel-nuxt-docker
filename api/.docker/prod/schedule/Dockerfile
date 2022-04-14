@@ -1,5 +1,5 @@
 # Image
-FROM ${IMAGE_REGISTRY:-local}/api-base:${IMAGE_TAG:-latest}
+FROM ${IMAGE_REGISTRY:-prod}/api-base:${IMAGE_TAG:-latest}
 
 # Starting from scratch
 RUN apt-get clean \
