@@ -252,6 +252,8 @@ const { data } = await useApiFetch('/products')
   - [ ] rename .prod dockerfile as default dockerfile and define current dockerfile in .env variable docker-compose -f ${COMPOSE_FILE}
   - [ ] opcache + jit
   - [ ] add .dockerignore
+  - [ ] add redis password
+  - [ ] add env variable to redis mode (disable background saves)
   - [ ] provide .env API_KEY during first prod installation 
   - [ ] add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
   - [ ] volume storage
