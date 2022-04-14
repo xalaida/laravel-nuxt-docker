@@ -20,6 +20,7 @@ services:
       - "8000:8000"
     networks:
       - api
+      - gateway
 
   queue:
     build:
@@ -110,5 +111,8 @@ volumes:
 
 networks:
   api:
-    external:
-      name: api
+    name: api
+
+  gateway:
+    name: gateway
+    external: true
