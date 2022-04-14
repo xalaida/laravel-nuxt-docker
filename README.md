@@ -235,6 +235,7 @@ const { data } = await useApiFetch('/products')
 - [ ] selenium (laravel dusk)
 - [ ] add s3 container, probably minio
 - [ ] add github actions for testing
+- [ ] add possibility to install composer scripts and app_key from stopped containers (run --rm)
 - [ ] set up volume permissions (ro, rw, etc)
 - [?] remove redis background saves (provide redis conf similar as nginx conf)
 - [ ] add health checks to other containers
