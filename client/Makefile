@@ -51,6 +51,10 @@ env\:dev:
 env\:prod:
 	cp ./.env.prod ./.env
 
+# Prune stopped docker containers and dangling images
+prune:
+	docker system prune
+
 
 #-----------------------------------------------------------
 # App
