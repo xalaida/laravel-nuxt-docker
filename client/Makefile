@@ -95,8 +95,8 @@ gateway:
 gateway\:reload:
 	cd ../gateway; make reload
 
-# Update containers within the gateway service
-gateway\:update: build up gateway\:reload
+# Update containers and reload the gateway service
+update\:reload: build up gateway\:reload
 
 
 #-----------------------------------------------------------
