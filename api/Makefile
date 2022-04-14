@@ -120,7 +120,7 @@ queue\:restart:
 
 # Generate the app key
 key:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan key:generate --ansi
+	docker-compose -f ${COMPOSE_FILE} run --rm app php artisan key:generate --ansi
 
 # Generate a symlink to the storage directory
 storage:
