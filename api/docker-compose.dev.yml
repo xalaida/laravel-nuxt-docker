@@ -20,6 +20,7 @@ services:
       - "8000:8000"
     networks:
       - api
+      - gateway
 
   queue:
     build:
@@ -109,6 +110,9 @@ volumes:
     driver: local
 
 networks:
-  api:
-    external:
-      name: api
+  client:
+    name: client
+
+  gateway:
+    name: gateway
+    external: true
