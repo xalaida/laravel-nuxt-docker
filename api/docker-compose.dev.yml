@@ -5,6 +5,9 @@ services:
     build:
       context: ./.docker/dev/app
       dockerfile: Dockerfile
+      args:
+        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+        IMAGE_TAG: ${IMAGE_TAG}
     volumes:
       - ./:/var/www/html
     links:
@@ -22,6 +25,9 @@ services:
     build:
       context: ./.docker/dev/queue
       dockerfile: Dockerfile
+      args:
+        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+        IMAGE_TAG: ${IMAGE_TAG}
     volumes:
       - ./:/var/www/html
     links:
@@ -35,6 +41,9 @@ services:
     build:
       context: ./.docker/dev/schedule
       dockerfile: Dockerfile
+      args:
+        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+        IMAGE_TAG: ${IMAGE_TAG}
     volumes:
       - ./:/var/www/html
     links:

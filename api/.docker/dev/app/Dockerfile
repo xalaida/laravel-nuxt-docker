@@ -1,8 +1,9 @@
-# Arguments
-ARG IMAGE_TAG
+# Build arguments
+ARG IMAGE_REGISTRY=dev
+ARG IMAGE_TAG=latest
 
 # Image
-FROM ${IMAGE_REGISTRY:-dev}/api-base:${IMAGE_TAG}
+FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
 
 # Starting from scratch
 RUN apt-get clean \

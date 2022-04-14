@@ -5,6 +5,9 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
+      args:
+        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+        IMAGE_TAG: ${IMAGE_TAG}
     image: ${IMAGE_REGISTRY:-local}/api-app:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
@@ -23,6 +26,9 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/queue/Dockerfile
+      args:
+        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+        IMAGE_TAG: ${IMAGE_TAG}
     image: ${IMAGE_REGISTRY:-local}/api-queue:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
@@ -37,6 +43,9 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/schedule/Dockerfile
+      args:
+        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+        IMAGE_TAG: ${IMAGE_TAG}
     image: ${IMAGE_REGISTRY:-local}/api-schedule:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage

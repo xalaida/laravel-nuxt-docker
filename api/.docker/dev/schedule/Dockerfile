@@ -1,5 +1,9 @@
+# Build arguments
+ARG IMAGE_REGISTRY=dev
+ARG IMAGE_TAG=latest
+
 # Image
-FROM ${IMAGE_REGISTRY:-dev}/api-base:${IMAGE_TAG:-latest}
+FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
 
 # Starting from scratch
 RUN apt-get clean \
@@ -12,12 +16,9 @@ RUN apt-get update
 # Install Crontab
 RUN apt-get install -y cron
 
-# Set up cron configuration file
+# Copy and enable cron job file
 COPY ./cron.d/crontab /etc/cron.d/crontab
-
-# Configure cron service
-RUN chmod 644 /etc/cron.d/crontab \
-  && crontab /etc/cron.d/crontab
+RUN crontab /etc/cron.d/crontab
 
 # Clean up
 RUN apt-get clean \
