@@ -19,8 +19,7 @@ services:
 
 networks:
   client:
-    external:
-      name: client
+    name: client
 
   gateway:
     name: gateway
