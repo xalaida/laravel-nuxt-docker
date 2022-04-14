@@ -1,5 +1,5 @@
 # Image
-FROM api-base-dev:latest
+FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
 
 # Starting from scratch
 RUN apt-get clean \
@@ -45,5 +45,5 @@ EXPOSE 8000
 CMD ["php", "artisan", "octane:start", "--server=swoole", "--host=0.0.0.0", "--port=8000", "--watch"]
 
 # The health check configuration
-HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=3 \
+HEALTHCHECK --start-period=5s --interval=5s --timeout=5s --retries=3 \
     CMD php artisan octane:status || exit 1
