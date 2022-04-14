@@ -248,6 +248,7 @@ const { data } = await useApiFetch('/products')
   - [ ] separate .env variables for prod build
   - [ ] http2, brotli/gzip, ssl config
   - [ ] handling static files
+  - [ ] add command for pruning old unused images
   - [ ] rename .prod dockerfile as default dockerfile and define current dockerfile in .env variable docker-compose -f ${COMPOSE_FILE}
   - [ ] opcache + jit
   - [ ] add .dockerignore
