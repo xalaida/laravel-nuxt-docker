@@ -21,8 +21,8 @@ services:
 
   queue:
     build:
-      context: ./.docker/prod/queue
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/prod/queue/Dockerfile
     image: ${IMAGE_REGISTRY:-local}/api-queue:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
@@ -35,8 +35,8 @@ services:
 
   schedule:
     build:
-      context: ./.docker/prod/schedule
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/prod/schedule/Dockerfile
     image: ${IMAGE_REGISTRY:-local}/api-schedule:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage

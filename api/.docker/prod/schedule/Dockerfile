@@ -1,28 +1,22 @@
 # Image
-FROM api-base:latest
+FROM ${IMAGE_REGISTRY:-local}/api-base:${IMAGE_TAG:-latest}
 
 # Starting from scratch
 RUN apt-get clean \
     && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 # Update dependencies
-RUN apt-get update
-
-# Install Crontab
-RUN apt-get install -y cron
-
-# Set up cron configuration file
-COPY ./cron.d/crontab /etc/cron.d/crontab
-
-# Configure cron service
-RUN chmod 644 /etc/cron.d/crontab \
-  && crontab /etc/cron.d/crontab
-
+    && apt-get update \
+# Install cron
+    && apt-get install -y cron \
 # Clean up
-RUN apt-get clean \
+    && apt-get clean \
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy and enable cron job file
+COPY ./.docker/prod/schedule/cron.d/crontab /etc/cron.d/crontab
+RUN crontab /etc/cron.d/crontab
 
 # Set up the working directory
 WORKDIR /var/www/html

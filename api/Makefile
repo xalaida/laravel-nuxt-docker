@@ -1,9 +1,18 @@
 #-----------------------------------------------------------
-# Control
+# Environment variables
 #-----------------------------------------------------------
 
 # Include file with .env variables if exists
 -include .env
+
+# Define default values for variables
+COMPOSE_FILE ?= docker-compose.yml
+IMAGE_REGISTRY ?= local
+IMAGE_TAG ?= latest
+
+#-----------------------------------------------------------
+# Control
+#-----------------------------------------------------------
 
 # Start containers
 up:
@@ -60,9 +69,9 @@ prune:
 # App
 #-----------------------------------------------------------
 
-# Enter into the app container
+# Enter the app container
 app:
-	docker-compose -f ${COMPOSE_FILE} exec app bash
+	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
 
 # Run the tinker service
 tinker:
@@ -95,9 +104,9 @@ db\:fresh:
 db\:dump:
 	docker-compose -f ${COMPOSE_FILE} exec postgres pg_dump -U ${DB_USERNAME} -d ${DB_DATABASE} > ./.docker/postgres/dumps/dump.sql
 
-# Restart the queue process (TODO: check if it works, probably queue container should listen signals)
+# Restart the queue process
 queue\:restart:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan queue:restart
+	docker-compose -f ${COMPOSE_FILE} exec queue php artisan queue:restart
 
 # Generate the app key
 key:
@@ -123,7 +132,7 @@ cu: composer\:update
 
 # Show outdated composer dependencies
 composer\:outdated:
-	docker-compose -f ${COMPOSE_FILE} exec app yarn outdated
+	docker-compose -f ${COMPOSE_FILE} exec app composer outdated
 
 # PHP composer autoload command
 composer\:autoload:
@@ -134,22 +143,22 @@ composer\:autoload:
 # Testing
 #-----------------------------------------------------------
 
-# Run phpunit tests
+# Run phpunit tests (requires 'phpunit/phpunit' composer package)
 test:
 	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpunit --order-by=defects --stop-on-defect
 
 # Alias to run phpunit tests
 t: test
 
-# Run phpunit tests with coverage
+# Run phpunit tests with the coverage mode (TODO: install PCOV or other lib)
 coverage:
 	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpunit --coverage-html ./.coverage
 
-# Run dusk tests
+# Run dusk tests (requires 'laravel/dusk' composer package)
 dusk:
 	docker-compose -f ${COMPOSE_FILE} exec app php artisan dusk
 
-# Generate metrics
+# Generate code metrics (requires 'phpmetrics/phpmetrics' composer package)
 metrics:
 	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpmetrics --report-html=./.metrics api/app
 
@@ -158,7 +167,7 @@ metrics:
 # Redis
 #-----------------------------------------------------------
 
-# Enter into the redis container
+# Enter the redis container
 redis:
 	docker-compose -f ${COMPOSE_FILE} exec redis redis-cli
 
@@ -178,10 +187,6 @@ build\:all: build\:base build
 build\:base:
 	docker build -f ./.docker/dev/base/Dockerfile -t api-base-dev .
 
-# Build containers
-build:
-	docker-compose build
-
 # Set up permissions for cache and storage folders
 permissions:
 	sudo chmod -R 777 bootstrap/cache
@@ -196,22 +201,30 @@ permissions:
 prod\:upgrade: prod\:build\:all up gateway\:reload
 
 # Build all production containers
-prod\:build\:all: prod\:build\:php prod\:build\:base build
-
-# Build the PHP image
-prod\:build\:php:
-	docker build -f ./.docker/prod/php/Dockerfile -t api-php .
+prod\:build\:all: prod\:build\:base build
 
 # Build the base API app image
 prod\:build\:base:
-	docker build -f ./.docker/prod/base/Dockerfile -t api-base .
+	docker build --file ./.docker/prod/base/Dockerfile --tag ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG} .
 
 # Build and start production containers
 prod\:build-up: prod\:build\:all up
 
+
+#-----------------------------------------------------------
+# Gateway
+#-----------------------------------------------------------
+
+# Create shared gateway network
+gateway:
+	docker network create gateway
+
 # Reload the gateway
 gateway\:reload:
 	cd ../gateway; make reload
+
+# Update containers within the gateway service (TODO: fix the command)
+gateway\:update: build up gateway\:reload
 
 
 #-----------------------------------------------------------

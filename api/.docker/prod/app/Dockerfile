@@ -1,5 +1,5 @@
-# Builder image
-FROM api-base:latest
+# Image
+FROM ${IMAGE_REGISTRY:-local}/api-base:${IMAGE_TAG:-latest}
 
 # Set up the working directory
 WORKDIR /var/www/html
