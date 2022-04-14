@@ -252,6 +252,8 @@ const { data } = await useApiFetch('/products')
   - [ ] check if storage file can be stored into storage (private) dir
   - [ ] check how relative public symlink works
   - [ ] add redis password
+  - [ ] add script to deploy from 0 (env, build, migrations, etc)
+  - [ ] add script to clone fresh dev app (env, composer install, generate key)
   - [ ] add env variable to redis mode (disable background saves)
   - [ ] provide .env API_KEY during first prod installation
   - [ ] add script to update containers (rebuild containers, update env, run migrations and other staff)
@@ -260,11 +262,9 @@ const { data } = await useApiFetch('/products')
   - [ ] add stats command: https://docs.docker.com/config/containers/runmetrics/
   - [?] remove public/index.php
   - [ ] use last commit hash instead of 'latest' image tag
-  - [ ] add IMAGE_REGISTRY and IMAGE_TAG to the base api images (on dev also)
   - [ ] deploy.sh script using ssh secrets
-  - [ ] docker-compose deploy (no registry, no swarm, only git)
   - [ ] set up logging driver
-  - [ ] docker swarm deployment
+  - [ ] docker swarm deployment (separate swarm compose file)
     - https://docs.docker.com/engine/swarm/stack-deploy/ 
   - [ ] private registry server (pushing/pulling tags)
     - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
