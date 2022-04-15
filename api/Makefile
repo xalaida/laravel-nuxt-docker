@@ -85,6 +85,13 @@ prune:
 app:
 	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
 
+# Restart the app container
+restart\:app:
+	docker-compose -f ${COMPOSE_FILE} restart app
+
+# Alias to restart the app container
+ra: restart\:app
+
 # Run the tinker service
 tinker:
 	docker-compose -f ${COMPOSE_FILE} exec app php artisan tinker
