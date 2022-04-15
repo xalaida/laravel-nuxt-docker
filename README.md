@@ -124,15 +124,27 @@ docker-compose logs app
 
 #### Storage
 
-To use Laravel storage with a local disk, create a symlink using the command:
+To use the `public` disk of the Laravel storage system you need to create a symlink.
+
+The symlink should be relative to work properly inside the docker environment.
+
+First, you need to install `symfony/filesystem` package which allows generating relative symlinks.
+
+```bash
+composer require symfony/filesystem --dev
+```
+
+Then create the symlink using the command:
 
 ```bash
 # Make command
-make storage
+make storage:link
 
 # Raw command
-docker-compose exec app php artisan storage:link --relative
+docker-compose -f docker-compose.dev.yml exec app php artisan storage:link --relative
 ```
+
+On production environment it will be created automatically 
 
 #### MailHog
 
@@ -244,16 +256,13 @@ const { data } = await useApiFetch('/products')
 - [ ] set up CI script
 - [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
 - [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
+- [ ] php-fpm version
+  - probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
+  - set up pm.max_children and other fpm params
+  - add nginx gateway for fastcgi proxy
 - [ ] prod
   - [ ] https://www.laradocker.com/production/#using-docker-compose
-  - [ ] handling static files
   - [ ] opcache preloading: https://theraloss.com/preloading-laravel-in-php7.4/
-  - [ ] probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
-  - [ ] check if storage file can be stored into public dir
-  - [ ] check if storage file can be stored into storage (private) dir
-  - [ ] check how relative public symlink works
-  - [ ] sync proxy upload file size with php
-  - [ ] docker.internal host: php artisan octane:start --port=80 --workers=16 --max-requests=1000 --host=host=host.docker.internal
   - [ ] add redis password
   - [ ] add script to deploy from 0 (env, build, migrations, etc)
   - [ ] add script to clone fresh dev app (env, composer install, generate key)
