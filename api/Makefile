@@ -126,10 +126,6 @@ queue\:restart:
 key:
 	docker-compose -f ${COMPOSE_FILE} run --rm app php artisan key:generate --ansi
 
-# Generate a symlink to the storage directory
-storage:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan storage:link --relative
-
 # Install composer dependencies
 composer\:install:
 	docker-compose -f ${COMPOSE_FILE} exec app composer install
@@ -152,9 +148,12 @@ composer\:outdated:
 composer\:autoload:
 	docker-compose -f ${COMPOSE_FILE} exec app composer dump-autoload
 
-# Set up permissions for cache and storage folders
-permissions:
-	sudo chmod -R 755 bootstrap/cache
+# Generate a symlink to the storage directory
+storage\:link:
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan storage:link --relative
+
+# Set up permissions for the storage folder
+storage\:perm:
 	sudo chmod -R 755 storage
 
 
