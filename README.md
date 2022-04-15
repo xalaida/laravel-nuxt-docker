@@ -282,10 +282,11 @@ const { data } = await useApiFetch('/products')
   - provide redis conf similar as nginx conf
   
 - [ ] prod
+  - [ ] refactor dockerfile clean up and run instructions according to this: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#run
+  - [ ] add secrets (from 3.9 version): https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
   - [ ] https://www.laradocker.com/production/#using-docker-compose
   - [ ] opcache preloading: https://theraloss.com/preloading-laravel-in-php7.4/
   - [ ] provide .env API_KEY during first prod installation
-  - [ ] add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
   - [ ] add possibility to open redis and postgres connections outside of docker network conditionally on runtime (using env variables)
   - [ ] use last commit hash instead of 'latest' image tag
   - [ ] deploy.sh script using ssh secrets
@@ -293,7 +294,6 @@ const { data } = await useApiFetch('/products')
 
 - [ ] add swarm deployment (separate docker-compose.swarm.yml)
   - https://docs.docker.com/engine/swarm/stack-deploy/
-  - add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
   - private registry server (pushing/pulling tags)
     - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
     - https://chris-vermeulen.com/laravel-in-kubernetes-part-3/
