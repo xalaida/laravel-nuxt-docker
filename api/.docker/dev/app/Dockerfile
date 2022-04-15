@@ -47,7 +47,7 @@ WORKDIR /var/www/html
 EXPOSE 8000
 
 # Run the Octane service
-CMD ["php", "artisan", "octane:start", "--server=swoole", "--host=0.0.0.0", "--port=8000", "--watch"]
+CMD ["php", "artisan", "octane:start", "--server=swoole", "--host=0.0.0.0", "--port=8000", "--max-requests=1000", "--watch"]
 
 # The health check configuration
 HEALTHCHECK --start-period=5s --interval=5s --timeout=5s --retries=3 \

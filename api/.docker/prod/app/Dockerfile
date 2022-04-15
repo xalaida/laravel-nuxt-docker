@@ -22,8 +22,8 @@ RUN apt-get clean \
 # Set up the working directory
 WORKDIR /var/www/html
 
-# Run the Octane service (TODO: add max requests and workers amount -workers=auto --task-workers=auto --max-requests=500)
-CMD ["php", "artisan", "octane:start", "--server=swoole", "--host=0.0.0.0", "--port=8000"]
+# Run the Octane service
+CMD ["php", "artisan", "octane:start", "--server=swoole", "--host=0.0.0.0", "--port=8000", "--max-requests=1000"]
 
 # The health check configuration
 HEALTHCHECK --start-period=5s --interval=5s --timeout=5s --retries=3 \
