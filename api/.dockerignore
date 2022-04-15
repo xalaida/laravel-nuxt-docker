@@ -3,6 +3,7 @@
 /.idea
 /.vscode
 /.git
+/public/storage
 /bootstrap/cache/*
 /storage/app/*
 /storage/framework/views/*

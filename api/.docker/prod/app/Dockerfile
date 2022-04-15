@@ -22,6 +22,9 @@ RUN apt-get clean \
 # Set up the working directory
 WORKDIR /var/www/html
 
+# Generate storage symlink
+RUN php artisan storage:link
+
 # Run the Octane service
 CMD ["php", "artisan", "octane:start", "--server=swoole", "--host=0.0.0.0", "--port=8000", "--max-requests=1000"]
 
