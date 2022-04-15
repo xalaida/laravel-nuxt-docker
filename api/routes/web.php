@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'index');
+
+Route::view('/upload', 'upload');
+Route::view('/files', 'files');
+
+Route::post('/upload', function (Request $request) {
+    $request->validate([
+        'file' => ['required', 'file']
+    ]);
+
+    $request->file('file')->storeAs('files', 'photo.jpg', 'local');
+    $request->file('file')->storeAs('files', 'photo.jpg', 'public');
+
+    return back();
+})->name('upload.store');
+
+Route::get('/image', function () {
+    return Storage::disk('local')->response('files/photo.jpg');
+})->name('image');
+
+Route::get('/info', function () {
+    return phpinfo();
+});
 
 Route::get('/version', function () {
     return ['Laravel' => app()->version()];
