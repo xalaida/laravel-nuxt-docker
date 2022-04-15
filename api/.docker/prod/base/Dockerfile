@@ -15,7 +15,7 @@ COPY composer.lock composer.lock
 RUN composer install \
     --no-interaction \
     --no-dev \
-    # TODO: check if needed --ignore-platform-reqs \
+    --ignore-platform-reqs \
     --no-scripts \
     --no-plugins
 
@@ -50,11 +50,6 @@ RUN apt-get clean \
 # Install PostgreSQL \
     && apt-get install -y libpq-dev \
     && docker-php-ext-install pdo pdo_pgsql \
-# Install PostgreSQL client (for database backups) (TODO: remove this and provide separate cron-based backup-container)
-    && apt-get install -y lsb-release wget gnupg \
-    && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
-    && echo "deb https://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
-    && apt-get update && apt-get install -y postgresql-client-13 \
 # Install BC Math
     && docker-php-ext-install bcmath \
 # Install internationalization functions \
@@ -78,9 +73,6 @@ WORKDIR /var/www/html
 # Copy files from builder
 COPY --from=builder /var/www/html .
 
-# Copy environment variables (TODO: copy before the actual build)
-# COPY ./.env.prod .env
-
 # PHP configuration
 COPY ./.docker/prod/base/php/php.ini "${PHP_INI_DIR}/php.ini"
 
@@ -92,13 +84,3 @@ RUN php artisan route:cache
 
 # Optimizing view loading
 RUN php artisan view:cache
-
-# Set up file ownership (TODO: check if needed)
-# RUN chown -R www-data:www-data bootstrap/cache
-# RUN chown -R www-data:www-data storage
-
-# TODO: optimize this part, slow exec
-# RUN chown -R www-data:www-data .
-# Set up file permissions
-# RUN chmod 755 -R storage
-# RUN chmod 755 -R storage bootstrap/cache
