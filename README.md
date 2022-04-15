@@ -114,7 +114,7 @@ artisan make:model Product
 
 #### Logs
 
-All laravel logs are forwarded to the docker system using the `stdout` channel.
+All laravel logs are forwarded to the docker system using the `stderr` channel.
 
 See the latest logs, running the command:
 
@@ -251,6 +251,7 @@ const { data } = await useApiFetch('/products')
   - [ ] check if storage file can be stored into public dir
   - [ ] check if storage file can be stored into storage (private) dir
   - [ ] check how relative public symlink works
+  - [ ] check how daily storage logs work
   - [ ] add redis password
   - [ ] add script to deploy from 0 (env, build, migrations, etc)
   - [ ] add script to clone fresh dev app (env, composer install, generate key)
