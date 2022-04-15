@@ -201,7 +201,7 @@ redis\:flush:
 
 # Deploy the stack
 swarm\:deploy:
-	docker stack deploy --compose-file docker-compose.yml api
+	docker stack deploy --compose-file ${COMPOSE_FILE} api
 
 # Remove/stop the stack
 swarm\:rm:
