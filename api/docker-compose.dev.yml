@@ -21,6 +21,7 @@ services:
     networks:
       - api
       - gateway
+    restart: unless-stopped
 
   queue:
     build:
