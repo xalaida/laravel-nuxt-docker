@@ -73,8 +73,9 @@ WORKDIR /var/www/html
 # Copy files from builder
 COPY --from=builder /var/www/html .
 
-# PHP configuration
+# Copy PHP configuration
 COPY ./.docker/prod/base/php/php.ini "${PHP_INI_DIR}/php.ini"
+COPY ./.docker/prod/base/php/opcache.ini "${PHP_INI_DIR}/opcache.ini"
 
 # Optimizing configuration loading
 RUN php artisan config:cache
@@ -84,3 +85,6 @@ RUN php artisan route:cache
 
 # Optimizing view loading
 RUN php artisan view:cache
+
+# Optimizing event loading
+RUN php artisan event:cache

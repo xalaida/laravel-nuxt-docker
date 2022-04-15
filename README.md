@@ -226,6 +226,7 @@ const { data } = await useApiFetch('/products')
 
 ## To Do list:
 
+- [ ] add command to remove framework app (left only docker starter template)
 - [ ] add stub for mysql
 - [ ] add stub for nuxt 2
 - [ ] add stub to switch queue into horizon
@@ -246,12 +247,13 @@ const { data } = await useApiFetch('/products')
 - [ ] prod
   - [ ] https://www.laradocker.com/production/#using-docker-compose
   - [ ] handling static files
-  - [ ] opcache + jit
+  - [ ] opcache preloading: https://theraloss.com/preloading-laravel-in-php7.4/
   - [ ] probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
   - [ ] check if storage file can be stored into public dir
   - [ ] check if storage file can be stored into storage (private) dir
   - [ ] check how relative public symlink works
-  - [ ] check how daily storage logs work
+  - [ ] sync proxy upload file size with php
+  - [ ] docker.internal host: php artisan octane:start --port=80 --workers=16 --max-requests=1000 --host=host=host.docker.internal
   - [ ] add redis password
   - [ ] add script to deploy from 0 (env, build, migrations, etc)
   - [ ] add script to clone fresh dev app (env, composer install, generate key)
@@ -260,11 +262,10 @@ const { data } = await useApiFetch('/products')
   - [ ] add script to update containers (rebuild containers, update env, run migrations and other staff)
   - [ ] add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
   - [ ] add possibility to open redis and postgres connections outside of docker network conditionally on runtime (using env variables)
-  - [ ] add stats command: https://docs.docker.com/config/containers/runmetrics/
   - [?] remove public/index.php
   - [ ] use last commit hash instead of 'latest' image tag
   - [ ] deploy.sh script using ssh secrets
-  - [ ] set up logging driver
+  - [ ] set up docker logging driver
   - [ ] docker swarm deployment (separate swarm compose file)
     - https://docs.docker.com/engine/swarm/stack-deploy/ 
   - [ ] private registry server (pushing/pulling tags)
