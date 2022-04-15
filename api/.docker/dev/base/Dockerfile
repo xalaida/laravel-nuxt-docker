@@ -50,6 +50,9 @@ RUN pecl install redis \
 RUN docker-php-ext-install pcntl \
     && docker-php-ext-enable pcntl
 
+# Install OPcache extension
+RUN docker-php-ext-install opcache
+
 # Clean up
 RUN apt-get clean \
     && apt-get -y autoremove \
