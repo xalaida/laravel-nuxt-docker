@@ -255,7 +255,7 @@ const { data } = await useApiFetch('/products')
 - [ ] add env variable to prod git branch and command to update app from git & rebuild (deploy script)
 - [ ] set up CI script
 - [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
-- [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
+- [ ] xDebug (add separate CLI container because it does not work with Swoole) and .idea configuration
 - [ ] php-fpm version
   - probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
   - set up pm.max_children and other fpm params
