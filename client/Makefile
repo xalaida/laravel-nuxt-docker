@@ -51,6 +51,10 @@ env\:dev:
 env\:prod:
 	cp ./.env.prod ./.env
 
+# Create shared gateway network
+gateway:
+	docker network create gateway
+
 # Prune stopped docker containers and dangling images
 prune:
 	docker system prune
@@ -81,23 +85,6 @@ yu: yarn\:upgrade
 # Show outdated yarn dependencies
 yarn\:outdated:
 	docker-compose exec -f ${COMPOSE_FILE} app yarn outdated
-
-
-#-----------------------------------------------------------
-# Gateway
-#-----------------------------------------------------------
-
-# Create shared gateway network
-gateway:
-	docker network create gateway
-
-# Reload the gateway
-gateway\:reload:
-	cd ../gateway; make reload
-
-# Update containers and reload the gateway service
-update\:reload: build up gateway\:reload
-
 
 #-----------------------------------------------------------
 # Swarm

@@ -68,6 +68,10 @@ env\:dev:
 env\:prod:
 	cp ./.env.prod ./.env
 
+# Create shared gateway network
+gateway:
+	docker network create gateway
+
 # Prune stopped docker containers and dangling images
 prune:
 	docker system prune
@@ -189,22 +193,6 @@ redis:
 # Flush the redis state
 redis\:flush:
 	docker-compose -f ${COMPOSE_FILE} exec redis redis-cli FLUSHALL
-
-
-#-----------------------------------------------------------
-# Gateway
-#-----------------------------------------------------------
-
-# Create shared gateway network
-gateway:
-	docker network create gateway
-
-# Reload the gateway
-gateway\:reload:
-	cd ../gateway; make reload
-
-# Update containers and reload the gateway service
-update\:reload: build\:all up gateway\:reload
 
 
 #-----------------------------------------------------------
