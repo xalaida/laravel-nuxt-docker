@@ -21,7 +21,7 @@ build:
 update: build up
 
 # Force the update process
-update\:force:
+update.force:
 	docker-compose -f ${COMPOSE_FILE} up -d --build --force-recreate
 
 # Show list of running containers
@@ -44,11 +44,11 @@ fl:
 	docker-compose -f ${COMPOSE_FILE} logs -f
 
 # Init variables for development environment
-env\:dev:
+env.dev:
 	cp ./.env.dev ./.env
 
 # Init variables for production environment
-env\:prod:
+env.prod:
 	cp ./.env.prod ./.env
 
 # Create shared gateway network
@@ -69,21 +69,21 @@ app:
 	docker-compose -f ${COMPOSE_FILE} exec app bash
 
 # Install yarn dependencies
-yarn\:install:
+yarn.install:
 	docker-compose -f ${COMPOSE_FILE} exec app yarn install
 
 # Alias to install yarn dependencies
-yi: yarn\:install
+yi: yarn.install
 
 # Upgrade yarn dependencies
-yarn\:upgrade:
+yarn.upgrade:
 	docker-compose -f ${COMPOSE_FILE} exec app yarn upgrade
 
 # Alias to upgrade yarn dependencies
-yu: yarn\:upgrade
+yu: yarn.upgrade
 
 # Show outdated yarn dependencies
-yarn\:outdated:
+yarn.outdated:
 	docker-compose exec -f ${COMPOSE_FILE} app yarn outdated
 
 #-----------------------------------------------------------
@@ -91,23 +91,23 @@ yarn\:outdated:
 #-----------------------------------------------------------
 
 # Deploy the stack
-swarm\:deploy:
+swarm.deploy:
 	docker stack deploy --compose-file ${COMPOSE_FILE} client
 
 # Remove/stop the stack
-swarm\:rm:
+swarm.rm:
 	docker stack rm client
 
 # List of stack services
-swarm\:services:
+swarm.services:
 	docker stack services client
 
 # List the tasks in the stack
-swarm\:ps:
+swarm.ps:
 	docker stack ps client
 
 # Init the Docker Swarm Leader node
-swarm\:init:
+swarm.init:
 	docker swarm init
 
 
@@ -117,20 +117,21 @@ swarm\:init:
 #-----------------------------------------------------------
 
 # Remove all app files and folders (leave only dockerized template)
-danger\:app\:prune:
-	sudo rm -rf .idea
-	sudo rm -rf .vscode
-	sudo rm -rf .nuxt
-	sudo rm -rf assets
-	sudo rm -rf layouts
-	sudo rm -rf node_modules
-	sudo rm -rf pages
-	sudo rm -rf public
-	sudo rm -rf store
-	sudo rm -f .env
-	sudo rm -f .gitignore
-	sudo rm -f nuxt.config.ts
-	sudo rm -f package.json
-	sudo rm -f README.md
-	sudo rm -f tsconfig.json
-	sudo rm -f yarn.lock
+danger.app.prune:
+	sudo rm -rf \
+		.idea \
+		.vscode \
+		.nuxt \
+		assets \
+		layouts \
+		node_modules \
+		pages \
+		public \
+		store \
+		.env \
+		.gitignore \
+		nuxt.config.ts \
+		package.json \
+		README.md \
+		tsconfig.json \
+		yarn.lock
