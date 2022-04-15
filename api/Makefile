@@ -119,7 +119,7 @@ db\:seed:
 db\:fresh:
 	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate:fresh
 
-# Dump database into file (only for development environment) #TODO: replace file name with env variable
+# Dump database into file (only for development environment) (TODO: replace file name with env variable)
 db\:dump:
 	docker-compose -f ${COMPOSE_FILE} exec postgres pg_dump -U ${DB_USERNAME} -d ${DB_DATABASE} > ./.docker/postgres/dumps/dump.sql
 
@@ -130,8 +130,10 @@ queue\:restart:
 	docker-compose -f ${COMPOSE_FILE} exec queue php artisan queue:restart
 
 # Generate the app key
-key:
+key\:generate:
 	docker-compose -f ${COMPOSE_FILE} run --rm app php artisan key:generate --ansi
+
+# TODO: add command to install composer packages from stopped container
 
 # Install composer dependencies
 composer\:install:

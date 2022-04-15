@@ -21,7 +21,7 @@ install_laravel() {
   rm -r ${DIRECTORY}
 
   # Generate the application key
-  make key
+  make key:generate
 }
 
 install_breeze() {
