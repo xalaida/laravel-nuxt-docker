@@ -5,6 +5,9 @@
 # Include file with .env variables if exists
 -include .env
 
+# Define default values for variables
+COMPOSE_FILE ?= docker-compose.yml
+
 # Start containers
 up:
 	docker-compose -f ${COMPOSE_FILE} up -d
