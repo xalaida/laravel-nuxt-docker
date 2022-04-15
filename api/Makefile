@@ -224,3 +224,37 @@ swarm\:ps:
 # Init the Docker Swarm Leader node
 swarm\:init:
 	docker swarm init
+
+
+#-----------------------------------------------------------
+# Danger zone
+# Do not use these commands
+#-----------------------------------------------------------
+
+# Remove all app files and folders (leave only dockerized template)
+danger\:app\:prune:
+	sudo rm -rf .idea
+	sudo rm -rf .vscode
+	sudo rm -rf app
+	sudo rm -rf bootstrap
+	sudo rm -rf config
+	sudo rm -rf database
+	sudo rm -rf lang
+	sudo rm -rf public
+	sudo rm -rf resources
+	sudo rm -rf routes
+	sudo rm -rf storage
+	sudo rm -rf vendor
+	sudo rm -rf tests
+	sudo rm -f .editorconfig
+	sudo rm -f .env
+	sudo rm -f .env.example
+	sudo rm -f .gitattributes
+	sudo rm -f .gitignore
+	sudo rm -f .phpunit.result.cache
+	sudo rm -f .styleci.yml
+	sudo rm -f artisan
+	sudo rm -f composer.json
+	sudo rm -f composer.lock
+	sudo rm -f phpunit.xml
+	sudo rm -f README.md

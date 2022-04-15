@@ -109,3 +109,28 @@ swarm\:ps:
 # Init the Docker Swarm Leader node
 swarm\:init:
 	docker swarm init
+
+
+#-----------------------------------------------------------
+# Danger zone
+# Do not use these commands
+#-----------------------------------------------------------
+
+# Remove all app files and folders (leave only dockerized template)
+danger\:app\:prune:
+	sudo rm -rf .idea
+	sudo rm -rf .vscode
+	sudo rm -rf .nuxt
+	sudo rm -rf assets
+	sudo rm -rf layouts
+	sudo rm -rf node_modules
+	sudo rm -rf pages
+	sudo rm -rf public
+	sudo rm -rf store
+	sudo rm -f .env
+	sudo rm -f .gitignore
+	sudo rm -f nuxt.config.ts
+	sudo rm -f package.json
+	sudo rm -f README.md
+	sudo rm -f tsconfig.json
+	sudo rm -f yarn.lock
