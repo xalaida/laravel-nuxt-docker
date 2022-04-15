@@ -80,13 +80,12 @@ COPY ./.docker/prod/base/php/php.ini "${PHP_INI_DIR}/php.ini"
 COPY ./.docker/prod/base/php/opcache.ini "${PHP_INI_DIR}/opcache.ini"
 
 # Optimizing configuration loading
-RUN php artisan config:cache
-
+RUN php artisan config:cache \
 # Optimizing route loading
-RUN php artisan route:cache
-
+    && php artisan route:cache \
 # Optimizing view loading
-RUN php artisan view:cache
-
+    && php artisan view:cache \
 # Optimizing event loading
-RUN php artisan event:cache
+    && php artisan event:cache \
+# Generate storage symlink
+    && php artisan storage:link
