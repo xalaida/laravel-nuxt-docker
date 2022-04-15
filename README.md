@@ -238,45 +238,63 @@ const { data } = await useApiFetch('/products')
 
 ## To Do list:
 
-- [ ] add stub for mysql
-- [ ] add stub for nuxt 2
-- [ ] add stub to switch queue into horizon
-- [ ] add stub for php-fpm
-- [ ] add root makefile to install both apps and stop/up both apps
-- [ ] laravel-echo
-- [ ] selenium (laravel dusk)
-- [ ] add s3 container, probably minio
-- [ ] add github actions for testing
-- [ ] add possibility to install composer scripts and app_key from stopped containers (run --rm)
-- [ ] set up volume permissions (ro, rw, etc)
-- [?] remove redis background saves (provide redis conf similar as nginx conf)
-- [ ] add health checks to other containers
-- [ ] add env variable to prod git branch and command to update app from git & rebuild (deploy script)
-- [ ] set up CI script
-- [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
-- [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
+- [ ] git dev pull script
+  - pull git branch
+  - replace old .env file with a new one
+  - build containers
+  - composer install
+  - generate api key
+  - up containers (queue and octane should be restarted)
+  - run migrations
+  - seed database
+
+- [ ] git prod deploy script
+  - pull git branch
+  - ensure env file is up-to-date (probably add git-ignored .env.prod.secrets (similar to docker swarm) to merge with .env.prod file)
+  - build containers
+  - composer install
+  - generate api key
+  - up containers (queue and octane should be restarted)
+  - run migrations (--force)
+
 - [ ] php-fpm version
   - probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
   - set up pm.max_children and other fpm params
   - add nginx gateway for fastcgi proxy
+  
+- [ ] add stub for mysql
+- [ ] add stub to replace default queue runner with horizon
+- [ ] laravel-echo
+- [ ] add stub for nuxt 2
+- [ ] selenium (laravel dusk)
+- [ ] add s3 container, probably minio (for stateless app)
+- [ ] try to set up CI/CD using github actions (probably extract into submodule)
+- [ ] add root makefile to install both apps and stop/up both apps
+- [ ] add possibility to install composer scripts and app_key from stopped containers (run --rm)
+- [ ] set up volume permissions (ro, rw, etc)
+- [ ] add health checks to other containers
+- [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
+- [ ] xDebug (only for CLI, not supported with Swoole, probably separate CLI container) and .idea configuration
+
+- [ ] configure redis
+  - add redis password
+  - remove redis background saves
+  - provide redis conf similar as nginx conf
+  
 - [ ] prod
   - [ ] https://www.laradocker.com/production/#using-docker-compose
   - [ ] opcache preloading: https://theraloss.com/preloading-laravel-in-php7.4/
-  - [ ] add redis password
-  - [ ] add script to deploy from 0 (env, build, migrations, etc)
-  - [ ] add script to clone fresh dev app (env, composer install, generate key)
-  - [ ] add env variable to redis mode (disable background saves)
   - [ ] provide .env API_KEY during first prod installation
-  - [ ] add script to update containers (rebuild containers, update env, run migrations and other staff)
   - [ ] add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
   - [ ] add possibility to open redis and postgres connections outside of docker network conditionally on runtime (using env variables)
-  - [?] remove public/index.php
   - [ ] use last commit hash instead of 'latest' image tag
   - [ ] deploy.sh script using ssh secrets
   - [ ] set up docker logging driver
-  - [ ] docker swarm deployment (separate swarm compose file)
-    - https://docs.docker.com/engine/swarm/stack-deploy/ 
-  - [ ] private registry server (pushing/pulling tags)
+
+- [ ] add swarm deployment (separate docker-compose.swarm.yml)
+  - https://docs.docker.com/engine/swarm/stack-deploy/
+  - add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
+  - private registry server (pushing/pulling tags)
     - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
     - https://chris-vermeulen.com/laravel-in-kubernetes-part-3/
     - https://www.koyeb.com/tutorials/dockerize-and-deploy-a-laravel-application-to-production
