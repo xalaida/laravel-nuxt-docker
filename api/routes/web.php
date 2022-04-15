@@ -19,4 +19,8 @@ Route::get('/version', function () {
     return ['Laravel' => app()->version()];
 });
 
+Route::get('/fail', function () {
+    throw new DomainException("Testing exception logging");
+});
+
 require __DIR__.'/auth.php';
