@@ -114,7 +114,7 @@ artisan make:model Product
 
 #### Logs
 
-All laravel logs are forwarded to the docker system using the `stdout` channel.
+All laravel logs are forwarded to the docker system using the `stderr` channel.
 
 See the latest logs, running the command:
 
@@ -124,15 +124,27 @@ docker-compose logs app
 
 #### Storage
 
-To use Laravel storage with a local disk, create a symlink using the command:
+To use the `public` disk of the Laravel storage system you need to create a symlink.
+
+The symlink should be relative to work properly inside the docker environment.
+
+First, you need to install `symfony/filesystem` package which allows generating relative symlinks.
+
+```bash
+composer require symfony/filesystem --dev
+```
+
+Then create the symlink using the command:
 
 ```bash
 # Make command
-make storage
+make storage:link
 
 # Raw command
-docker-compose exec app php artisan storage:link --relative
+docker-compose -f docker-compose.dev.yml exec app php artisan storage:link --relative
 ```
+
+On production environment it will be created automatically 
 
 #### MailHog
 
@@ -235,15 +247,39 @@ const { data } = await useApiFetch('/products')
 - [ ] selenium (laravel dusk)
 - [ ] add s3 container, probably minio
 - [ ] add github actions for testing
+- [ ] add possibility to install composer scripts and app_key from stopped containers (run --rm)
+- [ ] set up volume permissions (ro, rw, etc)
+- [?] remove redis background saves (provide redis conf similar as nginx conf)
 - [ ] add health checks to other containers
+- [ ] add env variable to prod git branch and command to update app from git & rebuild (deploy script)
+- [ ] set up CI script
+- [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
 - [ ] xDebug (only for CLI, not supported with Swoole) and .idea configuration
+- [ ] php-fpm version
+  - probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
+  - set up pm.max_children and other fpm params
+  - add nginx gateway for fastcgi proxy
 - [ ] prod
-  - [ ] proxy gateway
-  - [ ] certbot
-  - [ ] pushing tags dockerhub
-  - [ ] http2, brotli/gzip, ssl
-  - [ ] handling static files
-  - [ ] remove public/index.php
+  - [ ] https://www.laradocker.com/production/#using-docker-compose
+  - [ ] opcache preloading: https://theraloss.com/preloading-laravel-in-php7.4/
+  - [ ] add redis password
+  - [ ] add script to deploy from 0 (env, build, migrations, etc)
+  - [ ] add script to clone fresh dev app (env, composer install, generate key)
+  - [ ] add env variable to redis mode (disable background saves)
+  - [ ] provide .env API_KEY during first prod installation
+  - [ ] add script to update containers (rebuild containers, update env, run migrations and other staff)
+  - [ ] add secrets: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
+  - [ ] add possibility to open redis and postgres connections outside of docker network conditionally on runtime (using env variables)
+  - [?] remove public/index.php
+  - [ ] use last commit hash instead of 'latest' image tag
+  - [ ] deploy.sh script using ssh secrets
+  - [ ] set up docker logging driver
+  - [ ] docker swarm deployment (separate swarm compose file)
+    - https://docs.docker.com/engine/swarm/stack-deploy/ 
+  - [ ] private registry server (pushing/pulling tags)
+    - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
+    - https://chris-vermeulen.com/laravel-in-kubernetes-part-3/
+    - https://www.koyeb.com/tutorials/dockerize-and-deploy-a-laravel-application-to-production
 
 ##### Init laravel from sail
 
@@ -266,3 +302,18 @@ docker run --rm -it \
   laravelsail/php81-composer:latest \
   php artisan sail:install
 ```
+
+
+# Deploy
+
+## Single host & Docker Compose & Git
+
+The simplest solution to deploy apps on same host is only using Docker Compose and Git.
+
+To do that, you need to use some `proxy` in front of `client` and `api` apps.
+
+There are a lot of solutions you can use, for example few of them:
+
+- Traefik
+- https://github.com/NginxProxyManager/nginx-proxy-manager
+- https://github.com/nginx-proxy/nginx-proxy

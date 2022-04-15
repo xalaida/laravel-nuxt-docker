@@ -1,0 +1,14 @@
+/.idea
+/.vscode
+/.git
+/.docker
+/node_modules
+/tests
+.dockerignore
+.env.*
+.editorconfig
+.gitattributes
+.gitignore
+docker-compose.*.yml
+docker-compose.yml
+Makefile

@@ -1,5 +1,5 @@
 # Image
-FROM node:16
+FROM node:16-alpine
 
 # Starting from scratch
 RUN apt-get clean \
@@ -20,8 +20,11 @@ RUN apt-get clean \
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Set up work directory
+# Set up the working directory
 WORKDIR /var/www/html
+
+# Specify the host variable
+ENV HOST 0.0.0.0
 
 # Expose the Nuxt port
 EXPOSE 3000

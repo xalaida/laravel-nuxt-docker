@@ -12,6 +12,9 @@ RUN apt-get update
 # Install Zip
 RUN apt-get install -y libzip-dev zip && docker-php-ext-install zip
 
+# Install procps (required by Octane)
+RUN apt-get install -y procps
+
 # Install Git
 RUN apt-get install -y git
 
@@ -49,6 +52,9 @@ RUN pecl install redis \
 # Install Process Control extenstion
 RUN docker-php-ext-install pcntl \
     && docker-php-ext-enable pcntl
+
+# Install OPcache extension
+RUN docker-php-ext-install opcache
 
 # Clean up
 RUN apt-get clean \

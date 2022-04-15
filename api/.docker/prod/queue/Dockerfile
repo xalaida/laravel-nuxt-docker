@@ -1,5 +1,5 @@
 # Build arguments
-ARG IMAGE_REGISTRY=dev
+ARG IMAGE_REGISTRY=prod
 ARG IMAGE_TAG=latest
 
 # Image

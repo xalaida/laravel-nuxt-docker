@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./.docker/dev/app
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+    hostname: client
+    ports:
+      # The Nuxt app port
+      - "3000:3000"
+      # The Vite port for WebSocket
+      - "24678:24678"
+    networks:
+      - client
+      - gateway
+
+networks:
+  client:
+    name: client
+
+  gateway:
+    name: gateway
+    external: true
