@@ -21,7 +21,7 @@ install_laravel() {
   rm -r ${DIRECTORY}
 
   # Generate the application key
-  make key:generate
+  make key.generate
 }
 
 install_breeze() {
@@ -47,13 +47,13 @@ install_octane() {
 }
 
 # Copy .env file
-make env:dev
+make env.dev
 
 # Create shared gateway network
 make network
 
 # Build containers
-make build:all
+make build.all
 
 install_laravel
 install_octane
