@@ -145,6 +145,8 @@ docker run --rm -it \
   php artisan sail:install
 ```
 
+Also, there is an excellent project called [Laradock](https://laradock.io/) that contains a full bunch of services.
+
 ## To Do list
 
 - [ ] refactor dockerfile clean up and run instructions according to this: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#run
