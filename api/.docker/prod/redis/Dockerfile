@@ -1,2 +1,2 @@
 # Image
-FROM redis:6
+FROM redis:6.2-alpine
