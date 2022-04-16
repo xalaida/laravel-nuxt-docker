@@ -1,24 +1,12 @@
 # Image
 FROM node:16-alpine
 
-# Starting from scratch
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 # Update dependencies
-RUN apt-get update
-
+RUN apk update \
 # Install git
-RUN apt-get install -y git
-
+    && apk add --no-cache git \
 # Install nuxi package
-RUN npm install -g nuxi
-
-# Clean up
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && npm install -g nuxi
 
 # Set up the working directory
 WORKDIR /var/www/html
