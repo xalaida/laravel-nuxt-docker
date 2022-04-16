@@ -1,50 +1,72 @@
 #!/bin/bash
 
-# Copy .env file
+install_laravel() {
+  local INSTALL_DIRECTORY=src
+
+  # Init a new Laravel app into a temporary directory
+  docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
+    composer create-project --prefer-dist laravel/laravel ${INSTALL_DIRECTORY}
+
+  # Set ownership of the temporary directory to the current user
+  sudo chown -R "$(id -u)":"$(id -g)" ./${INSTALL_DIRECTORY}
+
+  # Remove the default file with environment variables
+  rm ${INSTALL_DIRECTORY}/.env
+
+  # Move everything from the temporary directory to the current directory
+  mv ${INSTALL_DIRECTORY}/* ${INSTALL_DIRECTORY}/.* .
+
+  # Remove the temporary directory
+  rm -r ${INSTALL_DIRECTORY}
+
+  # Generate the application key
+  make key.generate
+}
+
+install_breeze() {
+    # Require Breeze package
+    docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
+      composer require laravel/breeze --dev
+
+    # Install Breeze package
+    docker-compose -f docker-compose.dev.yml run --rm --no-deps \
+      --user "$(id -u)":"$(id -g)" app \
+      php artisan breeze:install api
+}
+
+install_octane() {
+  # Require Octane package
+  docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
+    composer require laravel/octane
+
+  # Install Octane package
+  docker-compose -f docker-compose.dev.yml run --rm --no-deps \
+    --user "$(id -u)":"$(id -g)" app \
+    php artisan octane:install --server=swoole
+}
+
+# Copy a .env file if it is missing
 if [ ! -f ./.env ]; then
-    cp ./.env.dev ./.env
+  cp ./.env.dev ./.env
 fi
 
-# Create shared API network
-docker network create api
+# Create shared gateway network
+docker network create gateway
 
-# Build base container
-docker build ./.docker/dev/base -t api-base
+# Build containers
+make build.all
 
-# Build the API containers
-docker-compose build
+# Install Laravel framework
+install_laravel
 
-# Init a new Laravel app
-docker-compose run --rm app composer create-project --prefer-dist laravel/laravel src
+# Install Octane package
+install_octane
 
-# Set ownership of the app to the current user
-sudo chown -R "$(id -u)":"$(id -g)" ./src
+# Install Breeze package
+install_breeze
 
-# Remove default .env file
-rm src/.env
-
-# Move app from the src directory to the current directory
-# TODO: rewrite without terminal errors
-mv src/* src/.* .
-
-# Remove 'src directory
-rm -r src
-
-# Generate the app key
-docker-compose run --rm app php artisan key:generate --ansi
-
-# Install Swoole
-docker-compose run --rm app composer require laravel/octane
-docker-compose run --rm --user "$(id -u)":"$(id -g)" app php artisan octane:install --server=swoole
-
-# Install breeze
-INSTALL_BREEZE=true
-
-# TODO: install it conditionally
-if [ ${INSTALL_BREEZE} ]; then
-    docker-compose run --rm app composer require laravel/breeze --dev
-    docker-compose run --rm --user "$(id -u)":"$(id -g)" app php artisan breeze:install api
-fi
+# Start containers
+make up
 
 # Print the final message
-echo "Laravel has been installed"
+echo "The API app has been installed and run on http://localhost:8000."

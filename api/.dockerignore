@@ -1,0 +1,25 @@
+# Excluded files
+/.docker
+/.idea
+/.vscode
+/.git
+/public/storage
+/bootstrap/cache/*
+/storage/app/*
+/storage/framework/views/*
+/storage/logs/*
+/tests
+/vendor
+.dockerignore
+.editorconfig
+.env.*
+.editorconfig
+.gitattributes
+.gitignore
+docker-compose.*.yml
+docker-compose.yml
+Makefile
+
+# Included files
+!/.docker/prod/base/php/*
+!/.docker/prod/schedule/cron.d/*

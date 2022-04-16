@@ -1,31 +1,23 @@
 version: '3.8'
 
 services:
-  # The client application container
   app:
     build:
-      context: ./.docker/dev/app
-      dockerfile: Dockerfile
-    environment:
-      HOST: 0.0.0.0
-    volumes:
-      - ./:/var/www/html
+      context: ./
+      dockerfile: ./.docker/prod/app/Dockerfile
     hostname: client
-    ports:
-      # The Nuxt app port
-      - "3000:3000"
-      # The Vite port for WebSocket
-      - "24678:24678"
+    expose:
+      - 3000
     networks:
       - client
-      - api
+      - gateway
+    restart: unless-stopped
 
 networks:
-  # The client network
   client:
-    driver: bridge
+    name: client
+    driver: overlay
 
-  # The external API network
-  api:
-    external:
-      name: api
+  gateway:
+    name: gateway
+    external: true

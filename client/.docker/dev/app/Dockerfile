@@ -1,27 +1,18 @@
 # Image
-FROM node:16
-
-# Starting from scratch
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+FROM node:16-alpine
 
 # Update dependencies
-RUN apt-get update
-
+RUN apk update \
 # Install git
-RUN apt-get install -y git
-
+    && apk add --no-cache git \
 # Install nuxi package
-RUN npm install -g nuxi
+    && npm install -g nuxi
 
-# Clean up
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Set up work directory
+# Set up the working directory
 WORKDIR /var/www/html
+
+# Specify the host variable
+ENV HOST 0.0.0.0
 
 # Expose the Nuxt port
 EXPOSE 3000

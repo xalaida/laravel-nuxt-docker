@@ -1,28 +1,44 @@
 #!/bin/bash
 
+install_nuxt() {
+  local INSTALL_DIRECTORY=src
+
+  # Init a new Nuxt app into a temporary directory
+  docker-compose -f docker-compose.dev.yml run --rm --no-deps \
+    --user "$(id -u)":"$(id -g)" app \
+    npx nuxi init ${INSTALL_DIRECTORY}
+
+  # Set ownership of the temporary directory to the current user
+  sudo chown -R "$(id -u)":"$(id -g)" ./${INSTALL_DIRECTORY}
+
+  # Move everything from the temporary directory to the current directory
+  mv ${INSTALL_DIRECTORY}/* ${INSTALL_DIRECTORY}/.* .
+
+  # Remove the temporary directory
+  rm -r ${INSTALL_DIRECTORY}
+}
+
 # Copy .env file
 if [ ! -f ./.env ]; then
     cp ./.env.dev ./.env
 fi
 
-# Build the client containers
-docker-compose build
+# Create shared gateway network
+docker network create gateway
 
-# Init a new Nuxt app
-docker-compose run --rm --user "$(id -u)":"$(id -g)" app npx nuxi init src
+# Build containers
+make build
 
-# Set ownership of the app to the current user
-chown -R "$(id -u)":"$(id -g)" ./src
-
-# Move all files and directories up one level
-# TODO: rewrite without terminal errors
-mv src/* src/.* .
-
-# Remove 'src directory
-rm -r src
+# Install Nuxt framework
+install_nuxt
 
 # Install packages
-docker-compose run --rm --user "$(id -u)":"$(id -g)" app yarn install
+docker-compose -f docker-compose.dev.yml run --rm --no-deps \
+  --user "$(id -u)":"$(id -g)" app \
+  yarn install
+
+# Start containers
+make up
 
 # Print the final message
-echo "Nuxt has been installed"
+echo "The client app has been installed and run on http://localhost:3000."
