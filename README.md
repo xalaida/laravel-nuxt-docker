@@ -9,8 +9,8 @@ Well tested on Ubuntu 18.04, 19.10 and 20.04.
 * API
   * Laravel (latest version)
   * Octane
-  * PostgreSQL 13 (and separate database for testing)
-  * Redis 6.2 (stable)
+  * PostgreSQL (and separate database for testing)
+  * Redis
   * MailHog
 * Client
   * Nuxt 3 (latest version)
