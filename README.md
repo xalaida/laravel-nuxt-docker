@@ -38,10 +38,10 @@ Of course, you can replace it with a more professional tool.
 
 ## Installation
 
-1. Clone or download the repository and enter its directory:
+1. Clone or download the repository with its submodules and enter its directory:
 
 ```bash
-git clone https://github.com/nevadskiy/laravel-nuxt-docker.git app
+git clone --recurse-submodules https://github.com/nevadskiy/laravel-nuxt-docker.git app
 cd app
 ```
 
