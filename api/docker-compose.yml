@@ -8,7 +8,7 @@ services:
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
-    image: ${IMAGE_REGISTRY:-local}/api-app:${IMAGE_TAG:-latest}
+    # image: ${IMAGE_REGISTRY:-dev}/api-app:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
     links:
@@ -29,7 +29,7 @@ services:
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
-    image: ${IMAGE_REGISTRY:-local}/api-queue:${IMAGE_TAG:-latest}
+    # image: ${IMAGE_REGISTRY:-dev}/api-queue:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
     links:
@@ -46,7 +46,7 @@ services:
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
-    image: ${IMAGE_REGISTRY:-local}/api-schedule:${IMAGE_TAG:-latest}
+    # image: ${IMAGE_REGISTRY:-dev}/api-schedule:${IMAGE_TAG:-latest}
     volumes:
       - ./storage:/var/www/html/storage
     links:
@@ -60,7 +60,7 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/postgres/Dockerfile
-    image: ${IMAGE_REGISTRY:-local}/api-postgres:${IMAGE_TAG:-latest}
+    # image: ${IMAGE_REGISTRY:-dev}/api-postgres:${IMAGE_TAG:-latest}
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -75,7 +75,7 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/redis/Dockerfile
-    image: ${IMAGE_REGISTRY:-local}/api-redis:${IMAGE_TAG:-latest}
+    # image: ${IMAGE_REGISTRY:-dev}/api-redis:${IMAGE_TAG:-latest}
     volumes:
       - redis:/data
     networks:
