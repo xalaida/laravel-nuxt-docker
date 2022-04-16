@@ -238,6 +238,8 @@ const { data } = await useApiFetch('/products')
 
 ## To Do list:
 
+- [ ] update doc
+
 - [ ] git dev pull script
   - pull git branch
   - replace old .env file with a new one
@@ -262,39 +264,39 @@ const { data } = await useApiFetch('/products')
   - set up pm.max_children and other fpm params
   - add nginx gateway for fastcgi proxy
   
+- [ ] add bash app to manage api containers (instead of current aliases file)
+- [ ] add nginx conf templates for gateway and add possibility to fill them according to the ENV variables
+
 - [ ] add stub for mysql
+- [ ] add stub for laravel-echo
+- [ ] add stub for s3 container, probably minio (for stateless app)
+- [ ] add stub for selenium (laravel dusk)
 - [ ] add stub to replace default queue runner with horizon
-- [ ] laravel-echo
 - [ ] add stub for nuxt 2
-- [ ] selenium (laravel dusk)
-- [ ] add s3 container, probably minio (for stateless app)
+- [ ] add stub for CLI container with installed xDebug (because xDebug conflicts Swoole)
+- [ ] add health checks to other containers
+- [ ] set up volume permissions (ro, rw, etc)
+- [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
 - [ ] try to set up CI/CD using github actions (probably extract into submodule)
 - [ ] add root makefile to install both apps and stop/up both apps
-- [ ] add possibility to install composer scripts and app_key from stopped containers (run --rm)
-- [ ] set up volume permissions (ro, rw, etc)
-- [ ] add health checks to other containers
-- [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
-- [ ] xDebug (only for CLI, not supported with Swoole, probably separate CLI container) and .idea configuration
 
 - [ ] configure redis
   - add redis password
   - remove redis background saves
   - provide redis conf similar as nginx conf
   
-- [ ] prod
+- [ ] prod deploying using git and docker-compose
   - [ ] refactor dockerfile clean up and run instructions according to this: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#run
   - [ ] add secrets (from 3.9 version): https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
-  - [ ] https://www.laradocker.com/production/#using-docker-compose
   - [ ] opcache preloading: https://theraloss.com/preloading-laravel-in-php7.4/
-  - [ ] provide .env API_KEY during first prod installation
-  - [ ] add possibility to open redis and postgres connections outside of docker network conditionally on runtime (using env variables)
+  - [ ] add possibility to open redis and postgres connections (by publishing ports) outside of docker network conditionally on runtime (using env variables)
   - [ ] use last commit hash instead of 'latest' image tag
-  - [ ] deploy.sh script using ssh secrets
+  - [ ] set up deploy script using ssh secrets
   - [ ] set up docker logging driver
 
 - [ ] add swarm deployment (separate docker-compose.swarm.yml)
   - https://docs.docker.com/engine/swarm/stack-deploy/
-  - private registry server (pushing/pulling tags)
+  - set up private registry server (pushing/pulling tags)
     - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04
     - https://chris-vermeulen.com/laravel-in-kubernetes-part-3/
     - https://www.koyeb.com/tutorials/dockerize-and-deploy-a-laravel-application-to-production
