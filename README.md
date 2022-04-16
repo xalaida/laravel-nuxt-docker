@@ -83,6 +83,5 @@ But the SSR request is sent by the node server, not the browser, and should be s
 
 ## To Do
 
-- [ ] add gateway submodule and instructions how to clone with it and pull updates
 - [ ] add gateway conf templates and add possibility to fill them according to the ENV variables
 - [ ] try to set up CI/CD using GitHub actions
