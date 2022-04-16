@@ -5,7 +5,6 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
-    image: ${IMAGE_REGISTRY:-dev}/client-app:${IMAGE_TAG:-latest}
     hostname: client
     expose:
       - 3000
