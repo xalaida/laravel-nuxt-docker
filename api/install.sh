@@ -1,24 +1,24 @@
 #!/bin/bash
 
 install_laravel() {
-  local DIRECTORY=src
+  local INSTALL_DIRECTORY=src
 
   # Init a new Laravel app into a temporary directory
   docker-compose -f docker-compose.dev.yml run --rm app \
-      composer create-project --prefer-dist laravel/laravel ${DIRECTORY}
+    composer create-project --prefer-dist laravel/laravel ${INSTALL_DIRECTORY}
 
   # Set ownership of the temporary directory to the current user
-  sudo chown -R "$(id -u)":"$(id -g)" ./${DIRECTORY}
+  sudo chown -R "$(id -u)":"$(id -g)" ./${INSTALL_DIRECTORY}
 
   # Remove the default file with environment variables
-  rm ${DIRECTORY}/.env
+  rm ${INSTALL_DIRECTORY}/.env
 
   # Move everything from the temporary directory to the current directory
   # TODO: rewrite without terminal errors
-  mv ${DIRECTORY}/* ${DIRECTORY}/.* .
+  mv ${INSTALL_DIRECTORY}/* ${INSTALL_DIRECTORY}/.* .
 
   # Remove the temporary directory
-  rm -r ${DIRECTORY}
+  rm -r ${INSTALL_DIRECTORY}
 
   # Generate the application key
   make key.generate
@@ -27,38 +27,43 @@ install_laravel() {
 install_breeze() {
     # Require Breeze package
     docker-compose -f docker-compose.dev.yml run --rm app \
-        composer require laravel/breeze --dev
+      composer require laravel/breeze --dev
 
     # Install Breeze package
     docker-compose -f docker-compose.dev.yml run --rm \
-        --user "$(id -u)":"$(id -g)" app \
-        php artisan breeze:install api
+      --user "$(id -u)":"$(id -g)" app \
+      php artisan breeze:install api
 }
 
 install_octane() {
   # Require Octane package
   docker-compose -f docker-compose.dev.yml run --rm app \
-      composer require laravel/octane
+    composer require laravel/octane
 
   # Install Octane package
   docker-compose -f docker-compose.dev.yml run --rm \
-      --user "$(id -u)":"$(id -g)" app \
-      php artisan octane:install --server=swoole
+    --user "$(id -u)":"$(id -g)" app \
+    php artisan octane:install --server=swoole
 }
 
 # Copy a .env file if it is missing
 if [ ! -f ./.env ]; then
-    cp ./.env.dev ./.env
+  cp ./.env.dev ./.env
 fi
 
 # Create shared gateway network
-make network
+docker network create gateway
 
 # Build containers
 make build.all
 
+# Install Laravel framework
 install_laravel
+
+# Install Octane package
 install_octane
+
+# Install Breeze package
 install_breeze
 
 # Start containers
