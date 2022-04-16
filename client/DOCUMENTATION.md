@@ -1,45 +1,50 @@
 ## Client
 
-Your Nuxt app will be placed in the `/client` directory.
+This is where your Nuxt application is stored.
 
 ## Installation
 
-To build and install a new Nuxt app, execute the `install.sh` script:
+The whole installation process is to create a shared network, build containers and initialize a new Nuxt application.
+
+Run the installation script in your terminal, and it will do it all automatically:
 
 ```bash
-cd client
 ./install.sh
 ```
 
-### Usage
+Now you should be able to see it running in your browser at [http://localhost:3000](http://localhost:3000).
 
-#### Start
+## Usage
 
-To start containers, run the command:
+All docker commands are abstracted into [Makefile](./Makefile) instructions.
+
+They are very simple and often just instead of the `docker-compose` command you need to write `make` in your terminal.
+
+Feel free to explore them and edit according to your needs.
+
+### Start containers
 
 ```bash
 # Make command
 make up
 
-# Raw command
-docker-compose up -d
+# Full command
+docker-compose -f docker-compose.dev.yml up -d
 ```
 
-Now, you can open [http://localhost:3000](http://localhost:3000) URL in your browser.
+Now you can open [http://localhost:3000](http://localhost:3000) URL in your browser.
 
-#### Stop
-
-To stop containers, run the command:
+### Stop containers
 
 ```bash
 # Make command
 make down
 
-# Raw command
-docker-compose down
+# Full command
+docker-compose -f docker-compose.dev.yml down
 ```
 
-#### Fetch API data
+### Fetch API data
 
 To fetch data from the Laravel API, you have to use different endpoints when requesting data from the browser and during the SSR process from the Node server instance.
 
