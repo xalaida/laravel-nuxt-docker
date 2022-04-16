@@ -46,8 +46,10 @@ install_octane() {
       php artisan octane:install --server=swoole
 }
 
-# Copy .env file
-make env.dev
+# Copy a .env file if it is missing
+if [ ! -f ./.env ]; then
+    cp ./.env.dev ./.env
+fi
 
 # Create shared gateway network
 make network
