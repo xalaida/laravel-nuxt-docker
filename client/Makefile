@@ -132,6 +132,7 @@ danger.app.prune:
 		public \
 		store \
 		.env \
+		app.vue \
 		.gitignore \
 		nuxt.config.ts \
 		package.json \
