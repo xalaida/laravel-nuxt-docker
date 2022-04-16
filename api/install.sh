@@ -4,7 +4,7 @@ install_laravel() {
   local INSTALL_DIRECTORY=src
 
   # Init a new Laravel app into a temporary directory
-  docker-compose -f docker-compose.dev.yml run --rm app \
+  docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
     composer create-project --prefer-dist laravel/laravel ${INSTALL_DIRECTORY}
 
   # Set ownership of the temporary directory to the current user
@@ -14,7 +14,6 @@ install_laravel() {
   rm ${INSTALL_DIRECTORY}/.env
 
   # Move everything from the temporary directory to the current directory
-  # TODO: rewrite without terminal errors
   mv ${INSTALL_DIRECTORY}/* ${INSTALL_DIRECTORY}/.* .
 
   # Remove the temporary directory
@@ -26,22 +25,22 @@ install_laravel() {
 
 install_breeze() {
     # Require Breeze package
-    docker-compose -f docker-compose.dev.yml run --rm app \
+    docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
       composer require laravel/breeze --dev
 
     # Install Breeze package
-    docker-compose -f docker-compose.dev.yml run --rm \
+    docker-compose -f docker-compose.dev.yml run --rm --no-deps \
       --user "$(id -u)":"$(id -g)" app \
       php artisan breeze:install api
 }
 
 install_octane() {
   # Require Octane package
-  docker-compose -f docker-compose.dev.yml run --rm app \
+  docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
     composer require laravel/octane
 
   # Install Octane package
-  docker-compose -f docker-compose.dev.yml run --rm \
+  docker-compose -f docker-compose.dev.yml run --rm --no-deps \
     --user "$(id -u)":"$(id -g)" app \
     php artisan octane:install --server=swoole
 }
