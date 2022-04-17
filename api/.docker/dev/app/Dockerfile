@@ -5,36 +5,26 @@ ARG IMAGE_TAG=latest
 # Image
 FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
 
-# Starting from scratch
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 # Update dependencies
-RUN apt-get update
-
-# Install Swoole
-RUN pecl install swoole \
-    && docker-php-ext-enable swoole
-
-# Install Node (v16 LTS) & NPM (required by Octane)
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+RUN apt-get update \
+# Install Swoole (required by Octane)
+    && pecl install swoole \
+    && docker-php-ext-enable swoole \
+# Install Node (v16 LTS) (required by Octane)
+    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs \
-    && npm install -g npm
-
+# Install NPM (required by Octane)
+    && npm install -g npm \
 # Install Chokidar (required by Octane)
-RUN npm install --g chokidar
+    && npm install --g chokidar \
+# Clean up the apt cache
+    && rm -rf /var/lib/apt/lists/*
 
 # Specify the node path (allow including Chokidar lib globally)
 ENV NODE_PATH /usr/lib/node_modules
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
-# Clean up
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set up the working directory
 WORKDIR /var/www/html

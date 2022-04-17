@@ -5,19 +5,13 @@ ARG IMAGE_TAG=latest
 # Image
 FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
 
-# Starting from scratch
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 # Update dependencies
-    && apt-get update \
+RUN && apt-get update \
 # Install Swoole \
     && pecl install swoole \
     && docker-php-ext-enable swoole \
-# Clean up
-    && apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Clean up the apt cache
+    && rm -rf /var/lib/apt/lists/*
 
 # Set up the working directory
 WORKDIR /var/www/html
