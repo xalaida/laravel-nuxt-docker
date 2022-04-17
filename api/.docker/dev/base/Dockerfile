@@ -60,3 +60,7 @@ RUN docker-php-ext-install opcache
 RUN apt-get clean \
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy PHP configuration
+COPY ./php/php.ini "${PHP_INI_DIR}/php.ini"
+COPY ./php/opcache.ini "${PHP_INI_DIR}/opcache.ini"

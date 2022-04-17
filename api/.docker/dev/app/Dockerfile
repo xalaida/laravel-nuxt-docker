@@ -31,10 +31,6 @@ ENV NODE_PATH /usr/lib/node_modules
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-# Copy PHP configuration
-COPY ./php/php.ini "${PHP_INI_DIR}/php.ini"
-COPY ./php/opcache.ini "${PHP_INI_DIR}/opcache.ini"
-
 # Clean up
 RUN apt-get clean \
     && apt-get -y autoremove \
