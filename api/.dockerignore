@@ -21,5 +21,9 @@ docker-compose.yml
 Makefile
 
 # Included files
-!/.docker/prod/base/php/*
-!/.docker/prod/schedule/cron.d/*
+!/.docker/*/app/conf.d
+!/.docker/*/base/conf.d
+!/.docker/*/base/php.ini
+!/.docker/*/gateway/conf.d
+!/.docker/*/schedule/cron.d
+!/.docker/*/postgres/dumps
