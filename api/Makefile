@@ -161,9 +161,15 @@ composer.autoload:
 storage.link:
 	docker-compose -f ${COMPOSE_FILE} exec app php artisan storage:link --relative
 
-# Set up permissions for the storage folder
+# Give permissions of the storage folder to the www-data
 storage.perm:
 	sudo chmod -R 755 storage
+	sudo chown -R www-data:www-data storage
+
+# Give permissions of the storage folder to the current user
+storage.perm.me:
+	sudo chmod -R 755 storage
+	sudo chown -R "$(id -u):$(id -g)" storage
 
 
 #-----------------------------------------------------------
