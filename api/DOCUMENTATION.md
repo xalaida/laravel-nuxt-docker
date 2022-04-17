@@ -170,6 +170,9 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
   - up containers (queue and octane should be restarted)
   - run migrations (--force)
 
+- [ ] add testing doc section
+- [ ] add xdebug doc section
+- [ ] add doc how to set up phpstorm
 - [ ] reduce image sizes (move to alpine versions)
 - [ ] add stubs system (to provide/replace additional services)
 - [ ] add stub for mysql
@@ -177,21 +180,14 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 - [ ] add stub for s3 container, probably minio (for stateless app)
 - [ ] add stub for selenium (laravel dusk)
 - [ ] add stub to replace default queue runner with horizon
-- [ ] add stub for CLI container with installed xDebug (because xDebug conflicts Swoole)
 - [ ] add health checks to other containers
-- [ ] set up volume permissions (ro, rw, etc)
 - [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
-- [ ] add bash `azov` app to manage api containers (instead of current aliases file) (should mostly work on top of CLI) 
-  - [ ] add command to see env value inside containers
 - [ ] php-fpm version
-  - probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
   - set up pm.max_children and other fpm params
   - add nginx gateway for fastcgi proxy
 
 - [ ] /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 - [ ] also add possibility to disable xdebug in runtime
-- [ ] add doc how to set up phpstorm with xdebug and phpunit tests
-- [ ] add parameters for queue (retry, timeout, etc)
 - [ ] extract max_upload_size into env variable 
 
 - [ ] configure redis
