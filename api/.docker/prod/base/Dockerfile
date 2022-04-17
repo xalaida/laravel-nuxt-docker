@@ -8,7 +8,7 @@ WORKDIR /var/www/html
 COPY composer.json composer.json
 COPY composer.lock composer.lock
 
-# Allow installing by superuser
+# Allow installing by superuser (TODO: use or remove)
 #ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install composer dependencies
@@ -29,18 +29,16 @@ RUN composer dump-autoload \
 # Serving image
 FROM php:8.1-cli
 
-# Starting from scratch
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 # Update dependencies
-    && apt-get update \
+RUN apt-get update \
 # Install Zip
-    && apt-get install -y libzip-dev zip && docker-php-ext-install zip \
+    && apt-get install -y libzip-dev zip \
+    && docker-php-ext-install zip \
 # Install Git
     && apt-get install -y git \
 # Install Curl
-    && apt-get install -y libcurl3-dev curl && docker-php-ext-install curl \
+    && apt-get install -y libcurl3-dev curl \
+    && docker-php-ext-install curl \
 # Install EXIF
     && docker-php-ext-install exif \
 # Install GD
@@ -64,10 +62,8 @@ RUN apt-get clean \
     && docker-php-ext-enable pcntl \
 # Install OPcache extension
     && docker-php-ext-install opcache \
-# Clean up
-    && apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Clean up the apt cache
+    && rm -rf /var/lib/apt/lists/*
 
 # Set up the working directory
 WORKDIR /var/www/html
@@ -76,8 +72,8 @@ WORKDIR /var/www/html
 COPY --from=builder /var/www/html .
 
 # Copy PHP configuration
-COPY ./.docker/prod/base/php/php.ini "${PHP_INI_DIR}/php.ini"
-COPY ./.docker/prod/base/php/opcache.ini "${PHP_INI_DIR}/opcache.ini"
+COPY ./.docker/prod/base/php.ini "/${PHP_INI_DIR}/php.ini"
+COPY ./.docker/prod/base/conf.d "/${PHP_INI_DIR}/conf.d"
 
 # Optimizing configuration loading
 RUN php artisan config:cache \
