@@ -7,7 +7,7 @@ FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
 
 # Update dependencies
 RUN && apt-get update \
-# Install Swoole \
+# Install Swoole (required by Octane)
     && pecl install swoole \
     && docker-php-ext-enable swoole \
 # Clean up the apt cache
