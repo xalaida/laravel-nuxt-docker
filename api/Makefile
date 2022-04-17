@@ -82,7 +82,7 @@ prune:
 #-----------------------------------------------------------
 
 # Enter the app container
-app:
+app.bash:
 	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
 
 # Restart the app container

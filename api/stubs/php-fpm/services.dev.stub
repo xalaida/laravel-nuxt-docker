@@ -8,7 +8,7 @@
       - app
     hostname: api
     ports:
-      - "${GATEWAY_PORT:-8000}:80"
+      - "8000:80"
     networks:
       - api
       - gateway

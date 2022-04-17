@@ -117,7 +117,7 @@ On production environment it will be created automatically.
 
 The [MailHog](https://github.com/mailhog/mailhog) service intercepts all sent emails by your application in development environment.
 
-If you want to check how sent mails look, just go to [http://localhost:8026](http://localhost:8026).
+If you want to check how sent mails look, just go to [http://localhost:8025](http://localhost:8025).
 
 ## Alternatives
 
@@ -170,6 +170,7 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
   - up containers (queue and octane should be restarted)
   - run migrations (--force)
 
+- [ ] reduce image sizes (move to alpine versions)
 - [ ] add stubs system (to provide/replace additional services)
 - [ ] add stub for mysql
 - [ ] add stub for laravel-echo
@@ -180,11 +181,18 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 - [ ] add health checks to other containers
 - [ ] set up volume permissions (ro, rw, etc)
 - [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
-- [ ] add bash `azov` app to manage api containers (instead of current aliases file)
+- [ ] add bash `azov` app to manage api containers (instead of current aliases file) (should mostly work on top of CLI) 
+  - [ ] add command to see env value inside containers
 - [ ] php-fpm version
   - probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
   - set up pm.max_children and other fpm params
   - add nginx gateway for fastcgi proxy
+
+- [ ] /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+- [ ] also add possibility to disable xdebug in runtime
+- [ ] add doc how to set up phpstorm with xdebug and phpunit tests
+- [ ] add parameters for queue (retry, timeout, etc)
+- [ ] extract max_upload_size into env variable 
 
 - [ ] configure redis
   - add redis password

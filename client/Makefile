@@ -68,8 +68,8 @@ prune:
 #-----------------------------------------------------------
 
 # Enter the app container
-app:
-	docker-compose -f ${COMPOSE_FILE} exec app bash
+app.bash:
+	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
 
 # Install yarn dependencies
 yarn.install:
