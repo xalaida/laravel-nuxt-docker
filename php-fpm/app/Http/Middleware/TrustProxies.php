@@ -12,7 +12,11 @@ class TrustProxies extends Middleware
      *
      * @var array<int, string>|string|null
      */
-    protected $proxies;
+    protected $proxies = [
+        'REMOTE_ADDR', // test this variable
+//        '127.0.0.1',
+//        '172.0.0.0/8', // Docker IP mask
+    ];
 
     /**
      * The headers that should be used to detect proxies.
