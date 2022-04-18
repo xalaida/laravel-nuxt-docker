@@ -21,3 +21,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::get('/ip', function (Request $request) {
     return $request->ip();
 });
+
+Route::get('/request', function (Request $request) {
+    return $request;
+});
+
