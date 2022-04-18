@@ -40,12 +40,12 @@ RUN apt-get update \
 # Clean up the apt cache
     && rm -rf /var/lib/apt/lists/*
 
-# Copy PHP configurations
+# Copy base PHP configurations
 COPY --from=base "/${PHP_INI_DIR}/php.ini" "/${PHP_INI_DIR}/php.ini"
 COPY --from=base "/${PHP_INI_DIR}/conf.d" "/${PHP_INI_DIR}/conf.d"
-COPY ./.docker/prod/app/conf.d "/${PHP_INI_DIR}/conf.d"
 
-# TODO: add php.fpm conf
+# Copy PHP-FPM configuration
+COPY ./.docker/prod/app/php-fpm.d /usr/local/etc/php-fpm.d
 
 # Set up the working directory
 WORKDIR /var/www/html
