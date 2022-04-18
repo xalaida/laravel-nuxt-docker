@@ -23,6 +23,6 @@ Route::get('/ip', function (Request $request) {
 });
 
 Route::get('/request', function (Request $request) {
-    return $request;
+    return dump($request);
 });
 
