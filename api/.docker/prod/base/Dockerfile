@@ -8,9 +8,6 @@ WORKDIR /var/www/html
 COPY composer.json composer.json
 COPY composer.lock composer.lock
 
-# Allow installing by superuser (TODO: use or remove)
-#ENV COMPOSER_ALLOW_SUPERUSER 1
-
 # Install composer dependencies
 RUN composer install \
     --no-interaction \
@@ -20,11 +17,10 @@ RUN composer install \
     --no-plugins
 
 # Copy all files into the container
-COPY . .
+COPY ./ ./
 
 # Dump composer autoload
-RUN composer dump-autoload \
-    --optimize
+RUN composer dump-autoload --optimize
 
 # Serving image
 FROM php:8.1-cli
@@ -68,8 +64,8 @@ RUN apt-get update \
 # Set up the working directory
 WORKDIR /var/www/html
 
-# Copy files from builder
-COPY --from=builder /var/www/html .
+# Copy files from builder image
+COPY --from=builder /var/www/html ./
 
 # Copy PHP configuration
 COPY ./.docker/prod/base/php.ini "/${PHP_INI_DIR}/php.ini"
