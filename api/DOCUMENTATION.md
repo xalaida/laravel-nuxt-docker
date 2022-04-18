@@ -177,7 +177,7 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 - [ ] add stub for laravel-echo
 - [ ] add stub for s3 container, probably minio (for stateless app)
 - [ ] add stub for selenium (laravel dusk)
-- [ ] add stub to replace default queue runner with horizon
+- [ ] add stub to replace default queue runner with horizon (add horizon make commands)
 - [ ] add health checks to other containers
 - [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
 
@@ -192,6 +192,7 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
   - [ ] add possibility to publish stub somehow with replacements
   - [ ] add authentication behind the gateway status pages
   - [ ] add fpm slow log: https://thephp.cc/presentations/2018-international-php-conference-spring-edition-optimizing-php-fpm-for-production.pdf
+  - [ ] set up test coverage driver for phpunit (also switch to artisan test command)
 
 - redis
   - [ ] add redis password
