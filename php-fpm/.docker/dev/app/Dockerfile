@@ -51,7 +51,5 @@ COPY --from=base "/${PHP_INI_DIR}/php.ini" "/${PHP_INI_DIR}/php.ini"
 COPY --from=base "/${PHP_INI_DIR}/conf.d" "/${PHP_INI_DIR}/conf.d"
 COPY ./.docker/dev/app/conf.d "/${PHP_INI_DIR}/conf.d"
 
-# TODO: add php.fpm conf
-
 # Set up the working directory
 WORKDIR /var/www/html
