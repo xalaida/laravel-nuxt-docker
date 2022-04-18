@@ -7,9 +7,6 @@
     links:
       - app
     hostname: api
-    expose:
-      - 8000
-      - 8001
     ports:
       # Publish a port for status pages
       - "8001:8001"

@@ -7,4 +7,9 @@ COPY ./.docker/prod/gateway/conf.d /etc/nginx/conf.d
 
 # Copy public folder
 COPY ./public /var/www/html/public
-RUN rm /var/www/html/public/index.php
+
+# Expose a port of the gateway server
+EXPOSE 8000;
+
+# Expose a port of the status server
+EXPOSE 8001;
