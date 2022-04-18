@@ -149,8 +149,6 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 
 ## To Do list
 
-- [ ] refactor dockerfile clean up and run instructions according to this: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#run
-
 - [ ] git dev pull script (when pulling existing app)
   - pull git branch
   - replace old .env file with a new one
@@ -182,20 +180,25 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 - [ ] add stub to replace default queue runner with horizon
 - [ ] add health checks to other containers
 - [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
-- [ ] php-fpm version
-  - set up pm.max_children and other fpm params
-  - add nginx gateway for fastcgi proxy
 
 - [ ] /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 - [ ] also add possibility to disable xdebug in runtime
 - [ ] extract max_upload_size into env variable 
+- [ ] add recommendation about logging with 'stack' driver (add 'stderr' to stack)
+- [ ] add info about laravel trusted proxy (REMOTE_ADDR)
+- [ ] add recommendations about authentication process (for API: no sanctum, no cookies, no sessions)
 
-- [ ] configure redis
-  - add redis password
-  - remove redis background saves
-  - provide redis conf similar as nginx conf
+- php-fpm
+  - [ ] add possibility to publish stub somehow with replacements
+  - [ ] add authentication behind the gateway status pages
+  - [ ] add fpm slow log: https://thephp.cc/presentations/2018-international-php-conference-spring-edition-optimizing-php-fpm-for-production.pdf
 
-- [ ] simple git and docker-compose deployment
+- redis
+  - [ ] add redis password
+  - [ ] remove redis background saves
+  - [ ] provide redis conf similar as nginx conf
+
+- simple git and docker-compose deployment
   - [ ] add secrets (from 3.9 version): https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
   - [ ] add possibility to open redis and postgres connections (by publishing ports) outside of docker network conditionally on runtime (using env variables)
   - [ ] set up docker logging driver

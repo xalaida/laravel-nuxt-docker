@@ -1,5 +1,5 @@
 # Build arguments
-ARG IMAGE_REGISTRY=dev
+ARG IMAGE_REGISTRY=prod
 ARG IMAGE_TAG=latest
 
 # Base image
@@ -37,19 +37,19 @@ RUN apt-get update \
     && docker-php-ext-enable pcntl \
 # Install OPcache extension
     && docker-php-ext-install opcache \
-# Install Xdebug
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
 # Clean up the apt cache
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
-# Copy PHP configurations
+# Copy base PHP configurations
 COPY --from=base "/${PHP_INI_DIR}/php.ini" "/${PHP_INI_DIR}/php.ini"
 COPY --from=base "/${PHP_INI_DIR}/conf.d" "/${PHP_INI_DIR}/conf.d"
-COPY ./.docker/dev/app/conf.d "/${PHP_INI_DIR}/conf.d"
+
+# Copy PHP-FPM configuration
+COPY ./.docker/prod/app/php-fpm.d /usr/local/etc/php-fpm.d
 
 # Set up the working directory
 WORKDIR /var/www/html
+
+# Copy files from base image
+COPY --from=base /var/www/html ./
+

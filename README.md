@@ -85,3 +85,4 @@ But the SSR request is sent by the node server, not the browser, and should be s
 
 - [ ] add gateway conf templates and add possibility to fill them according to the ENV variables
 - [ ] try to set up CI/CD using GitHub actions
+- [ ] add doc contributors section
