@@ -44,6 +44,12 @@ RUN apt-get update \
 COPY --from=base "/${PHP_INI_DIR}/php.ini" "/${PHP_INI_DIR}/php.ini"
 COPY --from=base "/${PHP_INI_DIR}/conf.d" "/${PHP_INI_DIR}/conf.d"
 
+# Set PHP-FPM variables
+ENV PHP_FPM_PM_MAX_CHILDREN=${PHP_FPM_PM_MAX_CHILDREN:-5}
+ENV PHP_FPM_PM_START_SERVERS=${PHP_FPM_PM_START_SERVERS:-2}
+ENV PHP_FPM_PM_MIN_SPARE_SERVERS=${PHP_FPM_PM_MIN_SPARE_SERVERS:-1}
+ENV PHP_FPM_PM_MAX_SPARE_SERVERS=${PHP_FPM_PM_MAX_SPARE_SERVERS:-3}
+
 # Copy PHP-FPM configuration
 COPY ./.docker/prod/app/php-fpm.d /usr/local/etc/php-fpm.d
 
