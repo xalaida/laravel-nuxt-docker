@@ -10,8 +10,8 @@ services:
     links:
       - app
     hostname: api
-    ports:
-      - "8000:80"
+    expose:
+      - 8000
     networks:
       - api
       - gateway
