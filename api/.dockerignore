@@ -25,5 +25,6 @@ Makefile
 !/.docker/*/base/conf.d
 !/.docker/*/base/php.ini
 !/.docker/*/gateway/conf.d
-!/.docker/*/schedule/cron.d
+!/.docker/*/gateway/nginx.conf
 !/.docker/*/postgres/dumps
+!/.docker/*/schedule/cron.d
