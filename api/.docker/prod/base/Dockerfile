@@ -5,8 +5,8 @@ FROM composer:latest as builder
 WORKDIR /var/www/html
 
 # Copy composer files
-COPY composer.json composer.json
-COPY composer.lock composer.lock
+COPY ./composer.json ./composer.json
+COPY ./composer.lock ./composer.lock
 
 # Install composer dependencies
 RUN composer install \
@@ -61,15 +61,15 @@ RUN apt-get update \
 # Clean up the apt cache
     && rm -rf /var/lib/apt/lists/*
 
+# Copy PHP configuration
+COPY ./.docker/prod/base/php.ini "/${PHP_INI_DIR}/php.ini"
+COPY ./.docker/prod/base/conf.d "/${PHP_INI_DIR}/conf.d"
+
 # Set up the working directory
 WORKDIR /var/www/html
 
 # Copy files from builder image
 COPY --from=builder /var/www/html ./
-
-# Copy PHP configuration
-COPY ./.docker/prod/base/php.ini "/${PHP_INI_DIR}/php.ini"
-COPY ./.docker/prod/base/conf.d "/${PHP_INI_DIR}/conf.d"
 
 # Optimizing configuration loading
 RUN php artisan config:cache \
