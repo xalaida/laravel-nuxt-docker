@@ -5,4 +5,4 @@ FROM nginx:1.21-alpine
 COPY ./.docker/dev/gateway/conf.d /etc/nginx/conf.d
 
 # Expose the gateway port
-EXPOSE 8000;
+EXPOSE 8000

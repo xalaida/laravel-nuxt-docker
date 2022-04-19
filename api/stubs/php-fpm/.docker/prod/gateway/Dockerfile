@@ -9,7 +9,7 @@ COPY ./.docker/prod/gateway/conf.d /etc/nginx/conf.d
 COPY ./public /var/www/html/public
 
 # Expose a port of the gateway server
-EXPOSE 8000;
+EXPOSE 8000
 
 # Expose a port of the status server
-EXPOSE 8001;
+EXPOSE 8001
