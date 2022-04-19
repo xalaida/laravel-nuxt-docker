@@ -119,6 +119,9 @@ db.seed:
 db.fresh:
 	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate:fresh
 
+# Refresh the database
+db.refresh: db.fresh db.seed
+
 # Dump database into file (only for development environment) (TODO: replace file name with env variable)
 db.dump:
 	docker-compose -f ${COMPOSE_FILE} exec postgres pg_dump -U ${DB_USERNAME} -d ${DB_DATABASE} > ./.docker/postgres/dumps/dump.sql
