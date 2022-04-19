@@ -187,6 +187,10 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 - [ ] add recommendation about logging with 'stack' driver (add 'stderr' to stack)
 - [ ] add info about laravel trusted proxy (REMOTE_ADDR)
 - [ ] add recommendations about authentication process (for API: no sanctum, no cookies, no sessions)
+- [ ] add info about `laravel telescope` issue due to `TELESCOPE_DUMP_WATCHER` during prod build
+  - add commands to ignore list: ['package:discover', 'config:cache', 'route:cache', 'view:cache', 'event:cache', 'storage:link']
+- [ ] add info about local packages/modules (how to include for build)
+- [ ] make env variable IMAGE_TAG and IMAGE_REGISTRY optional (check docker prod build)
 
 - php-fpm
   - [ ] add possibility to publish stub somehow with replacements
