@@ -34,4 +34,5 @@
       - redis
     networks:
       - api
+      - gateway
     restart: unless-stopped
