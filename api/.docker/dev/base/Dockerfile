@@ -11,6 +11,8 @@ RUN apt-get update \
 # Install Curl
     && apt-get install -y libcurl3-dev curl \
     && docker-php-ext-install curl \
+# Install procps (required by Octane)
+    && apt-get install -y procps \
 # Install EXIF
     && docker-php-ext-install exif \
 # Install GD
