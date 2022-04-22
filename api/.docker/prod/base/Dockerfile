@@ -5,11 +5,8 @@ FROM composer:latest as builder
 WORKDIR /var/www/html
 
 # Copy composer files
-COPY composer.json composer.json
-COPY composer.lock composer.lock
-
-# Allow installing by superuser
-#ENV COMPOSER_ALLOW_SUPERUSER 1
+COPY ./composer.json ./composer.json
+COPY ./composer.lock ./composer.lock
 
 # Install composer dependencies
 RUN composer install \
@@ -20,27 +17,26 @@ RUN composer install \
     --no-plugins
 
 # Copy all files into the container
-COPY . .
+COPY ./ ./
 
 # Dump composer autoload
-RUN composer dump-autoload \
-    --optimize
+RUN composer dump-autoload --optimize
 
 # Serving image
 FROM php:8.1-cli
 
-# Starting from scratch
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 # Update dependencies
-    && apt-get update \
+RUN apt-get update \
 # Install Zip
-    && apt-get install -y libzip-dev zip && docker-php-ext-install zip \
+    && apt-get install -y libzip-dev zip \
+    && docker-php-ext-install zip \
 # Install Git
     && apt-get install -y git \
 # Install Curl
-    && apt-get install -y libcurl3-dev curl && docker-php-ext-install curl \
+    && apt-get install -y libcurl3-dev curl \
+    && docker-php-ext-install curl \
+# Install procps (required by Octane)
+    && apt-get install -y procps \
 # Install EXIF
     && docker-php-ext-install exif \
 # Install GD
@@ -64,20 +60,18 @@ RUN apt-get clean \
     && docker-php-ext-enable pcntl \
 # Install OPcache extension
     && docker-php-ext-install opcache \
-# Clean up
-    && apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Clean up the apt cache
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy PHP configuration
+COPY ./.docker/prod/base/php.ini "/${PHP_INI_DIR}/php.ini"
+COPY ./.docker/prod/base/conf.d "/${PHP_INI_DIR}/conf.d"
 
 # Set up the working directory
 WORKDIR /var/www/html
 
-# Copy files from builder
-COPY --from=builder /var/www/html .
-
-# Copy PHP configuration
-COPY ./.docker/prod/base/php/php.ini "${PHP_INI_DIR}/php.ini"
-COPY ./.docker/prod/base/php/opcache.ini "${PHP_INI_DIR}/opcache.ini"
+# Copy files from builder image
+COPY --from=builder /var/www/html ./
 
 # Optimizing configuration loading
 RUN php artisan config:cache \

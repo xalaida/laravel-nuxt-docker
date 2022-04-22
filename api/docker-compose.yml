@@ -14,8 +14,6 @@ services:
       - postgres
       - redis
     hostname: api
-    expose:
-      - 8000
     networks:
       - api
       - gateway
@@ -87,7 +85,6 @@ volumes:
 networks:
   api:
     name: api
-    driver: overlay
 
   gateway:
     name: gateway

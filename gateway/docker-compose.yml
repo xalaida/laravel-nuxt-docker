@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  reverse-proxy:
+    build:
+      context: ./reverse-proxy/prod
+      dockerfile: Dockerfile
+    volumes:
+      # SSL certificates folder (shared with certbot service)
+      - ./reverse-proxy/prod/ssl:/etc/nginx/ssl:ro
+      # ACME challenge folder (shared with certbot service)
+      - ./reverse-proxy/prod/acme:/var/www/acme:ro
+    expose:
+      - 8001
+    ports:
+      - "443:443"
+      - "80:80"
+    networks:
+      - gateway
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  certbot:
+    build:
+      context: ./certbot
+      dockerfile: Dockerfile
+    environment:
+      NGINX_SERVICE: reverse-proxy
+    volumes:
+      # SSL certificates folder
+      - ./reverse-proxy/prod/ssl:/etc/letsencrypt:rw
+      # ACME challenge folder
+      - ./reverse-proxy/prod/acme:/var/www/acme:rw
+      # Docker Unix Socket (allow restarting reverse-proxy service after renewal)
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  gateway:
+    name: gateway
+    external: true

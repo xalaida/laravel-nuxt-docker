@@ -1,12 +1,27 @@
-#-----------------------------------------------------------
-# Control
-#-----------------------------------------------------------
-
 # Include file with .env variables if exists
 -include .env
 
 # Define default values for variables
 COMPOSE_FILE ?= docker-compose.yml
+
+#-----------------------------------------------------------
+# Management
+#-----------------------------------------------------------
+
+# Create shared gateway network
+gateway:
+	docker network create gateway
+
+# Init variables for development environment
+env.dev:
+	cp ./.env.dev ./.env
+
+# Init variables for production environment
+env.prod:
+	cp ./.env.prod ./.env
+
+# Build and restart containers
+install: build up
 
 # Start containers
 up:
@@ -19,13 +34,6 @@ down:
 # Build containers
 build:
 	docker-compose -f ${COMPOSE_FILE} build
-
-# Build and restart containers
-update: build up
-
-# Force the update process
-update.force:
-	docker-compose -f ${COMPOSE_FILE} up -d --build --force-recreate
 
 # Show list of running containers
 ps:
@@ -40,36 +48,23 @@ reboot: down up
 
 # View output from containers
 logs:
-	docker-compose -f ${COMPOSE_FILE} logs
+	docker-compose -f ${COMPOSE_FILE} logs --tail 500
 
-# Show logs of running containers with following output
+# Follow output from containers (short for 'follow logs')
 fl:
-	docker-compose -f ${COMPOSE_FILE} logs -f
-
-# Init variables for development environment
-env.dev:
-	cp ./.env.dev ./.env
-
-# Init variables for production environment
-env.prod:
-	cp ./.env.prod ./.env
-
-# Create shared gateway network
-gateway:
-	docker network create gateway
+	docker-compose -f ${COMPOSE_FILE} logs --tail 500 -f
 
 # Prune stopped docker containers and dangling images
 prune:
 	docker system prune
 
-
 #-----------------------------------------------------------
-# App
+# Application
 #-----------------------------------------------------------
 
 # Enter the app container
-app:
-	docker-compose -f ${COMPOSE_FILE} exec app bash
+app.bash:
+	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
 
 # Install yarn dependencies
 yarn.install:
@@ -113,7 +108,6 @@ swarm.ps:
 swarm.init:
 	docker swarm init
 
-
 #-----------------------------------------------------------
 # Danger zone
 # Do not use these commands
@@ -126,14 +120,18 @@ danger.app.prune:
 		.vscode \
 		.nuxt \
 		assets \
+		components \
 		layouts \
 		node_modules \
 		pages \
 		public \
+		static \
 		store \
+		.editorconfig \
 		.env \
 		app.vue \
 		.gitignore \
+		nuxt.config.js \
 		nuxt.config.ts \
 		package.json \
 		README.md \

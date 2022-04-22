@@ -117,7 +117,7 @@ On production environment it will be created automatically.
 
 The [MailHog](https://github.com/mailhog/mailhog) service intercepts all sent emails by your application in development environment.
 
-If you want to check how sent mails look, just go to [http://localhost:8026](http://localhost:8026).
+If you want to check how sent mails look, just go to [http://localhost:8025](http://localhost:8025).
 
 ## Alternatives
 
@@ -149,8 +149,6 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 
 ## To Do list
 
-- [ ] refactor dockerfile clean up and run instructions according to this: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#run
-
 - [ ] git dev pull script (when pulling existing app)
   - pull git branch
   - replace old .env file with a new one
@@ -170,28 +168,41 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
   - up containers (queue and octane should be restarted)
   - run migrations (--force)
 
+- [ ] add testing doc section
+- [ ] add xdebug doc section
+- [ ] add doc how to set up phpstorm
+- [ ] reduce image sizes (move to alpine versions)
 - [ ] add stubs system (to provide/replace additional services)
 - [ ] add stub for mysql
 - [ ] add stub for laravel-echo
 - [ ] add stub for s3 container, probably minio (for stateless app)
 - [ ] add stub for selenium (laravel dusk)
-- [ ] add stub to replace default queue runner with horizon
-- [ ] add stub for CLI container with installed xDebug (because xDebug conflicts Swoole)
+- [ ] add stub to replace default queue runner with horizon (add horizon make commands)
 - [ ] add health checks to other containers
-- [ ] set up volume permissions (ro, rw, etc)
 - [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
-- [ ] add bash `azov` app to manage api containers (instead of current aliases file)
-- [ ] php-fpm version
-  - probably add public to .dockerignore since it will be handled by nginx (only for php-fpm)
-  - set up pm.max_children and other fpm params
-  - add nginx gateway for fastcgi proxy
 
-- [ ] configure redis
-  - add redis password
-  - remove redis background saves
-  - provide redis conf similar as nginx conf
+- [ ] also add possibility to disable xdebug in runtime
+- [ ] extract max_upload_size into env variable 
+- [ ] add recommendation about logging with 'stack' driver (add 'stderr' to stack)
+- [ ] add info about laravel trusted proxy (REMOTE_ADDR)
+- [ ] add recommendations about authentication process (for API: no sanctum, no cookies, no sessions)
+- [ ] add info about `laravel telescope` issue due to `TELESCOPE_DUMP_WATCHER` during prod build
+  - add commands to ignore list: ['package:discover', 'config:cache', 'route:cache', 'view:cache', 'event:cache', 'storage:link']
+- [ ] add info about local packages/modules (how to include for build)
+- [ ] add best practice about stateless app and using of storage and cookies
 
-- [ ] simple git and docker-compose deployment
+- php-fpm
+  - [ ] add possibility to publish stub somehow with replacements
+  - [ ] add authentication behind the gateway status pages
+  - [ ] add fpm slow log: https://thephp.cc/presentations/2018-international-php-conference-spring-edition-optimizing-php-fpm-for-production.pdf
+  - [ ] set up test coverage driver for phpunit (also switch to artisan test command)
+
+- redis
+  - [ ] add redis password
+  - [ ] remove redis background saves
+  - [ ] provide redis conf similar as nginx conf
+
+- simple git and docker-compose deployment
   - [ ] add secrets (from 3.9 version): https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
   - [ ] add possibility to open redis and postgres connections (by publishing ports) outside of docker network conditionally on runtime (using env variables)
   - [ ] set up docker logging driver

@@ -5,7 +5,7 @@ FROM node:16-alpine as builder
 WORKDIR /var/www/html
 
 # Copy all files into the container
-COPY . .
+COPY ./ ./
 
 # Install build dependencies
 RUN yarn install \
@@ -32,10 +32,13 @@ FROM node:16-alpine
 WORKDIR /var/www/html
 
 # Copy the built app
-COPY --from=builder /var/www/html .
+COPY --from=builder /var/www/html ./
 
 # Specify the host variable
 ENV HOST 0.0.0.0
+
+# Expose the Nuxt port
+EXPOSE 3000
 
 # Init the command
 CMD ["yarn", "start"]

@@ -4,7 +4,7 @@
 
 Well tested on Ubuntu 18.04, 19.10 and 20.04.
 
-## Stack includes
+## 🍬 Stack includes
 
 * API
   * Laravel (latest version)
@@ -18,7 +18,7 @@ Well tested on Ubuntu 18.04, 19.10 and 20.04.
   * Nginx (as reverse-proxy)
   * Certbot
 
-## Introduction
+## 📜 Introduction
 
 The project is just separate preconfigured Laravel and Nuxt applications that are stored in the same [monorepo](https://en.wikipedia.org/wiki/Monorepo). 
 
@@ -30,18 +30,18 @@ There are also no restrictions to add more, for example, a mobile application or
 
 If you want to host API and client apps on the single host machine, you may set up subdomains rather than rely on published ports.
 
-The project includes a simple [gateway application](https://github.com/nevadskiy/gateway-proxy) that can easily help with this.
+The project includes a simple gateway application that can easily help with this.
 
-It can also be useful to run locally and set up an application to use subdomains and test CORS and other possible issues.
+It can be also useful to run locally and set up an application to use subdomains and test CORS and other possible issues.
 
-Of course, you can replace it with a more professional tool.
+Of course, you can replace it with a more professional tool, like [Traefik](https://traefik.io).
 
-## Installation
+## ⚙ Installation
 
-1. Clone or download the repository with its submodules and enter its directory:
+1. Clone or download the repository and enter its directory:
 
 ```bash
-git clone --recurse-submodules https://github.com/nevadskiy/laravel-nuxt-docker.git app
+git clone https://github.com/nevadskiy/laravel-nuxt-docker.git app
 cd app
 ```
 
@@ -63,9 +63,9 @@ cd client
 
 This will install and run a fresh new Nuxt 3 app which will be available on `http://localhost:3000`.
 
-4. (Optional) If you want to deploy your project using [single host](#single-host) approach, install the `gateway` application according to its documentation. Otherwise, you can safely delete it.
+4. (Optional) If you want to deploy your project using [single host](#single-host) approach, install the `gateway` application according to its documentation. Otherwise, you can safely delete it. For local development you can ignore it as well.
 
-## Network communication
+## 🔌 Network communication
 
 The following image demonstrates the request paths in a local development environment.
 
@@ -75,13 +75,17 @@ API and WEB requests sent by the browser are proxied directly via published port
 
 But the SSR request is sent by the node server, not the browser, and should be sent directly to the host of the API docker service.
 
-## Documentation
+## 📑 Documentation
 
 - [API](./api/DOCUMENTATION.md)
 - [Client](./client/DOCUMENTATION.md)
 - [Deployment](./docs/DEPLOYMENT.md)
 
-## To Do
+## ☕ Contributing
 
-- [ ] add gateway conf templates and add possibility to fill them according to the ENV variables
-- [ ] try to set up CI/CD using GitHub actions
+If you see anything that can be improved, feel free to make a pull request.
+Contributions are welcome and will be fully credited.
+
+## 🔨 To Do
+
+- [ ] try to set up CI/CD using GitHub actions (check cypress.io)

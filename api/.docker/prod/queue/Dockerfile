@@ -9,4 +9,4 @@ FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
 WORKDIR /var/www/html
 
 # Run the queue service
-CMD ["php", "artisan", "queue:work"]
+CMD ["php", "artisan", "queue:work", "--tries=3", "--sleep=3"]

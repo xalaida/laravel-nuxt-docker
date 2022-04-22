@@ -1,0 +1,38 @@
+  gateway:
+    build:
+      context: ./
+      dockerfile: ./.docker/prod/gateway/Dockerfile
+    volumes:
+      - ./storage/app/public:/var/www/html/public/storage:ro
+    links:
+      - app
+    hostname: api
+    ports:
+      # Publish a port for status pages
+      - "8001:8001"
+    networks:
+      - api
+      - gateway
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ./
+      dockerfile: ./.docker/prod/app/Dockerfile
+      args:
+        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+        IMAGE_TAG: ${IMAGE_TAG}
+    environment:
+      PHP_FPM_PM_MAX_CHILDREN: ${PHP_FPM_PM_MAX_CHILDREN:-5}
+      PHP_FPM_PM_START_SERVERS: ${PHP_FPM_PM_START_SERVERS:-2}
+      PHP_FPM_PM_MIN_SPARE_SERVERS: ${PHP_FPM_PM_MIN_SPARE_SERVERS:-1}
+      PHP_FPM_PM_MAX_SPARE_SERVERS: ${PHP_FPM_PM_MAX_SPARE_SERVERS:-3}
+    volumes:
+      - ./storage:/var/www/html/storage
+    links:
+      - postgres
+      - redis
+    networks:
+      - api
+      - gateway
+    restart: unless-stopped

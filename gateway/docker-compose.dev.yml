@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  reverse-proxy:
+    build:
+      context: ./reverse-proxy/dev
+      dockerfile: Dockerfile
+    volumes:
+      - ./reverse-proxy/dev/sites-enabled:/etc/nginx/sites-enabled:ro
+      - ./reverse-proxy/dev/snippets:/etc/nginx/snippets:ro
+      - ./reverse-proxy/dev/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./reverse-proxy/dev/ssl:/etc/nginx/ssl:ro
+    ports:
+      - "443:443"
+      - "80:80"
+    networks:
+      - gateway
+
+networks:
+  gateway:
+    name: gateway
+    external: true

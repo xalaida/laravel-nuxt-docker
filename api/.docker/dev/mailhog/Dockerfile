@@ -1,2 +1,2 @@
 # Image
-FROM mailhog/mailhog
+FROM mailhog/mailhog:latest

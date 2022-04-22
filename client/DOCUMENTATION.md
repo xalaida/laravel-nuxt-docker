@@ -14,6 +14,12 @@ Run the installation script in your terminal, and it will do it all automaticall
 
 Now you should be able to see it running in your browser at [http://localhost:3000](http://localhost:3000).
 
+## Installation to existing project
+
+1. Copy all files from the `client` directory to your application.
+2. Create the `.env` file from `.env.dev`.
+3. Build and run containers using the command `make install`.
+
 ## Usage
 
 All docker commands are abstracted into [Makefile](./Makefile) instructions.
@@ -87,7 +93,43 @@ const { data } = await useApiFetch('/products')
 </script>
 ```
 
+#### Nuxt 2
+
+For Nuxt 2 app you need to configure `axios` in the `nuxt.config.js` file like this:
+
+```js
+{
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.API_URL_BROWSER
+    }
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.API_URL_SERVER
+    }
+  },
+}
+```
+
+Now in the component file you can use it like this:
+
+```vue
+<script>
+export default {
+  async asyncData ({ $axios }) {
+    const { data } = await $axios.$get('/products')
+  }
+}
+</script>
+```
+
+## Nuxt 2 version
+
+If you want to use Nuxt 2, you need to copy all files from `stubs/nuxt2` directory to the base `client` directory and then follow [the installation instructions](#installation).
+
 ## To Do list
 
-- [ ] add stub for nuxt 2
 - [ ] add health checks
+- [ ] add aliases file or bash entry

@@ -1,7 +1,3 @@
-#-----------------------------------------------------------
-# Environment variables
-#-----------------------------------------------------------
-
 # Include file with .env variables if exists
 -include .env
 
@@ -12,8 +8,23 @@ IMAGE_REGISTRY ?= prod
 IMAGE_TAG ?= latest
 
 #-----------------------------------------------------------
-# Control
+# Management
 #-----------------------------------------------------------
+
+# Create shared gateway network
+gateway:
+	docker network create gateway
+
+# Init variables for development environment
+env.dev:
+	cp ./.env.dev ./.env
+
+# Init variables for production environment
+env.prod:
+	cp ./.env.prod ./.env
+
+# Build and restart containers
+install: build.all up
 
 # Start containers
 up:
@@ -34,13 +45,6 @@ build.all: build.base build
 build.base:
 	docker build --file ${BASE_IMAGE_DOCKERFILE} --tag ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG} .
 
-# Build and restart containers
-update: build.all up
-
-# Force the update process
-update.force:
-	docker-compose -f ${COMPOSE_FILE} up -d --build --force-recreate
-
 # Show list of running containers
 ps:
 	docker-compose -f ${COMPOSE_FILE} ps
@@ -54,35 +58,22 @@ reboot: down up
 
 # View output from containers
 logs:
-	docker-compose -f ${COMPOSE_FILE} logs
+	docker-compose -f ${COMPOSE_FILE} logs --tail 500
 
-# Show logs of running containers with following output
+# Follow output from containers (short of 'follow logs')
 fl:
-	docker-compose -f ${COMPOSE_FILE} logs -f
-
-# Init variables for development environment
-env.dev:
-	cp ./.env.dev ./.env
-
-# Init variables for production environment
-env.prod:
-	cp ./.env.prod ./.env
-
-# Create shared gateway network
-gateway:
-	docker network create gateway
+	docker-compose -f ${COMPOSE_FILE} logs --tail 500 -f
 
 # Prune stopped docker containers and dangling images
 prune:
 	docker system prune
 
-
 #-----------------------------------------------------------
-# App
+# Application
 #-----------------------------------------------------------
 
 # Enter the app container
-app:
+app.bash:
 	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
 
 # Restart the app container
@@ -118,6 +109,9 @@ db.seed:
 # Fresh the database state
 db.fresh:
 	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate:fresh
+
+# Refresh the database
+db.refresh: db.fresh db.seed
 
 # Dump database into file (only for development environment) (TODO: replace file name with env variable)
 db.dump:
@@ -161,10 +155,17 @@ composer.autoload:
 storage.link:
 	docker-compose -f ${COMPOSE_FILE} exec app php artisan storage:link --relative
 
-# Set up permissions for the storage folder
+# Give permissions of the storage folder to the www-data
 storage.perm:
 	sudo chmod -R 755 storage
+	sudo chown -R www-data:www-data storage
 
+# Give permissions of the storage folder to the current user
+storage.perm.me:
+	sudo chmod -R 755 storage
+	sudo chown -R "$(id -u):$(id -g)" storage
+
+# TODO: add octane commands
 
 #-----------------------------------------------------------
 # Testing (only for development environment)
@@ -189,7 +190,6 @@ dusk:
 metrics:
 	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpmetrics --report-html=./.metrics api/app
 
-
 #-----------------------------------------------------------
 # Redis
 #-----------------------------------------------------------
@@ -201,7 +201,6 @@ redis:
 # Flush the redis state
 redis.flush:
 	docker-compose -f ${COMPOSE_FILE} exec redis redis-cli FLUSHALL
-
 
 #-----------------------------------------------------------
 # Swarm
@@ -226,7 +225,6 @@ swarm.ps:
 # Init the Docker Swarm Leader node
 swarm.init:
 	docker swarm init
-
 
 #-----------------------------------------------------------
 # Danger zone

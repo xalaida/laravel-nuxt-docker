@@ -1,0 +1,34 @@
+  gateway:
+    build:
+      context: ./
+      dockerfile: ./.docker/dev/gateway/Dockerfile
+    volumes:
+      - ./public:/var/www/html/public:ro
+    links:
+      - app
+    hostname: api
+    ports:
+      - "8000:8000"
+    networks:
+      - api
+      - gateway
+
+  app:
+    build:
+      context: ./
+      dockerfile: ./.docker/dev/app/Dockerfile
+      args:
+        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+        IMAGE_TAG: ${IMAGE_TAG}
+    volumes:
+      - ./:/var/www/html
+    links:
+      - postgres
+      - postgres-testing
+      - redis
+      - mailhog
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - api
+      - gateway

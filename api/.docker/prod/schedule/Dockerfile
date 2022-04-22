@@ -5,18 +5,12 @@ ARG IMAGE_TAG=latest
 # Image
 FROM ${IMAGE_REGISTRY}/api-base:${IMAGE_TAG}
 
-# Starting from scratch
-RUN apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 # Update dependencies
-    && apt-get update \
-# Install cron
+RUN apt-get update \
+# Install Crontab
     && apt-get install -y cron \
-# Clean up
-    && apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Clean up the apt cache
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy and enable cron job file
 COPY ./.docker/prod/schedule/cron.d/crontab /etc/cron.d/crontab

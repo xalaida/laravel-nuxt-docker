@@ -3,8 +3,8 @@ version: '3.8'
 services:
   app:
     build:
-      context: ./.docker/dev/app
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/dev/app/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -25,8 +25,8 @@ services:
 
   queue:
     build:
-      context: ./.docker/dev/queue
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/dev/queue/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -41,8 +41,8 @@ services:
 
   schedule:
     build:
-      context: ./.docker/dev/schedule
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/dev/schedule/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -57,24 +57,24 @@ services:
 
   postgres:
     build:
-      context: ./.docker/dev/postgres
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/dev/postgres/Dockerfile
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres:/var/lib/postgresql/data
-      - ./.docker/dev/postgres/dumps/:/tmp/
+      - ./.docker/dev/postgres/dumps/:/tmp
     ports:
-      - "54321:5432"
+      - "5432:5432"
     networks:
       - api
 
   postgres-testing:
     build:
-      context: ./.docker/dev/postgres
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/dev/postgres/Dockerfile
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -84,22 +84,22 @@ services:
 
   redis:
     build:
-      context: ./.docker/dev/redis
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/dev/redis/Dockerfile
     # TODO: Add one more volume for configuration (disable background saves)
     volumes:
       - redis:/data
     ports:
-      - "63791:6379"
+      - "6379:6379"
     networks:
       - api
 
   mailhog:
     build:
-      context: ./.docker/dev/mailhog
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./.docker/dev/mailhog/Dockerfile
     ports:
-      - "8026:8025"
+      - "8025:8025"
     networks:
       - api
 
