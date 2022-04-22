@@ -192,6 +192,7 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 - [ ] add best practice about stateless app and using of storage and cookies
 
 - php-fpm
+  - [ ] add doc how to install (link to instruction)
   - [ ] add possibility to publish stub somehow with replacements
   - [ ] add authentication behind the gateway status pages
   - [ ] add fpm slow log: https://thephp.cc/presentations/2018-international-php-conference-spring-edition-optimizing-php-fpm-for-production.pdf
