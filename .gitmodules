@@ -1,3 +1,0 @@
-[submodule "gateway"]
-	path = gateway
-	url = https://github.com/nevadskiy/gateway-proxy.git
