@@ -120,14 +120,18 @@ danger.app.prune:
 		.vscode \
 		.nuxt \
 		assets \
+		components \
 		layouts \
 		node_modules \
 		pages \
 		public \
+		static \
 		store \
+		.editorconfig \
 		.env \
 		app.vue \
 		.gitignore \
+		nuxt.config.js \
 		nuxt.config.ts \
 		package.json \
 		README.md \
