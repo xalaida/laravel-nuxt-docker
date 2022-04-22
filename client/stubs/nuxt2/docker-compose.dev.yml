@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./.docker/dev/app/Dockerfile
+    volumes:
+      - ./:/var/www/html
+    hostname: client
+    ports:
+      - "3000:3000"
+    networks:
+      - client
+      - gateway
+    restart: unless-stopped
+
+networks:
+  client:
+    name: client
+
+  gateway:
+    name: gateway
+    external: true
