@@ -30,11 +30,11 @@ There are also no restrictions to add more, for example, a mobile application or
 
 If you want to host API and client apps on the single host machine, you may set up subdomains rather than rely on published ports.
 
-The project includes a simple [gateway application](https://github.com/nevadskiy/gateway-proxy) that can easily help with this.
+The project includes a simple gateway application that can easily help with this.
 
-It can also be useful to run locally and set up an application to use subdomains and test CORS and other possible issues.
+It can be also useful to run locally and set up an application to use subdomains and test CORS and other possible issues.
 
-Of course, you can replace it with a more professional tool.
+Of course, you can replace it with a more professional tool, like [Traefik](https://traefik.io).
 
 ## ⚙ Installation
 
