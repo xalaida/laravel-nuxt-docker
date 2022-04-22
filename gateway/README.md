@@ -64,6 +64,7 @@ make up
 - [ ] use staging env variable
 - [ ] add command to reissue cert according to new params
 - [ ] add possibility to automatically generate conf from stub (default nginx template engine very often breaks with variables inside strings)
+  - /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf'"
 - [ ] generate overlay network for swarm
 - [ ] configure logging
   - [ ] probably disable access.log

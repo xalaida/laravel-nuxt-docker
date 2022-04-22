@@ -181,7 +181,6 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 - [ ] add health checks to other containers
 - [ ] set up according to: https://phpunit.readthedocs.io/en/9.5/installation.html#recommended-php-configuration
 
-- [ ] /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 - [ ] also add possibility to disable xdebug in runtime
 - [ ] extract max_upload_size into env variable 
 - [ ] add recommendation about logging with 'stack' driver (add 'stderr' to stack)
