@@ -6,8 +6,6 @@ services:
       context: ./
       dockerfile: ./.docker/prod/app/Dockerfile
     hostname: client
-    expose:
-      - 3000
     networks:
       - client
       - gateway
