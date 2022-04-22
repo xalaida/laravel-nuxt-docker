@@ -190,7 +190,7 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 - [ ] add info about `laravel telescope` issue due to `TELESCOPE_DUMP_WATCHER` during prod build
   - add commands to ignore list: ['package:discover', 'config:cache', 'route:cache', 'view:cache', 'event:cache', 'storage:link']
 - [ ] add info about local packages/modules (how to include for build)
-- [ ] make env variable IMAGE_TAG and IMAGE_REGISTRY optional (check docker prod build)
+- [ ] add best practice about stateless app and using of storage and cookies
 
 - php-fpm
   - [ ] add possibility to publish stub somehow with replacements
