@@ -169,6 +169,13 @@ storage.perm.me:
 own.me:
 	sudo chown -R "$(id -u):$(id -g)" .
 
+# Reload the Octane workers
+octane.reload:
+	docker-compose -f ${COMPOSE_FILE} exec app php artisan octane:reload
+
+# Alias to reload the Octane workers
+or: octane.reload
+
 # TODO: add octane commands
 
 #-----------------------------------------------------------
