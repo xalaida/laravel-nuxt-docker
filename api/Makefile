@@ -138,6 +138,10 @@ ci: composer.install
 composer.update:
 	docker-compose -f ${COMPOSE_FILE} exec app composer update
 
+# Update composer dependencies from stopped containers
+r.composer.update:
+	docker-compose -f ${COMPOSE_FILE} run --rm --no-deps app composer update
+
 # Alias to update composer dependencies
 cu: composer.update
 
