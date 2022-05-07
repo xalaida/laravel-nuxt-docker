@@ -165,6 +165,10 @@ storage.perm.me:
 	sudo chmod -R 755 storage
 	sudo chown -R "$(id -u):$(id -g)" storage
 
+# Give files ownership to the current user
+own.me:
+	sudo chown -R "$(id -u):$(id -g)" .
+
 # TODO: add octane commands
 
 #-----------------------------------------------------------
