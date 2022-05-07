@@ -20,7 +20,8 @@ install_laravel() {
   rm -r ${INSTALL_DIRECTORY}
 
   # Generate the application key
-  make key.generate
+  docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
+    php artisan key:generate --ansi
 }
 
 install_breeze() {

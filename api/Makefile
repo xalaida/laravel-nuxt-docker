@@ -123,15 +123,13 @@ db.dump:
 queue.restart:
 	docker-compose -f ${COMPOSE_FILE} exec queue php artisan queue:restart
 
-# Generate the app key
-key.generate:
-	docker-compose -f ${COMPOSE_FILE} run --rm app php artisan key:generate --ansi
-
-# TODO: add command to install composer packages from stopped container
-
 # Install composer dependencies
 composer.install:
 	docker-compose -f ${COMPOSE_FILE} exec app composer install
+
+# Install composer dependencies from stopped containers
+r.composer.install:
+	docker-compose -f ${COMPOSE_FILE} run --rm --no-deps app composer install
 
 # Alias to install composer dependencies
 ci: composer.install
@@ -163,11 +161,11 @@ storage.perm:
 # Give permissions of the storage folder to the current user
 storage.perm.me:
 	sudo chmod -R 755 storage
-	sudo chown -R "$(id -u):$(id -g)" storage
+	sudo chown -R "$(shell id -u):$(shell id -g)" storage
 
 # Give files ownership to the current user
 own.me:
-	sudo chown -R "$(id -u):$(id -g)" .
+	sudo chown -R "$(shell id -u):$(shell id -g)" .
 
 # Reload the Octane workers
 octane.reload:
@@ -175,8 +173,6 @@ octane.reload:
 
 # Alias to reload the Octane workers
 or: octane.reload
-
-# TODO: add octane commands
 
 #-----------------------------------------------------------
 # Testing (only for development environment)
