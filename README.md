@@ -85,7 +85,3 @@ But the SSR request is sent by the node server, not the browser, and should be s
 
 If you see anything that can be improved, feel free to make a pull request.
 Contributions are welcome and will be fully credited.
-
-## 🔨 To Do
-
-- [ ] try to set up CI/CD using GitHub actions (check cypress.io)
