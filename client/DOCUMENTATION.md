@@ -128,8 +128,3 @@ export default {
 ## Nuxt 2 version
 
 If you want to use Nuxt 2, you need to copy all files from `stubs/nuxt2` directory to the base `client` directory and then follow [the installation instructions](#installation).
-
-## To Do list
-
-- [ ] add health checks
-- [ ] add aliases file or bash entry
