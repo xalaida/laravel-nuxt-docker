@@ -27,8 +27,3 @@ To do that, you need to set up some `proxy` in front of both `client` and `api` 
     - Run containers using `make up` command.
 
 7. Set up the `reverse proxy` application.
-
-## To Do
-
-- [ ] add more detailed instructions
-- [ ] add swarm instructions
