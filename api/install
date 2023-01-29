@@ -1,17 +1,23 @@
 #!/bin/bash
 
-install_laravel() {
-  local TEMP_INSTALL_DIRECTORY=src
+ENV_DIST_FILE=.env.dev
+ENV_FILE=.env
+GATEWAY_NETWORK=gateway
+COMPOSE_FILE=docker-compose.dev.yml
+APP_CONTAINER=app
+TEMP_INSTALL_DIRECTORY=src
+SELF_DESTRUCTION=false
 
+install_laravel() {
   # Init a new Laravel app into a temporary directory
-  docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
-    composer create-project --prefer-dist laravel/laravel ${TEMP_INSTALL_DIRECTORY}
+  docker compose -f "$COMPOSE_FILE" run --rm --no-deps "$APP_CONTAINER" \
+    composer create-project --prefer-dist laravel/laravel "$TEMP_INSTALL_DIRECTORY"
 
   # Set ownership of the temporary directory to the current user
   sudo chown -R "$(id -u)":"$(id -g)" ./${TEMP_INSTALL_DIRECTORY}
 
   # Remove the default file with environment variables
-  rm ${TEMP_INSTALL_DIRECTORY}/.env
+  rm ${TEMP_INSTALL_DIRECTORY}/${ENV_FILE}
 
   # Move everything from the temporary directory to the current directory
   mv ${TEMP_INSTALL_DIRECTORY}/* ${TEMP_INSTALL_DIRECTORY}/.* .
@@ -20,39 +26,45 @@ install_laravel() {
   rm -r ${TEMP_INSTALL_DIRECTORY}
 
   # Generate the application key
-  docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
+  docker compose -f "$COMPOSE_FILE" run --rm --no-deps "$APP_CONTAINER" \
     php artisan key:generate --ansi
 }
 
-install_breeze() {
-    # Require Breeze package
-    docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
-      composer require laravel/breeze --dev
-
-    # Install Breeze package
-    docker-compose -f docker-compose.dev.yml run --rm --no-deps \
-      --user "$(id -u)":"$(id -g)" app \
-      php artisan breeze:install api
-}
-
 install_octane() {
-  # Require Octane package
-  docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
+  # Install the Octane package
+  docker compose -f "$COMPOSE_FILE" run --rm --no-deps "$APP_CONTAINER" \
     composer require laravel/octane
 
-  # Install Octane package
-  docker-compose -f docker-compose.dev.yml run --rm --no-deps \
-    --user "$(id -u)":"$(id -g)" app \
+  # Configure the Octane package
+  docker compose -f "$COMPOSE_FILE" run --rm --no-deps \
+    --user "$(id -u)":"$(id -g)" "$APP_CONTAINER" \
     php artisan octane:install --server=swoole
 }
 
-# Copy a .env file if it is missing
-if [ ! -f ./.env ]; then
-  cp ./.env.dev ./.env
+install_breeze() {
+    # Install the Breeze package
+    docker compose -f "$COMPOSE_FILE" run --rm --no-deps "$APP_CONTAINER" \
+      composer require laravel/breeze --dev
+
+    # Configure the Breeze package
+    docker compose -f "$COMPOSE_FILE" run --rm --no-deps \
+      --user "$(id -u)":"$(id -g)" "$APP_CONTAINER" \
+      php artisan breeze:install api
+}
+
+# Configure self destruction
+if [ "$1" == "--destruct" ]; then
+    shift 1
+    SELF_DESTRUCTION=true
 fi
 
-# Create shared gateway network
-docker network create gateway
+# Copy the .env file from the dist
+if [ ! -f "$ENV_FILE" ]; then
+    cp "$ENV_DIST_FILE" "$ENV_FILE"
+fi
+
+# Create a shared gateway network
+docker network create "$GATEWAY_NETWORK"
 
 # Build containers
 make build.all
@@ -67,7 +79,16 @@ install_octane
 install_breeze
 
 # Start containers
-make up
+docker compose -f "$COMPOSE_FILE" up -d
+
+# Delete installation files
+if [ "$SELF_DESTRUCTION" ]; then
+    echo "Removing stubs directory"
+    rm -rf stubs
+
+    echo "Removing installation script"
+    rm ./install
+fi
 
 # Print the final message
 echo "The API app has been installed and run on http://localhost:8000."

@@ -30,12 +30,12 @@ if [ "$NUXT_VERSION" == 2 ]; then
     cp -r stubs/nuxt2/. .
 fi
 
-# Copy .env file from the dist
+# Copy the .env file from the dist
 if [ ! -f "$ENV_FILE" ]; then
     cp "$ENV_DIST_FILE" "$ENV_FILE"
 fi
 
-# Create shared gateway network
+# Create a shared gateway network
 docker network create "$GATEWAY_NETWORK"
 
 # Build containers
@@ -76,7 +76,7 @@ if [ "$SELF_DESTRUCTION" ]; then
     echo "Removing stubs directory"
     rm -rf stubs
 
-    echo "Removing install script"
+    echo "Removing installation script"
     rm ./install
 fi
 
