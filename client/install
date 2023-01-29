@@ -11,7 +11,7 @@ TEMP_INSTALL_DIRECTORY=src
 SELF_DESTRUCTION=false
 
 # Determine the Nuxt version
-if [ "$1" == "--nuxt2" ] || [ "$1" == "--nuxt-2" ] || [ "$1" == "--n2" ]; then
+if [ "$1" == "--nuxt2" ] || [ "$1" == "--nuxt-2" ]; then
     shift 1
     NUXT_VERSION=2
 fi
