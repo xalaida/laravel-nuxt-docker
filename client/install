@@ -35,11 +35,11 @@ docker compose -f $COMPOSE_FILE build
 
 # Init a new Nuxt app into a temporary directory
 if [ $NUXT_VERSION = 2 ]; then
-    docker-compose -f $COMPOSE_FILE run --rm --no-deps \
+    docker compose -f $COMPOSE_FILE run --rm --no-deps \
         --user "$(id -u)":"$(id -g)" $CONTAINER \
         yarn create nuxt-app $TEMP_INSTALL_DIRECTORY
 else
-    docker-compose -f $COMPOSE_FILE run --rm --no-deps \
+    docker compose -f $COMPOSE_FILE run --rm --no-deps \
         --user "$(id -u)":"$(id -g)" $CONTAINER \
         npx nuxi init $TEMP_INSTALL_DIRECTORY
 fi
@@ -55,13 +55,13 @@ rm -r $TEMP_INSTALL_DIRECTORY
 
 # Install packages
 if [ $NUXT_VERSION = 3 ]; then
-    docker-compose -f $COMPOSE_FILE run --rm --no-deps \
+    docker compose -f $COMPOSE_FILE run --rm --no-deps \
         --user "$(id -u)":"$(id -g)" $CONTAINER \
         yarn install
 fi
 
 # Start containers
-docker-compose -f $COMPOSE_FILE up -d
+docker compose -f $COMPOSE_FILE up -d
 
 # Print the final message
 echo "The client app has been installed and run on http://localhost:3000."
