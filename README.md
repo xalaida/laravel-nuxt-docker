@@ -58,7 +58,7 @@ This will install and run a fresh new Laravel app which will be available on `ht
 
 ```bash
 cd client
-./install.sh
+./install
 ```
 
 This will install and run a fresh new Nuxt 3 app which will be available on `http://localhost:3000`.
