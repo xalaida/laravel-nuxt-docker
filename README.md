@@ -41,7 +41,7 @@ cd app
 
 ```bash
 cd api
-./install.sh
+./install
 ```
 
 This will install and run a fresh new Laravel app which will be available on `http://localhost:8000`.

@@ -17,7 +17,7 @@ The whole installation process is to create a shared network, build containers a
 Run the installation script in your terminal, and it will do it all automatically:
 
 ```bash
-./install.sh
+./install
 ```
 
 Also, it will install a Laravel app along with [Octane](https://laravel.com/docs/octane) package and [Breeze](https://laravel.com/docs/starter-kits#breeze-and-next) API scaffolding.

@@ -1,23 +1,23 @@
 #!/bin/bash
 
 install_laravel() {
-  local INSTALL_DIRECTORY=src
+  local TEMP_INSTALL_DIRECTORY=src
 
   # Init a new Laravel app into a temporary directory
   docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
-    composer create-project --prefer-dist laravel/laravel ${INSTALL_DIRECTORY}
+    composer create-project --prefer-dist laravel/laravel ${TEMP_INSTALL_DIRECTORY}
 
   # Set ownership of the temporary directory to the current user
-  sudo chown -R "$(id -u)":"$(id -g)" ./${INSTALL_DIRECTORY}
+  sudo chown -R "$(id -u)":"$(id -g)" ./${TEMP_INSTALL_DIRECTORY}
 
   # Remove the default file with environment variables
-  rm ${INSTALL_DIRECTORY}/.env
+  rm ${TEMP_INSTALL_DIRECTORY}/.env
 
   # Move everything from the temporary directory to the current directory
-  mv ${INSTALL_DIRECTORY}/* ${INSTALL_DIRECTORY}/.* .
+  mv ${TEMP_INSTALL_DIRECTORY}/* ${TEMP_INSTALL_DIRECTORY}/.* .
 
   # Remove the temporary directory
-  rm -r ${INSTALL_DIRECTORY}
+  rm -r ${TEMP_INSTALL_DIRECTORY}
 
   # Generate the application key
   docker-compose -f docker-compose.dev.yml run --rm --no-deps app \
@@ -57,13 +57,13 @@ docker network create gateway
 # Build containers
 make build.all
 
-# Install Laravel framework
+# Install the Laravel framework
 install_laravel
 
-# Install Octane package
+# Install the Octane package
 install_octane
 
-# Install Breeze package
+# Install the Breeze package
 install_breeze
 
 # Start containers
