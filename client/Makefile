@@ -5,7 +5,7 @@
 COMPOSE_FILE ?= docker-compose.yml
 
 #-----------------------------------------------------------
-# Management
+# Docker
 #-----------------------------------------------------------
 
 # Create shared gateway network
@@ -19,9 +19,6 @@ env.dev:
 # Init variables for production environment
 env.prod:
 	cp ./.env.prod ./.env
-
-# Build and restart containers
-install: build up
 
 # Start containers
 up:
@@ -43,27 +40,26 @@ ps:
 restart:
 	docker-compose -f ${COMPOSE_FILE} restart
 
+# Alias to restart containers
+r: restart
+
 # Reboot containers
 reboot: down up
 
-# View output from containers
+# View output logs from containers
 logs:
 	docker-compose -f ${COMPOSE_FILE} logs --tail 500
 
-# Follow output from containers (short for 'follow logs')
-fl:
+# Follow output logs from containers
+logs.f:
 	docker-compose -f ${COMPOSE_FILE} logs --tail 500 -f
 
-# Prune stopped docker containers and dangling images
-prune:
-	docker system prune
-
 #-----------------------------------------------------------
-# Application
+# App
 #-----------------------------------------------------------
 
 # Enter the app container
-app.bash:
+bash:
 	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
 
 # Install yarn dependencies
@@ -110,11 +106,14 @@ swarm.init:
 
 #-----------------------------------------------------------
 # Danger zone
-# Do not use these commands
 #-----------------------------------------------------------
 
+# Prune stopped docker containers and dangling images
+danger.prune:
+	docker system prune
+
 # Remove all app files and folders (leave only dockerized template)
-danger.app.prune:
+danger.remove: down
 	sudo rm -rf \
 		.idea \
 		.vscode \
