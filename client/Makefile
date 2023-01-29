@@ -20,6 +20,9 @@ env.dev:
 env.prod:
 	cp .env.prod .env
 
+# Build and start containers
+bup: build up
+
 # Start containers
 up:
 	docker compose -f ${COMPOSE_FILE} up -d

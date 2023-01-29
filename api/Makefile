@@ -23,8 +23,8 @@ env.dev:
 env.prod:
 	cp .env.prod .env
 
-# Build and restart containers
-install: build.all up
+# Build and start containers
+bup: build.all up
 
 # Start containers
 up:
