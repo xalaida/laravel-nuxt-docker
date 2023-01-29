@@ -9,30 +9,34 @@ The whole installation process is to create a shared network, build containers a
 Run the installation script in your terminal, and it will do it all automatically:
 
 ```bash
-# Install Nuxt 3
+# Nuxt 3
 ./install
 ```
 
+You can also install the Nuxt 2 version:
+
 ```bash
-# Install Nuxt 2
+# Nuxt 2
 ./install --nuxt-2
 ```
 
 Now you should be able to see it running in your browser at [http://localhost:3000](http://localhost:3000).
 
-## Installation to existing project
+> After installation the `stubs` directory and `install` script may be deleted.
 
-1. Copy all files from the `client` directory to your application.
+## Installation to an existing project
+
+1. Copy all files from the `client` directory to your application directory.
 2. Create the `.env` file from `.env.dev`.
-3. Build and run containers using `make build` and `make up` commands.
+3. Build and run containers using the `make up` command.
 
 ## Usage
 
-All docker commands are abstracted into [Makefile](./Makefile) instructions.
+Most common docker commands are abstracted into [Makefile](./Makefile) instructions.
 
-They are very simple and often just instead of the `docker-compose` command you need to write `make` in your terminal.
+They are very simple and often just instead of the `docker compose` command you need to write `make` in your terminal.
 
-Feel free to explore them and edit according to your needs.
+Feel free to explore them and edit them according to your needs.
 
 ### Start containers
 
@@ -44,7 +48,7 @@ make up
 docker-compose -f docker-compose.dev.yml up -d
 ```
 
-Now you can open [http://localhost:3000](http://localhost:3000) URL in your browser.
+Now you can open the [http://localhost:3000](http://localhost:3000) URL in your browser.
 
 ### Stop containers
 
@@ -115,7 +119,7 @@ For Nuxt 2 app you need to configure `axios` in the `nuxt.config.js` file like t
     axios: {
       baseURL: process.env.API_URL_SERVER
     }
-  },
+  }
 }
 ```
 
@@ -126,6 +130,10 @@ Now in the component file you can use it like this:
 export default {
   async asyncData ({ $axios }) {
     const { data } = await $axios.$get('/products')
+
+    return {
+      products: data
+    }
   }
 }
 </script>
