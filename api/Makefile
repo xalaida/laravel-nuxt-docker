@@ -8,7 +8,7 @@ IMAGE_REGISTRY ?= prod
 IMAGE_TAG ?= latest
 
 #-----------------------------------------------------------
-# Management
+# Docker
 #-----------------------------------------------------------
 
 # Create shared gateway network
@@ -56,24 +56,20 @@ restart:
 # Reboot containers
 reboot: down up
 
-# View output from containers
+# View output logs from containers
 logs:
 	docker-compose -f ${COMPOSE_FILE} logs --tail 500
 
-# Follow output from containers (short of 'follow logs')
-fl:
+# Follow output logs from containers
+logs.f:
 	docker-compose -f ${COMPOSE_FILE} logs --tail 500 -f
-
-# Prune stopped docker containers and dangling images
-prune:
-	docker system prune
 
 #-----------------------------------------------------------
 # Application
 #-----------------------------------------------------------
 
 # Enter the app container
-app.bash:
+bash:
 	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
 
 # Restart the app container
@@ -239,11 +235,14 @@ swarm.init:
 
 #-----------------------------------------------------------
 # Danger zone
-# Do not use these commands
 #-----------------------------------------------------------
 
+# Prune stopped docker containers and dangling images
+danger.prune:
+	docker system prune
+
 # Remove all app files and folders (leave only dockerized template)
-danger.app.prune:
+danger.remove:
 	sudo rm -rf \
 		.idea \
 		.vscode \
