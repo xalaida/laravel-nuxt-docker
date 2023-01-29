@@ -3,13 +3,12 @@ version: '3.8'
 services:
   app:
     build:
-      context: ./
-      dockerfile: ./.docker/dev/app/Dockerfile
+      dockerfile: .docker/dev/app/Dockerfile
     volumes:
       - ./:/var/www/html
     hostname: client
     ports:
-      - "3000:3000"
+      - "3000:3000" # The Nuxt app port
     networks:
       - client
       - gateway
