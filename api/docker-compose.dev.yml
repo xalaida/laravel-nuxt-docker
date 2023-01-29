@@ -3,8 +3,7 @@ version: '3.8'
 services:
   app:
     build:
-      context: ./
-      dockerfile: ./.docker/dev/app/Dockerfile
+      dockerfile: .docker/dev/app/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -25,8 +24,7 @@ services:
 
   queue:
     build:
-      context: ./
-      dockerfile: ./.docker/dev/queue/Dockerfile
+      dockerfile: .docker/dev/queue/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -41,8 +39,7 @@ services:
 
   schedule:
     build:
-      context: ./
-      dockerfile: ./.docker/dev/schedule/Dockerfile
+      dockerfile: .docker/dev/schedule/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -57,8 +54,7 @@ services:
 
   postgres:
     build:
-      context: ./
-      dockerfile: ./.docker/dev/postgres/Dockerfile
+      dockerfile: .docker/dev/postgres/Dockerfile
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -73,8 +69,7 @@ services:
 
   postgres-testing:
     build:
-      context: ./
-      dockerfile: ./.docker/dev/postgres/Dockerfile
+      dockerfile: .docker/dev/postgres/Dockerfile
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -84,9 +79,7 @@ services:
 
   redis:
     build:
-      context: ./
-      dockerfile: ./.docker/dev/redis/Dockerfile
-    # TODO: Add one more volume for configuration (disable background saves)
+      dockerfile: .docker/dev/redis/Dockerfile
     volumes:
       - redis:/data
     ports:
@@ -96,8 +89,7 @@ services:
 
   mailhog:
     build:
-      context: ./
-      dockerfile: ./.docker/dev/mailhog/Dockerfile
+      dockerfile: .docker/dev/mailhog/Dockerfile
     ports:
       - "8025:8025"
     networks:

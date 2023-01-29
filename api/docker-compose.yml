@@ -3,8 +3,7 @@ version: '3.8'
 services:
   app:
     build:
-      context: ./
-      dockerfile: ./.docker/prod/app/Dockerfile
+      dockerfile: .docker/prod/app/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -21,8 +20,7 @@ services:
 
   queue:
     build:
-      context: ./
-      dockerfile: ./.docker/prod/queue/Dockerfile
+      dockerfile: .docker/prod/queue/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -37,8 +35,7 @@ services:
 
   schedule:
     build:
-      context: ./
-      dockerfile: ./.docker/prod/schedule/Dockerfile
+      dockerfile: .docker/prod/schedule/Dockerfile
       args:
         IMAGE_REGISTRY: ${IMAGE_REGISTRY}
         IMAGE_TAG: ${IMAGE_TAG}
@@ -53,8 +50,7 @@ services:
 
   postgres:
     build:
-      context: ./
-      dockerfile: ./.docker/prod/postgres/Dockerfile
+      dockerfile: .docker/prod/postgres/Dockerfile
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -67,8 +63,7 @@ services:
 
   redis:
     build:
-      context: ./
-      dockerfile: ./.docker/prod/redis/Dockerfile
+      dockerfile: .docker/prod/redis/Dockerfile
     volumes:
       - redis:/data
     networks:
