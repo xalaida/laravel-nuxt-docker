@@ -1,5 +1,6 @@
 #!/bin/bash
 
+INSTALL_BREEZE=false
 ENV_DIST_FILE=.env.dev
 ENV_FILE=.env
 GATEWAY_NETWORK=gateway
@@ -52,6 +53,12 @@ install_breeze() {
       php artisan breeze:install api
 }
 
+# Determine the Nuxt version
+if [ "$1" == "--breeze" ]; then
+    shift 1
+    INSTALL_BREEZE=true
+fi
+
 # Configure self destruction
 if [ "$1" == "--destruct" ]; then
     shift 1
@@ -76,7 +83,9 @@ install_laravel
 install_octane
 
 # Install the Breeze package
-install_breeze
+if [ "$INSTALL_BREEZE" ]; then
+    install_breeze
+fi
 
 # Start containers
 docker compose -f "$COMPOSE_FILE" up -d

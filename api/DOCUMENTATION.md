@@ -5,7 +5,7 @@ This is where your Laravel application is stored.
 ## Stack includes
 
 * Laravel (latest version)
-* Octane
+* Octane / PHP-FPM
 * PostgreSQL (and separate database for testing)
 * Redis
 * MailHog
@@ -20,17 +20,25 @@ Run the installation script in your terminal, and it will do it all automaticall
 ./install
 ```
 
-Also, it will install a Laravel app along with [Octane](https://laravel.com/docs/octane) package and [Breeze](https://laravel.com/docs/starter-kits#breeze-and-next) API scaffolding.
+Also, it will install a Laravel app along with [Octane](https://laravel.com/docs/octane) package.
 
 Now you should be able to see it running in your browser at [http://localhost:8000](http://localhost:8000).
+
+#### Breeze
+
+If you want to install [Laravel Breeze](https://laravel.com/docs/starter-kits#breeze-and-next) API scaffolding, you can provide the `--breeze` option for the installation script:
+
+```bash
+./install --breeze
+```
 
 ## Usage
 
 All docker commands are abstracted into [Makefile](./Makefile) instructions.
 
-They are very simple and often just instead of the `docker-compose` command you need to write `make` in your terminal.
+They are very simple and often just instead of the `docker compose` command you need to write `make` in your terminal.
 
-Of course, you can still use the `docker-compose` commands in the terminal, but you should remember that development and production environments rely on different docker-compose files. 
+Of course, you can still use the `docker compose` commands in the terminal, but you should remember that development and production environments rely on different docker compose files. 
 
 Example:
 ```
@@ -38,10 +46,10 @@ Example:
 make up
 
 # Full command
-docker-compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml up -d
 ```
 
-Because *make* commands are much easier to use than full docker-compose commands, I prefer and recommend using them, so free to explore them and edit according to your needs.
+Because *make* commands are much easier to use than full `docker compose` commands, I prefer and recommend using them, so free to explore them and edit according to your needs.
 
 ### Start containers
 
@@ -50,7 +58,7 @@ Because *make* commands are much easier to use than full docker-compose commands
 make up
 
 # Full command
-docker-compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml up -d
 ```
 
 Now you can open [http://localhost:8000](http://localhost:8000) URL in your browser.
@@ -62,7 +70,7 @@ Now you can open [http://localhost:8000](http://localhost:8000) URL in your brow
 make down
 
 # Full command
-docker-compose -f docker-compose.dev.yml down
+docker compose -f docker-compose.dev.yml down
 ```
 
 ### Bash aliases
@@ -86,7 +94,7 @@ All laravel logs are forwarded to the docker log collector via the `stderr` chan
 See the latest logs, running the command:
 
 ```bash
-docker-compose logs app
+docker compose logs app
 ```
 
 ### Storage
@@ -98,7 +106,7 @@ The symlink should be relative to work properly inside the docker environment an
 First, you need to install `symfony/filesystem` package which allows generating relative symlinks.
 
 ```bash
-docker-compose -f docker-compose.dev.yml exec app composer require symfony/filesystem --dev
+docker compose -f docker-compose.dev.yml exec app composer require symfony/filesystem --dev
 ```
 
 Then create the symlink using the command:
@@ -108,7 +116,7 @@ Then create the symlink using the command:
 make storage:link
 
 # Raw command
-docker-compose -f docker-compose.dev.yml exec app php artisan storage:link --relative
+docker compose -f docker-compose.dev.yml exec app php artisan storage:link --relative
 ```
 
 On production environment it will be created automatically.
