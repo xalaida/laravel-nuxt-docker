@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Specify variables
+NUXT_VERSION=3
 ENV_DIST_FILE=.env.dev
 ENV_FILE=.env
 DOCKER_NETWORK=gateway
@@ -8,12 +9,23 @@ COMPOSE_FILE=docker-compose.dev.yml
 CONTAINER=app
 TEMP_INSTALL_DIRECTORY=src
 
+# Determine the Nuxt version
+if [ "$1" == "--nuxt2" ] || [ "$1" == "--nuxt-2" ] || [ "$1" == "--n2" ]; then
+    NUXT_VERSION=2
+fi
+
+# Print the Nuxt version
+echo "Using Nuxt ${NUXT_VERSION} version"
+
+# Copy Nuxt 2 stubs
+if [ $NUXT_VERSION = 2 ]; then
+    cp -r stubs/nuxt2/. .
+fi
+
 # Copy .env file from the dist
 if [ ! -f $ENV_FILE ]; then
     cp $ENV_DIST_FILE $ENV_FILE
 fi
-
-#todo provide --nuxt2 option that automatically copies stubs
 
 # Create shared gateway network
 docker network create $DOCKER_NETWORK
@@ -22,9 +34,15 @@ docker network create $DOCKER_NETWORK
 docker compose -f $COMPOSE_FILE build
 
 # Init a new Nuxt app into a temporary directory
-docker-compose -f $COMPOSE_FILE run --rm --no-deps \
-  --user "$(id -u)":"$(id -g)" $CONTAINER \
-  npx nuxi init $TEMP_INSTALL_DIRECTORY
+if [ $NUXT_VERSION = 2 ]; then
+    docker-compose -f $COMPOSE_FILE run --rm --no-deps \
+        --user "$(id -u)":"$(id -g)" $CONTAINER \
+        yarn create nuxt-app $TEMP_INSTALL_DIRECTORY
+else
+    docker-compose -f $COMPOSE_FILE run --rm --no-deps \
+        --user "$(id -u)":"$(id -g)" $CONTAINER \
+        npx nuxi init $TEMP_INSTALL_DIRECTORY
+fi
 
 # Set ownership of the temporary directory to the current user
 sudo chown -R "$(id -u)":"$(id -g)" $TEMP_INSTALL_DIRECTORY
@@ -36,9 +54,11 @@ mv $TEMP_INSTALL_DIRECTORY/* $TEMP_INSTALL_DIRECTORY/.* .
 rm -r $TEMP_INSTALL_DIRECTORY
 
 # Install packages
-docker-compose -f $COMPOSE_FILE run --rm --no-deps \
-  --user "$(id -u)":"$(id -g)" $CONTAINER \
-  yarn install
+if [ $NUXT_VERSION = 3 ]; then
+    docker-compose -f $COMPOSE_FILE run --rm --no-deps \
+        --user "$(id -u)":"$(id -g)" $CONTAINER \
+        yarn install
+fi
 
 # Start containers
 docker-compose -f $COMPOSE_FILE up -d
