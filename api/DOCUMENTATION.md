@@ -121,6 +121,8 @@ If you want to check how sent mails look, just go to [http://localhost:8025](htt
 
 ## Alternatives
 
+### Sail
+
 The best alternative to this is the official [Laravel Sail](https://laravel.com/docs/9.x/sail) tool which is intended for development environment only.
 
 Sail is automatically installed with all new Laravel applications. 
@@ -144,5 +146,7 @@ docker run --rm -it \
   laravelsail/php81-composer:latest \
   php artisan sail:install
 ```
+
+### Laradock
 
 Also, there is an excellent project called [Laradock](https://laradock.io/) that contains a full bunch of services.

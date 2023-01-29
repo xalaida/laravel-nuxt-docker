@@ -26,4 +26,4 @@ To do that, you need to set up some `proxy` in front of both `client` and `api` 
     - Build containers using `make build` command.
     - Run containers using `make up` command.
 
-7. Set up the `reverse proxy` application.
+7. Set up the `gateway` application.
