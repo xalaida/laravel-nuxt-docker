@@ -72,7 +72,7 @@ fi
 docker compose -f "$COMPOSE_FILE" up -d
 
 # Delete installation files
-if [ "$SELF_DESTRUCTION" ]; then
+if [ "$SELF_DESTRUCTION" == true ]; then
     echo "Removing stubs directory"
     rm -rf stubs
 

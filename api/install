@@ -83,7 +83,7 @@ install_laravel
 install_octane
 
 # Install the Breeze package
-if [ "$INSTALL_BREEZE" ]; then
+if [ "$INSTALL_BREEZE" == true ]; then
     install_breeze
 fi
 
@@ -91,7 +91,7 @@ fi
 docker compose -f "$COMPOSE_FILE" up -d
 
 # Delete installation files
-if [ "$SELF_DESTRUCTION" ]; then
+if [ "$SELF_DESTRUCTION" == true ]; then
     echo "Removing stubs directory"
     rm -rf stubs
 
