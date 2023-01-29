@@ -112,8 +112,8 @@ swarm.init:
 danger.prune:
 	docker system prune
 
-# Delete all app files and folders (leave only dockerized template)
-danger.delete: down
+# Remove all app files and folders (leave only dockerized template)
+danger.remove: down
 	sudo rm -rf \
 		.idea \
 		.vscode \
