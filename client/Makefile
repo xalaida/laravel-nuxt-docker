@@ -119,6 +119,7 @@ danger.app.prune:
 		.idea \
 		.vscode \
 		.nuxt \
+		.npmrc \
 		assets \
 		components \
 		layouts \
