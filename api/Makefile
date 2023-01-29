@@ -17,11 +17,11 @@ gateway:
 
 # Init variables for development environment
 env.dev:
-	cp ./.env.dev ./.env
+	cp .env.dev .env
 
 # Init variables for production environment
 env.prod:
-	cp ./.env.prod ./.env
+	cp .env.prod .env
 
 # Build and restart containers
 install: build.all up
@@ -242,7 +242,7 @@ danger.prune:
 	docker system prune
 
 # Remove all app files and folders (leave only dockerized template)
-danger.remove:
+danger.remove: down
 	sudo rm -rf \
 		.idea \
 		.vscode \
