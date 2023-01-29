@@ -4,64 +4,81 @@
 NUXT_VERSION=3
 ENV_DIST_FILE=.env.dev
 ENV_FILE=.env
-DOCKER_NETWORK=gateway
+GATEWAY_NETWORK=gateway
 COMPOSE_FILE=docker-compose.dev.yml
-CONTAINER=app
+APP_CONTAINER=app
 TEMP_INSTALL_DIRECTORY=src
+SELF_DESTRUCTION=false
 
 # Determine the Nuxt version
 if [ "$1" == "--nuxt2" ] || [ "$1" == "--nuxt-2" ] || [ "$1" == "--n2" ]; then
+    shift 1
     NUXT_VERSION=2
+fi
+
+# Configure self destruction
+if [ "$1" == "--destruct" ]; then
+    shift 1
+    SELF_DESTRUCTION=true
 fi
 
 # Print the Nuxt version
 echo "Using Nuxt ${NUXT_VERSION} version"
 
 # Copy Nuxt 2 stubs
-if [ $NUXT_VERSION = 2 ]; then
+if [ "$NUXT_VERSION" == 2 ]; then
     cp -r stubs/nuxt2/. .
 fi
 
 # Copy .env file from the dist
-if [ ! -f $ENV_FILE ]; then
-    cp $ENV_DIST_FILE $ENV_FILE
+if [ ! -f "$ENV_FILE" ]; then
+    cp "$ENV_DIST_FILE" "$ENV_FILE"
 fi
 
 # Create shared gateway network
-docker network create $DOCKER_NETWORK
+docker network create "$GATEWAY_NETWORK"
 
 # Build containers
-docker compose -f $COMPOSE_FILE build
+docker compose -f "$COMPOSE_FILE" build
 
 # Init a new Nuxt app into a temporary directory
-if [ $NUXT_VERSION = 2 ]; then
-    docker compose -f $COMPOSE_FILE run --rm --no-deps \
-        --user "$(id -u)":"$(id -g)" $CONTAINER \
-        yarn create nuxt-app $TEMP_INSTALL_DIRECTORY
+if [ "$NUXT_VERSION" == 2 ]; then
+    docker compose -f "$COMPOSE_FILE" run --rm --no-deps \
+        --user "$(id -u)":"$(id -g)" "$APP_CONTAINER" \
+        yarn create nuxt-app "$TEMP_INSTALL_DIRECTORY"
 else
-    docker compose -f $COMPOSE_FILE run --rm --no-deps \
-        --user "$(id -u)":"$(id -g)" $CONTAINER \
-        npx nuxi init $TEMP_INSTALL_DIRECTORY
+    docker compose -f "$COMPOSE_FILE" run --rm --no-deps \
+        --user "$(id -u)":"$(id -g)" "$APP_CONTAINER" \
+        npx nuxi init "$TEMP_INSTALL_DIRECTORY"
 fi
 
 # Set ownership of the temporary directory to the current user
-sudo chown -R "$(id -u)":"$(id -g)" $TEMP_INSTALL_DIRECTORY
+sudo chown -R "$(id -u)":"$(id -g)" "$TEMP_INSTALL_DIRECTORY"
 
 # Move everything from the temporary directory to the current directory
-mv $TEMP_INSTALL_DIRECTORY/* $TEMP_INSTALL_DIRECTORY/.* .
+mv "${TEMP_INSTALL_DIRECTORY}/*" ${TEMP_INSTALL_DIRECTORY}/.* .
 
 # Remove the temporary directory
-rm -r $TEMP_INSTALL_DIRECTORY
+rm -r "$TEMP_INSTALL_DIRECTORY"
 
 # Install packages
-if [ $NUXT_VERSION = 3 ]; then
-    docker compose -f $COMPOSE_FILE run --rm --no-deps \
-        --user "$(id -u)":"$(id -g)" $CONTAINER \
+if [ "$NUXT_VERSION" == 3 ]; then
+    docker compose -f "$COMPOSE_FILE" run --rm --no-deps \
+        --user "$(id -u)":"$(id -g)" "$APP_CONTAINER" \
         yarn install
 fi
 
 # Start containers
-docker compose -f $COMPOSE_FILE up -d
+docker compose -f "$COMPOSE_FILE" up -d
+
+# Delete installation files
+if [ "$SELF_DESTRUCTION" ]; then
+    echo "Removing stubs directory"
+    rm -rf stubs
+
+    echo "Removing install script"
+    rm ./install
+fi
 
 # Print the final message
 echo "The client app has been installed and run on http://localhost:3000."
