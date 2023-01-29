@@ -3,7 +3,7 @@
 
 # Define default values for variables
 COMPOSE_FILE ?= docker-compose.yml
-BASE_IMAGE_DOCKERFILE ?= ./.docker/prod/base/Dockerfile
+BASE_IMAGE_DOCKERFILE ?= .docker/prod/base/Dockerfile
 IMAGE_REGISTRY ?= prod
 IMAGE_TAG ?= latest
 
@@ -28,15 +28,15 @@ install: build.all up
 
 # Start containers
 up:
-	docker-compose -f ${COMPOSE_FILE} up -d
+	docker compose -f ${COMPOSE_FILE} up -d
 
 # Stop containers
 down:
-	docker-compose -f ${COMPOSE_FILE} down --remove-orphans
+	docker compose -f ${COMPOSE_FILE} down --remove-orphans
 
 # Build containers
 build:
-	docker-compose -f ${COMPOSE_FILE} build
+	docker compose -f ${COMPOSE_FILE} build
 
 # Build all containers
 build.all: build.base build
@@ -47,22 +47,22 @@ build.base:
 
 # Show list of running containers
 ps:
-	docker-compose -f ${COMPOSE_FILE} ps
+	docker compose -f ${COMPOSE_FILE} ps
 
 # Restart containers
 restart:
-	docker-compose -f ${COMPOSE_FILE} restart
+	docker compose -f ${COMPOSE_FILE} restart
 
 # Reboot containers
 reboot: down up
 
 # View output logs from containers
 logs:
-	docker-compose -f ${COMPOSE_FILE} logs --tail 500
+	docker compose -f ${COMPOSE_FILE} logs --tail 500
 
 # Follow output logs from containers
 logs.f:
-	docker-compose -f ${COMPOSE_FILE} logs --tail 500 -f
+	docker compose -f ${COMPOSE_FILE} logs --tail 500 -f
 
 #-----------------------------------------------------------
 # Application
@@ -70,88 +70,88 @@ logs.f:
 
 # Enter the app container
 bash:
-	docker-compose -f ${COMPOSE_FILE} exec app /bin/bash
+	docker compose -f ${COMPOSE_FILE} exec app /bin/bash
 
 # Restart the app container
 restart.app:
-	docker-compose -f ${COMPOSE_FILE} restart app
+	docker compose -f ${COMPOSE_FILE} restart app
 
 # Alias to restart the app container
 ra: restart.app
 
 # Run the tinker service
 tinker:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan tinker
+	docker compose -f ${COMPOSE_FILE} exec app php artisan tinker
 
 # Clear the app cache
 cache.clear:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan cache:clear
+	docker compose -f ${COMPOSE_FILE} exec app php artisan cache:clear
 
 # Migrate the database
 db.migrate:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate
+	docker compose -f ${COMPOSE_FILE} exec app php artisan migrate
 
 # Alias to migrate the database
 migrate: db.migrate
 
 # Rollback the database
 db.rollback:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate:rollback
+	docker compose -f ${COMPOSE_FILE} exec app php artisan migrate:rollback
 
 # Seed the database
 db.seed:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan db:seed
+	docker compose -f ${COMPOSE_FILE} exec app php artisan db:seed
 
 # Fresh the database state
 db.fresh:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan migrate:fresh
+	docker compose -f ${COMPOSE_FILE} exec app php artisan migrate:fresh
 
 # Refresh the database
 db.refresh: db.fresh db.seed
 
 # Dump database into file (only for development environment) (TODO: replace file name with env variable)
 db.dump:
-	docker-compose -f ${COMPOSE_FILE} exec postgres pg_dump -U ${DB_USERNAME} -d ${DB_DATABASE} > ./.docker/postgres/dumps/dump.sql
+	docker compose -f ${COMPOSE_FILE} exec postgres pg_dump -U ${DB_USERNAME} -d ${DB_DATABASE} > ./.docker/postgres/dumps/dump.sql
 
 # TODO: add command to import db dump
 
 # Restart the queue process
 queue.restart:
-	docker-compose -f ${COMPOSE_FILE} exec queue php artisan queue:restart
+	docker compose -f ${COMPOSE_FILE} exec queue php artisan queue:restart
 
 # Install composer dependencies
 composer.install:
-	docker-compose -f ${COMPOSE_FILE} exec app composer install
+	docker compose -f ${COMPOSE_FILE} exec app composer install
 
 # Install composer dependencies from stopped containers
 r.composer.install:
-	docker-compose -f ${COMPOSE_FILE} run --rm --no-deps app composer install
+	docker compose -f ${COMPOSE_FILE} run --rm --no-deps app composer install
 
 # Alias to install composer dependencies
 ci: composer.install
 
 # Update composer dependencies
 composer.update:
-	docker-compose -f ${COMPOSE_FILE} exec app composer update
+	docker compose -f ${COMPOSE_FILE} exec app composer update
 
 # Update composer dependencies from stopped containers
 r.composer.update:
-	docker-compose -f ${COMPOSE_FILE} run --rm --no-deps app composer update
+	docker compose -f ${COMPOSE_FILE} run --rm --no-deps app composer update
 
 # Alias to update composer dependencies
 cu: composer.update
 
 # Show outdated composer dependencies
 composer.outdated:
-	docker-compose -f ${COMPOSE_FILE} exec app composer outdated
+	docker compose -f ${COMPOSE_FILE} exec app composer outdated
 
 # PHP composer autoload command
 composer.autoload:
-	docker-compose -f ${COMPOSE_FILE} exec app composer dump-autoload
+	docker compose -f ${COMPOSE_FILE} exec app composer dump-autoload
 
 # Generate a symlink to the storage directory
 storage.link:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan storage:link --relative
+	docker compose -f ${COMPOSE_FILE} exec app php artisan storage:link --relative
 
 # Give permissions of the storage folder to the www-data
 storage.perm:
@@ -169,7 +169,7 @@ own.me:
 
 # Reload the Octane workers
 octane.reload:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan octane:reload
+	docker compose -f ${COMPOSE_FILE} exec app php artisan octane:reload
 
 # Alias to reload the Octane workers
 or: octane.reload
@@ -180,22 +180,22 @@ or: octane.reload
 
 # Run phpunit tests (requires 'phpunit/phpunit' composer package)
 test:
-	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpunit --order-by=defects --stop-on-defect
+	docker compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpunit --order-by=defects --stop-on-defect
 
 # Alias to run phpunit tests
 t: test
 
 # Run phpunit tests with the coverage mode (TODO: install PCOV or other lib)
 coverage:
-	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpunit --coverage-html ./.coverage
+	docker compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpunit --coverage-html ./.coverage
 
 # Run dusk tests (requires 'laravel/dusk' composer package)
 dusk:
-	docker-compose -f ${COMPOSE_FILE} exec app php artisan dusk
+	docker compose -f ${COMPOSE_FILE} exec app php artisan dusk
 
 # Generate code metrics (requires 'phpmetrics/phpmetrics' composer package)
 metrics:
-	docker-compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpmetrics --report-html=./.metrics api/app
+	docker compose -f ${COMPOSE_FILE} exec app ./vendor/bin/phpmetrics --report-html=./.metrics api/app
 
 #-----------------------------------------------------------
 # Redis
@@ -203,11 +203,11 @@ metrics:
 
 # Enter the redis container
 redis:
-	docker-compose -f ${COMPOSE_FILE} exec redis redis-cli
+	docker compose -f ${COMPOSE_FILE} exec redis redis-cli
 
 # Flush the redis state
 redis.flush:
-	docker-compose -f ${COMPOSE_FILE} exec redis redis-cli FLUSHALL
+	docker compose -f ${COMPOSE_FILE} exec redis redis-cli FLUSHALL
 
 #-----------------------------------------------------------
 # Swarm
