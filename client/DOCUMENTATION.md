@@ -9,7 +9,13 @@ The whole installation process is to create a shared network, build containers a
 Run the installation script in your terminal, and it will do it all automatically:
 
 ```bash
-./install.sh
+# Install Nuxt 3
+./install
+```
+
+```bash
+# Install Nuxt 2
+./install --nuxt-2
 ```
 
 Now you should be able to see it running in your browser at [http://localhost:3000](http://localhost:3000).
@@ -18,7 +24,7 @@ Now you should be able to see it running in your browser at [http://localhost:30
 
 1. Copy all files from the `client` directory to your application.
 2. Create the `.env` file from `.env.dev`.
-3. Build and run containers using the command `make install`.
+3. Build and run containers using `make build` and `make up` commands.
 
 ## Usage
 
@@ -124,7 +130,3 @@ export default {
 }
 </script>
 ```
-
-## Nuxt 2 version
-
-If you want to use Nuxt 2, you need to copy all files from `stubs/nuxt2` directory to the base `client` directory and then follow [the installation instructions](#installation).
