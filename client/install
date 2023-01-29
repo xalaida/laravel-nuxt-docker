@@ -56,7 +56,7 @@ fi
 sudo chown -R "$(id -u)":"$(id -g)" "$TEMP_INSTALL_DIRECTORY"
 
 # Move everything from the temporary directory to the current directory
-mv "${TEMP_INSTALL_DIRECTORY}/*" ${TEMP_INSTALL_DIRECTORY}/.* .
+mv ${TEMP_INSTALL_DIRECTORY}/* ${TEMP_INSTALL_DIRECTORY}/.* .
 
 # Remove the temporary directory
 rm -r "$TEMP_INSTALL_DIRECTORY"
