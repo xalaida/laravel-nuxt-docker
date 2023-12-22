@@ -118,6 +118,7 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    restart: unless-stopped
 
   redis:
     image: redis:6.2-alpine
@@ -125,6 +126,7 @@ services:
       - redis:/data
     ports:
       - "6379:6379"
+    restart: unless-stopped
 
 #  mailhog:
 #    build:
