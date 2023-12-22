@@ -1,15 +1,20 @@
 # Base image
 FROM php:8.3-cli
 
-# Retrieve lists of APT packages
+# Retrieve APT lists
 RUN apt-get update \
-# Install PDO PGSQL extension
+# Install Zip (required for Composer)
+  && apt-get install -y libzip-dev zip \
+  && docker-php-ext-install zip \
+# Install Git (required for Composer)
+  && apt-get install -y git \
+# Install PDO PGSQL extension (required for Postgres connection)
   && apt-get install -y libpq-dev \
   && docker-php-ext-install pdo pdo_pgsql \
-# Install Redis extension
+# Install Redis extension (required for Redis connection)
   && pecl install redis \
   && docker-php-ext-enable redis \
-# Clear APT cache
+# Remove APT lists
   && rm -rf /var/lib/apt/lists/*
 
 # Install Composer package manager
