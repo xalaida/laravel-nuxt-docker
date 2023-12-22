@@ -1,0 +1,150 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+    environment:
+      APP_NAME: Laravel
+      APP_ENV: local
+      APP_KEY: base64:YATW8fOGnL4XznjcaIloh9e4ub9N9IAeb+Gz8tyfzC0=
+      APP_DEBUG: true
+      APP_URL: http://localhost:8000
+
+      LOG_CHANNEL: stderr
+      LOG_DEPRECATIONS_CHANNEL: stderr
+      LOG_LEVEL: debug
+
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: app
+      DB_USERNAME: app
+      DB_PASSWORD: app
+
+      BROADCAST_DRIVER: log #todo
+      CACHE_DRIVER: redis
+      FILESYSTEM_DISK: local #todo
+      QUEUE_CONNECTION: sync #todo
+      SESSION_DRIVER: redis
+      SESSION_LIFETIME: 120
+
+      REDIS_HOST: redis
+      REDIS_PASSWORD: null
+      REDIS_PORT: 6379
+
+      #todo
+      MAIL_MAILER: smtp
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_USERNAME: null
+      MAIL_PASSWORD: null
+      MAIL_ENCRYPTION: null
+      MAIL_FROM_ADDRESS: "hello@example.com"
+      MAIL_FROM_NAME: "${APP_NAME}"
+
+      #todo
+      AWS_ACCESS_KEY_ID:
+      AWS_SECRET_ACCESS_KEY:
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_BUCKET:
+      AWS_USE_PATH_STYLE_ENDPOINT: false
+
+      #todo
+      VITE_APP_NAME: "${APP_NAME}"
+      VITE_PUSHER_APP_KEY: "${PUSHER_APP_KEY}"
+      VITE_PUSHER_HOST: "${PUSHER_HOST}"
+      VITE_PUSHER_PORT: "${PUSHER_PORT}"
+      VITE_PUSHER_SCHEME: "${PUSHER_SCHEME}"
+      VITE_PUSHER_APP_CLUSTER: "${PUSHER_APP_CLUSTER}"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8000:8000"
+    command: php artisan serve --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+
+#    links:
+#      - postgres
+#      - postgres-testing
+#      - redis
+#      - mailhog
+#    hostname: api
+#    networks:
+#      - api
+#      - gateway
+
+#  queue:
+#    build:
+#      dockerfile: .docker/dev/queue/Dockerfile
+#      args:
+#        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+#        IMAGE_TAG: ${IMAGE_TAG}
+#    volumes:
+#      - ./:/var/www/html
+#    links:
+#      - postgres
+#      - redis
+#      - mailhog
+#    networks:
+#      - api
+#
+#  schedule:
+#    build:
+#      dockerfile: .docker/dev/schedule/Dockerfile
+#      args:
+#        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
+#        IMAGE_TAG: ${IMAGE_TAG}
+#    volumes:
+#      - ./:/var/www/html
+#    links:
+#      - postgres
+#      - redis
+#      - mailhog
+#    networks:
+#      - api
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6.2-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - "6379:6379"
+
+#  mailhog:
+#    build:
+#      dockerfile: .docker/dev/mailhog/Dockerfile
+#    ports:
+#      - "8025:8025"
+#    networks:
+#      - api
+
+volumes:
+  postgres:
+    driver: local
+
+  redis:
+    driver: local
+
+#networks:
+#  api:
+#    name: api
+
+#  gateway:
+#    name: gateway
+#    external: true
