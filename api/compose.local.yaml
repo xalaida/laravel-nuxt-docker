@@ -21,9 +21,9 @@ services:
       DB_USERNAME: app
       DB_PASSWORD: app
 
-      BROADCAST_DRIVER: log #todo
+      BROADCAST_DRIVER: redis
       CACHE_DRIVER: redis
-      FILESYSTEM_DISK: local #todo
+      FILESYSTEM_DISK: local
       QUEUE_CONNECTION: redis
       SESSION_DRIVER: redis
       SESSION_LIFETIME: 120
@@ -39,28 +39,14 @@ services:
       MAIL_PASSWORD: null
       MAIL_ENCRYPTION: null
       MAIL_FROM_ADDRESS: "hello@example.com"
-      MAIL_FROM_NAME: "${APP_NAME}"
-
-      #todo
-      AWS_ACCESS_KEY_ID:
-      AWS_SECRET_ACCESS_KEY:
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_BUCKET:
-      AWS_USE_PATH_STYLE_ENDPOINT: false
-
-      #todo
-      VITE_APP_NAME: "${APP_NAME}"
-      VITE_PUSHER_APP_KEY: "${PUSHER_APP_KEY}"
-      VITE_PUSHER_HOST: "${PUSHER_HOST}"
-      VITE_PUSHER_PORT: "${PUSHER_PORT}"
-      VITE_PUSHER_SCHEME: "${PUSHER_SCHEME}"
-      VITE_PUSHER_APP_CLUSTER: "${PUSHER_APP_CLUSTER}"
-    volumes:
-      - ./:/app
-    working_dir: /app
+      MAIL_FROM_NAME: Laravel
     depends_on:
       - postgres
       - redis
+      - mailpit
+    volumes:
+      - ./:/app
+    working_dir: /app
     restart: unless-stopped
     command: php artisan schedule:work
 
@@ -86,7 +72,6 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    restart: unless-stopped
 
   redis:
     image: redis:6.2-alpine
@@ -94,10 +79,9 @@ services:
       - redis:/data
     ports:
       - "6379:6379"
-    restart: unless-stopped
 
   mailpit:
-    image: axllent/mailpit
+    image: axllent/mailpit:latest
     volumes:
       - mailpit:/data
     ports:
@@ -108,7 +92,6 @@ services:
       MP_DATA_FILE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
-    restart: unless-stopped
 
 volumes:
   postgres:
@@ -117,11 +100,3 @@ volumes:
     driver: local
   mailpit:
     driver: local
-
-#networks:
-#  api:
-#    name: api
-
-#  gateway:
-#    name: gateway
-#    external: true
