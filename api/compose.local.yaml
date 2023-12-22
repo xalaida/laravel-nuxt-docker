@@ -124,3 +124,5 @@ volumes:
     driver: local
   mailpit:
     driver: local
+  minio:
+    driver: local
