@@ -24,7 +24,7 @@ services:
       BROADCAST_DRIVER: log #todo
       CACHE_DRIVER: redis
       FILESYSTEM_DISK: local #todo
-      QUEUE_CONNECTION: sync #todo
+      QUEUE_CONNECTION: redis
       SESSION_DRIVER: redis
       SESSION_LIFETIME: 120
 
@@ -32,7 +32,6 @@ services:
       REDIS_PASSWORD: null
       REDIS_PORT: 6379
 
-      #todo
       MAIL_MAILER: smtp
       MAIL_HOST: mailpit
       MAIL_PORT: 1025
@@ -97,19 +96,26 @@ services:
       - "6379:6379"
     restart: unless-stopped
 
-#  mailhog:
-#    build:
-#      dockerfile: .docker/dev/mailhog/Dockerfile
-#    ports:
-#      - "8025:8025"
-#    networks:
-#      - api
+  mailpit:
+    image: axllent/mailpit
+    volumes:
+      - mailpit:/data
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    restart: unless-stopped
 
 volumes:
   postgres:
     driver: local
-
   redis:
+    driver: local
+  mailpit:
     driver: local
 
 #networks:
