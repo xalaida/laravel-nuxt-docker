@@ -109,7 +109,7 @@ services:
 #      - api
 
   postgres:
-    image: postgres:16-alpine
+    image: postgres:16.1-alpine
     environment:
       POSTGRES_DB: app
       POSTGRES_USER: app
