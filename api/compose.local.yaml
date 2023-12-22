@@ -1,9 +1,8 @@
 version: '3.9'
 
 services:
-  app:
-    build:
-      dockerfile: Dockerfile
+  console:
+    build: .
     environment:
       APP_NAME: Laravel
       APP_ENV: local
@@ -63,50 +62,20 @@ services:
     depends_on:
       - postgres
       - redis
+    restart: unless-stopped
+    command: php artisan schedule:work
+
+  web:
+    extends:
+      service: console
     ports:
       - "8000:8000"
-    command: php artisan serve --host 0.0.0.0 --port 8000
-    restart: unless-stopped
+    command: php artisan serve --host=0.0.0.0 --port=8000
 
-#    links:
-#      - postgres
-#      - postgres-testing
-#      - redis
-#      - mailhog
-#    hostname: api
-#    networks:
-#      - api
-#      - gateway
-
-#  queue:
-#    build:
-#      dockerfile: .docker/dev/queue/Dockerfile
-#      args:
-#        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
-#        IMAGE_TAG: ${IMAGE_TAG}
-#    volumes:
-#      - ./:/var/www/html
-#    links:
-#      - postgres
-#      - redis
-#      - mailhog
-#    networks:
-#      - api
-#
-#  schedule:
-#    build:
-#      dockerfile: .docker/dev/schedule/Dockerfile
-#      args:
-#        IMAGE_REGISTRY: ${IMAGE_REGISTRY}
-#        IMAGE_TAG: ${IMAGE_TAG}
-#    volumes:
-#      - ./:/var/www/html
-#    links:
-#      - postgres
-#      - redis
-#      - mailhog
-#    networks:
-#      - api
+  queue:
+    extends:
+      service: console
+    command: php artisan queue:work --tries=3
 
   postgres:
     image: postgres:16.1-alpine
