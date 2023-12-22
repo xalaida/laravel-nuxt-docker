@@ -23,7 +23,7 @@ services:
 
       BROADCAST_DRIVER: redis
       CACHE_DRIVER: redis
-      FILESYSTEM_DISK: local
+      FILESYSTEM_DISK: s3
       QUEUE_CONNECTION: redis
       SESSION_DRIVER: redis
       SESSION_LIFETIME: 120
@@ -40,6 +40,14 @@ services:
       MAIL_ENCRYPTION: null
       MAIL_FROM_ADDRESS: "hello@example.com"
       MAIL_FROM_NAME: Laravel
+
+      AWS_ACCESS_KEY_ID: minio-user
+      AWS_SECRET_ACCESS_KEY: minio-password
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_BUCKET: storage
+      AWS_URL: http://localhost:9000/storage
+      AWS_ENDPOINT: http://minio:9000
+      AWS_USE_PATH_STYLE_ENDPOINT: true
     depends_on:
       - postgres
       - redis
@@ -92,6 +100,22 @@ services:
       MP_DATA_FILE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio:/buckets
+    environment:
+      MINIO_ROOT_USER: minio-user
+      MINIO_ROOT_PASSWORD: minio-password
+    command: server /buckets --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      retries: 3
+      timeout: 5s
 
 volumes:
   postgres:
