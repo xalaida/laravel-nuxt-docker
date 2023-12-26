@@ -1,53 +1,28 @@
+name: api-local
+
 version: '3.9'
 
 services:
-  console:
-    build: .
-    environment:
-      APP_NAME: Laravel
-      APP_ENV: local
-      APP_KEY: base64:YATW8fOGnL4XznjcaIloh9e4ub9N9IAeb+Gz8tyfzC0=
-      APP_DEBUG: true
-      APP_URL: http://localhost:8000
+  web:
+    build:
+      context: .
+      target: web
+    depends_on:
+      - postgres
+      - redis
+      - mailpit
+    volumes:
+      - ./:/app
+    working_dir: /app
+    restart: unless-stopped
+    command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --watch
+    ports:
+      - "8000:8000"
 
-      LOG_CHANNEL: stderr
-      LOG_DEPRECATIONS_CHANNEL: stderr
-      LOG_LEVEL: debug
-
-      DB_CONNECTION: pgsql
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_DATABASE: app
-      DB_USERNAME: app
-      DB_PASSWORD: app
-
-      BROADCAST_DRIVER: redis
-      CACHE_DRIVER: redis
-      FILESYSTEM_DISK: s3
-      QUEUE_CONNECTION: redis
-      SESSION_DRIVER: redis
-      SESSION_LIFETIME: 120
-
-      REDIS_HOST: redis
-      REDIS_PASSWORD: null
-      REDIS_PORT: 6379
-
-      MAIL_MAILER: smtp
-      MAIL_HOST: mailpit
-      MAIL_PORT: 1025
-      MAIL_USERNAME: null
-      MAIL_PASSWORD: null
-      MAIL_ENCRYPTION: null
-      MAIL_FROM_ADDRESS: "hello@example.com"
-      MAIL_FROM_NAME: Laravel
-
-      AWS_ACCESS_KEY_ID: minio-user
-      AWS_SECRET_ACCESS_KEY: minio-password
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_BUCKET: storage
-      AWS_URL: http://localhost:9000/storage
-      AWS_ENDPOINT: http://minio:9000
-      AWS_USE_PATH_STYLE_ENDPOINT: true
+  schedule:
+    build:
+      context: .
+      target: cli
     depends_on:
       - postgres
       - redis
@@ -58,16 +33,18 @@ services:
     restart: unless-stopped
     command: php artisan schedule:work
 
-  web:
-    extends:
-      service: console
-    ports:
-      - "8000:8000"
-    command: php artisan serve --host=0.0.0.0 --port=8000
-
   queue:
-    extends:
-      service: console
+    build:
+      context: .
+      target: cli
+    depends_on:
+      - postgres
+      - redis
+      - mailpit
+    volumes:
+      - ./:/app
+    working_dir: /app
+    restart: unless-stopped
     command: php artisan queue:work --tries=3
 
   postgres:
@@ -112,10 +89,6 @@ services:
       MINIO_ROOT_USER: minio-user
       MINIO_ROOT_PASSWORD: minio-password
     command: server /buckets --console-address ":9001"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      retries: 3
-      timeout: 5s
 
 volumes:
   postgres:
