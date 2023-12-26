@@ -6,7 +6,7 @@ services:
   cli:
     build:
       context: .
-      target: cli
+      target: dev
     environment:
       APP_NAME: Laravel
       APP_ENV: testing
