@@ -3,7 +3,7 @@ name: api-local
 version: '3.9'
 
 services:
-  web:
+  app:
     build:
       context: .
       target: dev

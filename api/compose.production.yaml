@@ -1,9 +1,9 @@
-version: '3.9'
-
 name: api-production
 
+version: '3.9'
+
 services:
-  web:
+  app:
     build:
       context: .
       dockerfile: production.Dockerfile
