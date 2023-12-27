@@ -32,10 +32,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 WORKDIR /app
 
 # Copy application files
-COPY . .
-
-# Change owner for application files
-RUN chown -R www-data:www-data .
+COPY --chown=www-data:www-data . .
 
 # Move PHP configuration files
 RUN mv ./platform/php/php.ini "/${PHP_INI_DIR}/php.ini"
