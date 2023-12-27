@@ -12,19 +12,8 @@
 /vendor
 .dockerignore
 .editorconfig
-.env.*
-.editorconfig
 .gitattributes
 .gitignore
-docker-compose.*.yml
-docker-compose.yml
+compose.*.yaml
+Dockerfile
 Makefile
-
-# Included files
-!/.docker/*/app/php-fpm.d
-!/.docker/*/base/conf.d
-!/.docker/*/base/php.ini
-!/.docker/*/gateway/conf.d
-!/.docker/*/gateway/nginx.conf
-!/.docker/*/postgres/dumps
-!/.docker/*/schedule/cron.d
