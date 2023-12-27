@@ -1,49 +1,6 @@
 version: '3.9'
 
-#todo move to .env variable
-x-environment: &environment
-  APP_NAME: Laravel
-  APP_ENV: production
-  APP_KEY: 'base64:YATW8fOGnL4XznjcaIloh9e4ub9N9IAeb+Gz8tyfzC0='
-  APP_DEBUG: 'false'
-  APP_URL: http://localhost:8000
-
-  LOG_CHANNEL: stack
-  LOG_DEPRECATIONS_CHANNEL: stack
-  LOG_LEVEL: debug
-
-  DB_CONNECTION: pgsql
-  DB_HOST: postgres
-  DB_PORT: 5432
-  DB_DATABASE: app
-  DB_USERNAME: app
-  DB_PASSWORD: app
-
-  BROADCAST_DRIVER: redis
-  CACHE_DRIVER: redis
-  FILESYSTEM_DISK: s3
-  QUEUE_CONNECTION: redis
-  SESSION_DRIVER: redis
-  SESSION_LIFETIME: 120
-
-  REDIS_HOST: redis
-  REDIS_PASSWORD: null
-  REDIS_PORT: 6379
-
-  MAIL_MAILER: smtp
-  MAIL_HOST: mailpit
-  MAIL_PORT: 1025
-  MAIL_USERNAME: null
-  MAIL_PASSWORD: null
-  MAIL_ENCRYPTION: null
-  MAIL_FROM_ADDRESS: "hello@example.com"
-  MAIL_FROM_NAME: Laravel
-
-  AWS_ACCESS_KEY_ID:
-  AWS_SECRET_ACCESS_KEY:
-  AWS_DEFAULT_REGION: us-east-1
-  AWS_BUCKET:
-  AWS_USE_PATH_STYLE_ENDPOINT: 'false'
+name: api-production
 
 services:
   web:
@@ -52,15 +9,16 @@ services:
       dockerfile: production.Dockerfile
       target: build
     image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
-    environment: *environment
+    environment:
+      APP_ENV: production
+    ports:
+      - "8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
     working_dir: /app
-    ports:
-      - "8000:8000"
     entrypoint: ./entrypoint.sh
     command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
     restart: unless-stopped
@@ -77,7 +35,8 @@ services:
       dockerfile: production.Dockerfile
       target: build
     image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
-    environment: *environment
+    environment:
+      APP_ENV: production
     depends_on:
       postgres:
         condition: service_healthy
@@ -93,7 +52,8 @@ services:
       dockerfile: production.Dockerfile
       target: build
     image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
-    environment: *environment
+    environment:
+      APP_ENV: production
     depends_on:
       postgres:
         condition: service_healthy
