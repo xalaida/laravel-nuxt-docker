@@ -20,6 +20,8 @@ RUN apt-get update \
 # Install Redis extension
   && pecl install redis \
   && docker-php-ext-enable redis \
+# Install OPcache extension
+  && docker-php-ext-install opcache \
 # Remove APT lists
   && rm -rf /var/lib/apt/lists/*
 
@@ -34,6 +36,10 @@ COPY . .
 
 # Change owner for application files
 RUN chown -R www-data:www-data .
+
+# Move PHP configuration files
+RUN mv ./platform/php/php.ini "/${PHP_INI_DIR}/php.ini"
+RUN mv ./platform/php/conf.d "/${PHP_INI_DIR}/conf.d"
 
 # Install Composer dependencies
 RUN composer install \
