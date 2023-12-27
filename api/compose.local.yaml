@@ -3,82 +3,55 @@ name: api-local
 version: '3.9'
 
 services:
-  cli:
+  web:
     build:
       context: .
       target: dev
     environment:
-      APP_NAME: Laravel
       APP_ENV: local
-      APP_KEY: base64:YATW8fOGnL4XznjcaIloh9e4ub9N9IAeb+Gz8tyfzC0=
-      APP_DEBUG: true
-      APP_URL: http://localhost:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pgsql
+      - redis
+      - mailpit
+    working_dir: /app
+    command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --watch
+    restart: unless-stopped
 
-      LOG_CHANNEL: stderr
-      LOG_DEPRECATIONS_CHANNEL: stderr
-      LOG_LEVEL: debug
-
-      DB_CONNECTION: pgsql
-      DB_HOST: pgsql
-      DB_PORT: 5432
-      DB_DATABASE: app
-      DB_USERNAME: app
-      DB_PASSWORD: app
-
-      BROADCAST_DRIVER: redis
-      CACHE_DRIVER: redis
-      FILESYSTEM_DISK: s3
-      QUEUE_CONNECTION: redis
-      SESSION_DRIVER: redis
-      SESSION_LIFETIME: 120
-
-      REDIS_HOST: redis
-      REDIS_PASSWORD: null
-      REDIS_PORT: 6379
-
-      MAIL_MAILER: smtp
-      MAIL_HOST: mailpit
-      MAIL_PORT: 1025
-      MAIL_USERNAME: null
-      MAIL_PASSWORD: null
-      MAIL_ENCRYPTION: null
-      MAIL_FROM_ADDRESS: "hello@example.com"
-      MAIL_FROM_NAME: Laravel
-
-      AWS_ACCESS_KEY_ID: minio-user
-      AWS_SECRET_ACCESS_KEY: minio-password
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_BUCKET: storage
-      AWS_URL: http://localhost:9000/storage
-      AWS_ENDPOINT: http://minio:9000
-      AWS_USE_PATH_STYLE_ENDPOINT: true
+  schedule:
+    build:
+      context: .
+      target: dev
+    environment:
+      APP_ENV: local
     depends_on:
       - pgsql
       - redis
       - mailpit
     volumes:
-      - ./:/app
+      - .:/app
     working_dir: /app
-
-  web:
-    extends:
-      service: cli
-    ports:
-      - "8000:8000"
-    restart: unless-stopped
-    command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --watch
-
-  schedule:
-    extends:
-      service: cli
-    restart: unless-stopped
     command: php artisan schedule:work
+    restart: unless-stopped
 
   queue:
-    extends:
-      service: cli
-    restart: unless-stopped
+    build:
+      context: .
+      target: dev
+    environment:
+      APP_ENV: local
+    depends_on:
+      - pgsql
+      - redis
+      - mailpit
+    volumes:
+      - .:/app
+    working_dir: /app
     command: php artisan queue:work --tries=3
+    restart: unless-stopped
 
   pgsql:
     image: postgres:16.1-alpine
