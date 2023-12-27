@@ -19,7 +19,7 @@ services:
       LOG_LEVEL: debug
 
       DB_CONNECTION: pgsql
-      DB_HOST: postgres
+      DB_HOST: pgsql
       DB_PORT: 5432
       DB_DATABASE: app
       DB_USERNAME: app
@@ -36,12 +36,12 @@ services:
       PULSE_ENABLED: false
       TELESCOPE_ENABLED: false
     depends_on:
-      - postgres
+      - pgsql
     volumes:
       - ./:/app
     working_dir: /app
 
-  postgres:
+  pgsql:
     image: postgres:16.1-alpine
     environment:
       POSTGRES_DB: app

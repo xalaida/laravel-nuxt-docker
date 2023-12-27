@@ -19,7 +19,7 @@ services:
       LOG_LEVEL: debug
 
       DB_CONNECTION: pgsql
-      DB_HOST: postgres
+      DB_HOST: pgsql
       DB_PORT: 5432
       DB_DATABASE: app
       DB_USERNAME: app
@@ -53,7 +53,7 @@ services:
       AWS_ENDPOINT: http://minio:9000
       AWS_USE_PATH_STYLE_ENDPOINT: true
     depends_on:
-      - postgres
+      - pgsql
       - redis
       - mailpit
     volumes:
@@ -80,14 +80,14 @@ services:
     restart: unless-stopped
     command: php artisan queue:work --tries=3
 
-  postgres:
+  pgsql:
     image: postgres:16.1-alpine
     environment:
       POSTGRES_DB: app
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - pgsql:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -124,7 +124,7 @@ services:
     command: server /buckets --console-address ":9001"
 
 volumes:
-  postgres:
+  pgsql:
     driver: local
   redis:
     driver: local

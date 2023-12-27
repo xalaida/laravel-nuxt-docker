@@ -14,7 +14,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      postgres:
+      pgsql:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -38,7 +38,7 @@ services:
     environment:
       APP_ENV: production
     depends_on:
-      postgres:
+      pgsql:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -55,7 +55,7 @@ services:
     environment:
       APP_ENV: production
     depends_on:
-      postgres:
+      pgsql:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -63,14 +63,14 @@ services:
     command: php artisan queue:work --tries=3
     restart: unless-stopped
 
-  postgres:
+  pgsql:
     image: postgres:16.1-alpine
     environment:
       POSTGRES_DB: app
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - pgsql:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
       test: pg_isready -q -d app -U app
@@ -90,7 +90,7 @@ services:
       retries: 5
 
 volumes:
-  postgres:
+  pgsql:
     driver: local
   redis:
     driver: local
