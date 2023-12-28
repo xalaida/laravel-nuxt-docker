@@ -6,7 +6,6 @@ services:
   app:
     build:
       context: .
-      dockerfile: production.Dockerfile
       target: build
     image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
     environment:
@@ -19,7 +18,7 @@ services:
       redis:
         condition: service_healthy
     working_dir: /app
-    entrypoint: ./entrypoint.sh
+    entrypoint: bash ./entrypoint.sh
     command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
     restart: unless-stopped
     healthcheck:
@@ -32,7 +31,6 @@ services:
   schedule:
     build:
       context: .
-      dockerfile: production.Dockerfile
       target: build
     image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
     environment:
@@ -49,7 +47,6 @@ services:
   queue:
     build:
       context: .
-      dockerfile: production.Dockerfile
       target: build
     image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
     environment:
