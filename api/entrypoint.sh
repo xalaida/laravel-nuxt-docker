@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Exit immediately on any non-zero exit status
 set -e
 
