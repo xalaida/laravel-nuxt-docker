@@ -42,10 +42,10 @@ RUN docker-php-ext-install opcache
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0"
 
 # Copy OPcache configuration file
-COPY ./platform/php/conf.d/opcache.ini "/${PHP_INI_DIR}/conf.d/opcache.ini"
+COPY ./platform/php/conf.d/opcache.ini "${PHP_INI_DIR}/conf.d/opcache.ini"
 
 # Copy PHP configuration file
-COPY ./platform/php/php.ini "/${PHP_INI_DIR}/php.ini"
+COPY ./platform/php/php.ini "${PHP_INI_DIR}/php.ini"
 
 # Dev stage
 FROM base AS dev
