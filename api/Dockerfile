@@ -85,6 +85,9 @@ RUN composer install \
   --no-dev \
   --optimize-autoloader
 
+# Specify production environment
+ENV APP_ENV=production
+
 # Optimize config loading
 RUN php artisan config:cache \
 # Optimize route loading
