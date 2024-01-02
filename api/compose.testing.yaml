@@ -6,7 +6,7 @@ services:
   app:
     build:
       context: .
-      target: dev
+      target: base-dev
     environment:
       APP_ENV: testing
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1

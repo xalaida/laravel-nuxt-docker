@@ -6,7 +6,7 @@ services:
   app:
     build:
       context: .
-      target: dev
+      target: base-dev
     environment:
       APP_ENV: local
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
@@ -25,7 +25,7 @@ services:
   schedule:
     build:
       context: .
-      target: dev
+      target: base-dev
     environment:
       APP_ENV: local
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
@@ -42,7 +42,7 @@ services:
   queue:
     build:
       context: .
-      target: dev
+      target: base-dev
     environment:
       APP_ENV: local
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
