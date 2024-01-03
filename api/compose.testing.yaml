@@ -13,10 +13,10 @@ services:
         extra_hosts:
             - host.docker.internal:host-gateway
         depends_on:
-            - pgsql
+            pgsql:
+                condition: service_healthy
         volumes:
             - .:/app
-        working_dir: /app
 
     pgsql:
         image: postgres:16.1-alpine
@@ -24,3 +24,8 @@ services:
             POSTGRES_DB: app
             POSTGRES_USER: app
             POSTGRES_PASSWORD: app
+        healthcheck:
+            test: pg_isready -q -d app -U app
+            interval: 5s
+            timeout: 5s
+            retries: 3
