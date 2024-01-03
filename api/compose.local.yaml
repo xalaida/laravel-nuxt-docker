@@ -3,108 +3,108 @@ name: api-local
 version: '3.9'
 
 services:
-  app:
-    build:
-      context: .
-      target: base-dev
-    environment:
-      APP_ENV: local
-      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    depends_on:
-      - pgsql
-      - redis
-      - mailpit
-    working_dir: /app
-    command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --watch
-    restart: unless-stopped
+    app:
+        build:
+            context: .
+            target: base-dev
+        environment:
+            APP_ENV: local
+            PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+        volumes:
+            - .:/app
+        ports:
+            - "8000:8000"
+        depends_on:
+            - pgsql
+            - redis
+            - mailpit
+        working_dir: /app
+        command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --watch
+        restart: unless-stopped
 
-  schedule:
-    build:
-      context: .
-      target: base-dev
-    environment:
-      APP_ENV: local
-      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
-    depends_on:
-      - pgsql
-      - redis
-      - mailpit
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: php artisan schedule:work
-    restart: unless-stopped
+    schedule:
+        build:
+            context: .
+            target: base-dev
+        environment:
+            APP_ENV: local
+            PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+        depends_on:
+            - pgsql
+            - redis
+            - mailpit
+        volumes:
+            - .:/app
+        working_dir: /app
+        command: php artisan schedule:work
+        restart: unless-stopped
 
-  queue:
-    build:
-      context: .
-      target: base-dev
-    environment:
-      APP_ENV: local
-      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
-    depends_on:
-      - pgsql
-      - redis
-      - mailpit
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: php artisan queue:work --tries=3
-    restart: unless-stopped
+    queue:
+        build:
+            context: .
+            target: base-dev
+        environment:
+            APP_ENV: local
+            PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+        depends_on:
+            - pgsql
+            - redis
+            - mailpit
+        volumes:
+            - .:/app
+        working_dir: /app
+        command: php artisan queue:work --tries=3
+        restart: unless-stopped
 
-  pgsql:
-    image: postgres:16.1-alpine
-    environment:
-      POSTGRES_DB: app
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: app
-    volumes:
-      - pgsql:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    pgsql:
+        image: postgres:16.1-alpine
+        environment:
+            POSTGRES_DB: app
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: app
+        volumes:
+            - pgsql:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
 
-  redis:
-    image: redis:6.2-alpine
-    volumes:
-      - redis:/data
-    ports:
-      - "6379:6379"
+    redis:
+        image: redis:6.2-alpine
+        volumes:
+            - redis:/data
+        ports:
+            - "6379:6379"
 
-  mailpit:
-    image: axllent/mailpit:latest
-    volumes:
-      - mailpit:/data
-    ports:
-      - "8025:8025"
-      - "1025:1025"
-    environment:
-      MP_MAX_MESSAGES: 5000
-      MP_DATA_FILE: /data/mailpit.db
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    mailpit:
+        image: axllent/mailpit:latest
+        volumes:
+            - mailpit:/data
+        ports:
+            - "8025:8025"
+            - "1025:1025"
+        environment:
+            MP_MAX_MESSAGES: 5000
+            MP_DATA_FILE: /data/mailpit.db
+            MP_SMTP_AUTH_ACCEPT_ANY: 1
+            MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
-  minio:
-    image: minio/minio:latest
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - minio:/buckets
-    environment:
-      MINIO_ROOT_USER: minio-user
-      MINIO_ROOT_PASSWORD: minio-password
-    command: server /buckets --console-address ":9001"
+    minio:
+        image: minio/minio:latest
+        ports:
+            - "9000:9000"
+            - "9001:9001"
+        volumes:
+            - minio:/buckets
+        environment:
+            MINIO_ROOT_USER: minio-user
+            MINIO_ROOT_PASSWORD: minio-password
+        command: server /buckets --console-address ":9001"
 
 volumes:
-  pgsql:
-    driver: local
-  redis:
-    driver: local
-  mailpit:
-    driver: local
-  minio:
-    driver: local
+    pgsql:
+        driver: local
+    redis:
+        driver: local
+    mailpit:
+        driver: local
+    minio:
+        driver: local

@@ -3,22 +3,22 @@ name: api-testing
 version: '3.9'
 
 services:
-  app:
-    build:
-      context: .
-      target: base-dev
-    environment:
-      APP_ENV: testing
-      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
-    depends_on:
-      - pgsql
-    volumes:
-      - ./:/app
-    working_dir: /app
+    app:
+        build:
+            context: .
+            target: base-dev
+        environment:
+            APP_ENV: testing
+            PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+        depends_on:
+            - pgsql
+        volumes:
+            - ./:/app
+        working_dir: /app
 
-  pgsql:
-    image: postgres:16.1-alpine
-    environment:
-      POSTGRES_DB: app
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: app
+    pgsql:
+        image: postgres:16.1-alpine
+        environment:
+            POSTGRES_DB: app
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: app
