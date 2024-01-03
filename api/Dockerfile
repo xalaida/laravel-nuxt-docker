@@ -82,17 +82,20 @@ ENV OPCACHE_VALIDATE_TIMESTAMPS=1
 # Build stage
 FROM base AS build
 
+# Specify environment variable for .env file
+ENV APP_ENV=production
+
 # Copy application files
 COPY --chown=www-data:www-data . .
+
+# Specify filesystem permissions
+RUN chmod -R 775 storage bootstrap/cache
 
 # Install Composer dependencies
 RUN composer install \
     --no-interaction \
     --no-dev \
     --optimize-autoloader
-
-# Specify production environment variable
-ENV APP_ENV=production
 
 # Optimize config loading
 RUN php artisan config:cache \

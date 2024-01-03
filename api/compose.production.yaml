@@ -7,9 +7,7 @@ services:
         build:
             context: .
             target: build
-        image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
-        environment:
-            APP_ENV: production
+        restart: unless-stopped
         ports:
             - "8000:8000"
         depends_on:
@@ -20,7 +18,6 @@ services:
         working_dir: /app
         entrypoint: bash entrypoint.sh
         command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
-        restart: unless-stopped
         healthcheck:
             test: php artisan octane:status || exit 1
             start_period: 5s
@@ -32,9 +29,7 @@ services:
         build:
             context: .
             target: build
-        image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
-        environment:
-            APP_ENV: production
+        restart: unless-stopped
         depends_on:
             pgsql:
                 condition: service_healthy
@@ -42,15 +37,12 @@ services:
                 condition: service_healthy
         working_dir: /app
         command: php artisan schedule:work
-        restart: unless-stopped
 
     queue:
         build:
             context: .
             target: build
-        image: ${IMAGE_REGISTRY:-local}/${IMAGE_NAME:-api}:${IMAGE_TAG:-latest}
-        environment:
-            APP_ENV: production
+        restart: unless-stopped
         depends_on:
             pgsql:
                 condition: service_healthy
@@ -58,17 +50,16 @@ services:
                 condition: service_healthy
         working_dir: /app
         command: php artisan queue:work --tries=3
-        restart: unless-stopped
 
     pgsql:
         image: postgres:16.1-alpine
+        restart: unless-stopped
         environment:
             POSTGRES_DB: app
             POSTGRES_USER: app
             POSTGRES_PASSWORD: app
         volumes:
             - pgsql:/var/lib/postgresql/data
-        restart: unless-stopped
         healthcheck:
             test: pg_isready -q -d app -U app
             interval: 5s
@@ -77,9 +68,9 @@ services:
 
     redis:
         image: redis:6.2-alpine
+        restart: unless-stopped
         volumes:
             - redis:/data
-        restart: unless-stopped
         healthcheck:
             test: redis-cli ping || exit 1
             interval: 5s
