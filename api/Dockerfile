@@ -16,38 +16,42 @@ RUN apt-get update \
 # Remove APT lists
     && rm -rf /var/lib/apt/lists/*
 
+# Install PHP extensions using PECL
+RUN pecl install \
+# Install Swoole extension
+    swoole \
+# Install Redis extension
+    redis \
+# Compile PHP extensions
+    && docker-php-ext-install \
+# Compile PDO extension
+    pdo \
+# Compile PGSQL extension
+    pdo_pgsql \
+# Compile Process Control extension
+    pcntl \
+# Compile Opcache extension
+    opcache \
+# Enable PHP extensions
+    && docker-php-ext-enable \
+# Enable Swoole extension
+    swoole \
+# Enable Redis extension
+    redis \
+# Enable Process Control extension
+    pcntl
+
 # Install Composer binary
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install PDO PGSQL extension
-RUN docker-php-ext-install pdo pdo_pgsql
-
-# Install Redis extension
-RUN pecl install redis \
-    && docker-php-ext-enable redis
-
-# Install ZIP extension
-RUN docker-php-ext-install zip
-
-# Install Process Control extension
-RUN docker-php-ext-install pcntl \
-    && docker-php-ext-enable pcntl
-
-# Install Swoole extension
-RUN pecl install swoole \
-    && docker-php-ext-enable swoole
-
-# Install OPcache extension
-RUN docker-php-ext-install opcache
+# Copy PHP configuration file
+COPY ./platform/php/php.ini "${PHP_INI_DIR}/php.ini"
 
 # Copy OPcache configuration file
 COPY ./platform/php/conf.d/opcache.ini "${PHP_INI_DIR}/conf.d/opcache.ini"
 
 # Configure OPcache environment variables
 ENV OPCACHE_VALIDATE_TIMESTAMPS=0
-
-# Copy PHP configuration file
-COPY ./platform/php/php.ini "${PHP_INI_DIR}/php.ini"
 
 # Specify working directory
 WORKDIR /app
