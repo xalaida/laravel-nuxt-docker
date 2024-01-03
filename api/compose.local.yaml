@@ -7,28 +7,27 @@ services:
         build:
             context: .
             target: base-dev
+        restart: unless-stopped
         environment:
             APP_ENV: local
-            PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
-        volumes:
-            - .:/app
         ports:
             - "8000:8000"
         depends_on:
             - pgsql
             - redis
             - mailpit
+        volumes:
+            - .:/app
         working_dir: /app
         command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --watch
-        restart: unless-stopped
 
     schedule:
         build:
             context: .
             target: base-dev
+        restart: unless-stopped
         environment:
             APP_ENV: local
-            PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
         depends_on:
             - pgsql
             - redis
@@ -37,15 +36,14 @@ services:
             - .:/app
         working_dir: /app
         command: php artisan schedule:work
-        restart: unless-stopped
 
     queue:
         build:
             context: .
             target: base-dev
+        restart: unless-stopped
         environment:
             APP_ENV: local
-            PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
         depends_on:
             - pgsql
             - redis
@@ -54,7 +52,6 @@ services:
             - .:/app
         working_dir: /app
         command: php artisan queue:work --tries=3
-        restart: unless-stopped
 
     pgsql:
         image: postgres:16.1-alpine

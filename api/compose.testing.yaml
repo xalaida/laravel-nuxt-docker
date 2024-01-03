@@ -9,11 +9,13 @@ services:
             target: base-dev
         environment:
             APP_ENV: testing
-            PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+            XDEBUG_MODE: ${XDEBUG_MODE:-off}
+        extra_hosts:
+            - host.docker.internal:host-gateway
         depends_on:
             - pgsql
         volumes:
-            - ./:/app
+            - .:/app
         working_dir: /app
 
     pgsql:
