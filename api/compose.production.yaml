@@ -15,7 +15,6 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-        working_dir: /app
         entrypoint: bash entrypoint.sh
         command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
         healthcheck:
@@ -35,7 +34,6 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-        working_dir: /app
         command: php artisan schedule:work
 
     queue:
@@ -48,7 +46,6 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-        working_dir: /app
         command: php artisan queue:work --tries=3
 
     pgsql:
