@@ -40,11 +40,11 @@ RUN pecl install swoole \
 # Install OPcache extension
 RUN docker-php-ext-install opcache
 
-# Configure OPcache environment variables
-ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0"
-
 # Copy OPcache configuration file
 COPY ./platform/php/conf.d/opcache.ini "${PHP_INI_DIR}/conf.d/opcache.ini"
+
+# Configure OPcache environment variables
+ENV OPCACHE_VALIDATE_TIMESTAMPS=0
 
 # Copy PHP configuration file
 COPY ./platform/php/php.ini "${PHP_INI_DIR}/php.ini"
@@ -67,11 +67,17 @@ COPY --from=node:21-slim /opt /opt
 RUN npm install -g chokidar
 
 # Configure node_mobules path
-ENV NODE_PATH /usr/local/lib/node_modules
+ENV NODE_PATH=/usr/local/lib/node_modules
 
 # Install Xdebug extension
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
+
+# Copy Xdebug configuration file
+COPY ./platform/php/conf.d/xdebug.ini "${PHP_INI_DIR}/conf.d/xdebug.ini"
+
+# Configure OPcache environment variables
+ENV OPCACHE_VALIDATE_TIMESTAMPS=1
 
 # Build stage
 FROM base AS build
@@ -85,7 +91,7 @@ RUN composer install \
     --no-dev \
     --optimize-autoloader
 
-# Specify production environment
+# Specify production environment variable
 ENV APP_ENV=production
 
 # Optimize config loading
