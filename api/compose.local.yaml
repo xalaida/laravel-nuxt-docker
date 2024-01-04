@@ -10,14 +10,17 @@ services:
         restart: unless-stopped
         environment:
             APP_ENV: local
-        ports:
-            - "8000:8000"
+        volumes:
+            - .:/app
         depends_on:
             - pgsql
             - redis
             - mailpit
-        volumes:
-            - .:/app
+        ports:
+            - "8000:8000"
+        networks:
+            - api
+            - gateway
         command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --watch
 
     schedule:
@@ -27,12 +30,14 @@ services:
         restart: unless-stopped
         environment:
             APP_ENV: local
+        volumes:
+            - .:/app
         depends_on:
             - pgsql
             - redis
             - mailpit
-        volumes:
-            - .:/app
+        networks:
+            - api
         command: php artisan schedule:work
 
     queue:
@@ -42,12 +47,14 @@ services:
         restart: unless-stopped
         environment:
             APP_ENV: local
+        volumes:
+            - .:/app
         depends_on:
             - pgsql
             - redis
             - mailpit
-        volumes:
-            - .:/app
+        networks:
+            - api
         command: php artisan queue:work --tries=3
 
     pgsql:
@@ -60,6 +67,8 @@ services:
             - pgsql:/var/lib/postgresql/data
         ports:
             - "5432:5432"
+        networks:
+            - api
 
     redis:
         image: redis:6.2-alpine
@@ -67,38 +76,55 @@ services:
             - redis:/data
         ports:
             - "6379:6379"
+        networks:
+            - api
 
     mailpit:
         image: axllent/mailpit:latest
-        volumes:
-            - mailpit:/data
-        ports:
-            - "8025:8025"
-            - "1025:1025"
         environment:
             MP_MAX_MESSAGES: 5000
             MP_DATA_FILE: /data/mailpit.db
             MP_SMTP_AUTH_ACCEPT_ANY: 1
             MP_SMTP_AUTH_ALLOW_INSECURE: 1
+        volumes:
+            - mailpit:/data
+        ports:
+            - "8025:8025"
+            - "1025:1025"
+        networks:
+            - api
 
     minio:
         image: minio/minio:latest
-        ports:
-            - "9000:9000"
-            - "9001:9001"
-        volumes:
-            - minio:/buckets
         environment:
             MINIO_ROOT_USER: minio-user
             MINIO_ROOT_PASSWORD: minio-password
+        volumes:
+            - minio:/buckets
+        ports:
+            - "9000:9000"
+            - "9001:9001"
+        networks:
+            - api
         command: server /buckets --console-address ":9001"
 
 volumes:
     pgsql:
         driver: local
+
     redis:
         driver: local
+
     mailpit:
         driver: local
+
     minio:
         driver: local
+
+networks:
+    api:
+        driver: bridge
+
+    gateway:
+        driver: bridge
+        external: true
