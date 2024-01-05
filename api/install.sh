@@ -4,11 +4,14 @@ COMPOSE_FILE=compose.local.yaml
 APP_SERVICE=app
 GATEWAY_NETWORK=gateway
 TEMP_DIR=tmp
-SELF_DESTRUCTION=false
 
 install_laravel() {
     docker compose -f $COMPOSE_FILE run --rm --no-deps --user $(id -u):$(id -g) $APP_SERVICE \
         composer create-project --prefer-dist laravel/laravel $TEMP_DIR
+
+    rm $TEMP_DIR/.env
+    rm $TEMP_DIR/.env.example
+    rm $TEMP_DIR/README.md
 
     shopt -s dotglob
 
