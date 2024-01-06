@@ -45,13 +45,13 @@ RUN pecl install \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy PHP configuration file
-COPY ./platform/php/php.ini "${PHP_INI_DIR}/php.ini"
+COPY platform/php/php.ini $PHP_INI_DIR/php.ini
 
 # Copy OPcache configuration file
-COPY ./platform/php/conf.d/opcache.ini "${PHP_INI_DIR}/conf.d/opcache.ini"
+COPY platform/php/conf.d/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
 
 # Configure OPcache environment variables
-ENV OPCACHE_VALIDATE_TIMESTAMPS=0
+ENV OPCACHE_VALIDATE_TIMESTAMPS=1
 
 # Specify working directory
 WORKDIR /app
@@ -73,27 +73,20 @@ RUN npm install -g chokidar
 # Configure node_mobules path
 ENV NODE_PATH=/usr/local/lib/node_modules
 
-# Install Xdebug extension
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-
-# Copy Xdebug configuration file
-COPY ./platform/php/conf.d/xdebug.ini "${PHP_INI_DIR}/conf.d/xdebug.ini"
-
-# Configure OPcache environment variables
-ENV OPCACHE_VALIDATE_TIMESTAMPS=1
-
 # Build stage
 FROM base AS build
 
 # Specify environment variable for .env file
 ENV APP_ENV=production
 
+# Configure OPcache environment variables
+ENV OPCACHE_VALIDATE_TIMESTAMPS=0
+
 # Copy application files
 COPY --chown=www-data:www-data . .
 
 # Specify filesystem permissions
-RUN chmod -R 775 storage bootstrap/cache
+RUN chmod -R 775 bootstrap/cache storage
 
 # Install Composer dependencies
 RUN composer install \
