@@ -123,10 +123,6 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 
 ## To Do List
 
-- [ ] replace octane watcher with docker compose watch command (and apply for everything: schedule, queue and octane)
-- [ ] fix opcache or xdebug for octane server (currently it breaks octane server, make it work for testing env) https://www.youtube.com/watch?v=4opFac50Vwo&ab_channel=DerickRethans
-- [ ] check missing extensions and dependencies in dockerfile
-    - [ ] # Install Curl && apt-get install -y libcurl3-dev curl \ && docker-php-ext-install curl \
-    - [ ] # Install procps (required by Octane) && apt-get install -y procps \
-    - [ ] # Install BC Math && docker-php-ext-install bcmath \
-    - [ ] # # Install internationalization functions && apt-get install -y zlib1g-dev libicu-dev g++ \ && docker-php-ext-configure intl \ && docker-php-ext-install intl \
+- [ ] use php.ini-development & php.ini-production from base php image
+- [ ] configure xdebug for testing environment
+- [ ] replace octane watcher with `docker compose watch`, enable for app, queue, schedule
