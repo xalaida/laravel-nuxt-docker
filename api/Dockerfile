@@ -47,10 +47,10 @@ RUN pecl install \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy PHP configuration file
-COPY platform/php/php.ini $PHP_INI_DIR/php.ini
+COPY .platform/php/php.ini $PHP_INI_DIR/php.ini
 
 # Copy OPcache configuration file
-COPY platform/php/conf.d/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
+COPY .platform/php/conf.d/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
 
 # Configure OPcache environment variables
 ENV OPCACHE_ENABLE=disable
@@ -68,7 +68,7 @@ RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
 # Copy Xdebug configuration file
-COPY platform/php/conf.d/xdebug.ini ${PHP_INI_DIR}/conf.d/xdebug.ini
+COPY .platform/php/conf.d/xdebug.ini ${PHP_INI_DIR}/conf.d/xdebug.ini
 
 # Install Node.js
 COPY --from=node:21-slim /usr/lib /usr/lib
