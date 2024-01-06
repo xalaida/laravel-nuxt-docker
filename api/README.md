@@ -124,5 +124,4 @@ Also, there is an excellent project called [Laradock](https://laradock.io/) that
 ## To Do List
 
 - [ ] use php.ini-development & php.ini-production from base php image
-- [ ] configure xdebug for testing environment
-- [ ] replace octane watcher with `docker compose watch`, enable for app, queue, schedule
+- [ ] replace octane watcher with `docker compose watch` for app, queue, schedule services
