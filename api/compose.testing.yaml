@@ -7,17 +7,16 @@ services:
         build:
             context: .
             target: base-dev
+        tty: true
         environment:
             APP_ENV: testing
-            XDEBUG_MODE: ${XDEBUG_MODE:-off}
+        volumes:
+            - .:/app
         extra_hosts:
             - host.docker.internal:host-gateway
         depends_on:
             pgsql:
                 condition: service_healthy
-        volumes:
-            - .:/app
-        tty: true
 
     pgsql:
         image: postgres:16.1-alpine

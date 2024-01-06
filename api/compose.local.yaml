@@ -7,6 +7,7 @@ services:
         build:
             context: .
             target: base-dev
+        command: php artisan octane:start --host=0.0.0.0 --port=8000 --watch
         restart: unless-stopped
         environment:
             APP_ENV: local
@@ -21,12 +22,12 @@ services:
         networks:
             - api
             - gateway
-        command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --watch
 
     schedule:
         build:
             context: .
             target: base-dev
+        command: php artisan schedule:work
         restart: unless-stopped
         environment:
             APP_ENV: local
@@ -38,12 +39,12 @@ services:
             - mailpit
         networks:
             - api
-        command: php artisan schedule:work
 
     queue:
         build:
             context: .
             target: base-dev
+        command: php artisan queue:work --tries=3
         restart: unless-stopped
         environment:
             APP_ENV: local
@@ -55,7 +56,6 @@ services:
             - mailpit
         networks:
             - api
-        command: php artisan queue:work --tries=3
 
     pgsql:
         image: postgres:16.1-alpine
@@ -96,6 +96,7 @@ services:
 
     minio:
         image: minio/minio:latest
+        command: server /buckets --console-address ":9001"
         environment:
             MINIO_ROOT_USER: minio-user
             MINIO_ROOT_PASSWORD: minio-password
@@ -106,7 +107,6 @@ services:
             - "9001:9001"
         networks:
             - api
-        command: server /buckets --console-address ":9001"
 
 volumes:
     pgsql:

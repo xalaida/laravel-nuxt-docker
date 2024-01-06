@@ -7,6 +7,8 @@ services:
         build:
             context: .
             target: build
+        entrypoint: bash entrypoint.sh
+        command: php artisan octane:start --host=0.0.0.0 --port=8000
         restart: unless-stopped
         depends_on:
             pgsql:
@@ -17,8 +19,6 @@ services:
             - "8000:8000"
         networks:
             - api
-        entrypoint: bash entrypoint.sh
-        command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
         healthcheck:
             test: php artisan octane:status || exit 1
             start_period: 5s
@@ -30,6 +30,7 @@ services:
         build:
             context: .
             target: build
+        command: php artisan schedule:work
         restart: unless-stopped
         depends_on:
             pgsql:
@@ -38,12 +39,12 @@ services:
                 condition: service_healthy
         networks:
             - api
-        command: php artisan schedule:work
 
     queue:
         build:
             context: .
             target: build
+        command: php artisan queue:work --tries=3
         restart: unless-stopped
         depends_on:
             pgsql:
@@ -52,7 +53,6 @@ services:
                 condition: service_healthy
         networks:
             - api
-        command: php artisan queue:work --tries=3
 
     pgsql:
         image: postgres:16.1-alpine
