@@ -13,6 +13,8 @@ RUN apt-get update \
     git \
 # Install PostgresSQL library
     libpq-dev \
+# Install Process monitoring package
+    procps \
 # Remove APT lists
     && rm -rf /var/lib/apt/lists/*
 
@@ -47,17 +49,24 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy PHP configuration file
 COPY platform/php/php.ini $PHP_INI_DIR/php.ini
 
-# Copy OPcache configuration file
-COPY platform/php/conf.d/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
-
 # Configure OPcache environment variables
 ENV OPCACHE_VALIDATE_TIMESTAMPS=1
+
+# Copy OPcache configuration file
+# COPY platform/php/conf.d/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
 
 # Specify working directory
 WORKDIR /app
 
 # Dev stage
 FROM base AS base-dev
+
+# Install Xdebug extension
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
+# Copy Xdebug configuration file
+COPY platform/php/conf.d/xdebug.ini ${PHP_INI_DIR}/conf.d/xdebug.ini
 
 # Install Node.js
 COPY --from=node:21-slim /usr/lib /usr/lib
