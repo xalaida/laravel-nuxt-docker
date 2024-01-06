@@ -49,11 +49,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy PHP configuration file
 COPY platform/php/php.ini $PHP_INI_DIR/php.ini
 
-# Configure OPcache environment variables
-ENV OPCACHE_VALIDATE_TIMESTAMPS=1
-
 # Copy OPcache configuration file
-# COPY platform/php/conf.d/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
+COPY platform/php/conf.d/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
+
+# Configure OPcache environment variables
+ENV OPCACHE_ENABLE=disable
+ENV OPCACHE_ENABLE_CLI=0
+ENV OPCACHE_JIT=tracing
 
 # Specify working directory
 WORKDIR /app
@@ -89,7 +91,9 @@ FROM base AS build
 ENV APP_ENV=production
 
 # Configure OPcache environment variables
-ENV OPCACHE_VALIDATE_TIMESTAMPS=0
+ENV OPCACHE_ENABLE=1
+ENV OPCACHE_ENABLE_CLI=1
+ENV OPCACHE_JIT=tracing
 
 # Copy application files
 COPY --chown=www-data:www-data . .
