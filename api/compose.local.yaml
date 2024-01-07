@@ -13,12 +13,13 @@ services:
             APP_ENV: local
         volumes:
             - .:/app
-        depends_on:
-            - pgsql
-            - redis
-            - mailpit
+        hostname: api
         ports:
             - "8000:8000"
+        depends_on:
+          - pgsql
+          - redis
+          - mailpit
         networks:
             - api
             - gateway

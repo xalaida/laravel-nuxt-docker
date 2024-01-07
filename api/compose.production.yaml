@@ -10,13 +10,14 @@ services:
         entrypoint: bash entrypoint.sh
         command: php artisan octane:start --host=0.0.0.0 --port=8000
         restart: unless-stopped
-        depends_on:
-            pgsql:
-                condition: service_healthy
-            redis:
-                condition: service_healthy
+        hostname: api
         ports:
             - "8000:8000"
+        depends_on:
+          pgsql:
+            condition: service_healthy
+          redis:
+            condition: service_healthy
         networks:
             - api
         healthcheck:
