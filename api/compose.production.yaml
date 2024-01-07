@@ -1,6 +1,6 @@
 name: api-production
 
-version: '3.9'
+version: "3.9"
 
 services:
     app:
@@ -10,9 +10,13 @@ services:
         entrypoint: bash entrypoint.sh
         command: php artisan octane:start --host=0.0.0.0 --port=8000
         restart: unless-stopped
-        hostname: api
-        ports:
-            - "8000:8000"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.api.rule=Host(`api.host.production`)"
+            - "traefik.http.routers.api.service=api"
+            - "traefik.http.services.api.loadbalancer.server.port=8000"
+        expose:
+          - 8000
         depends_on:
           pgsql:
             condition: service_healthy
@@ -20,6 +24,7 @@ services:
             condition: service_healthy
         networks:
             - api
+            - reverse-proxy
         healthcheck:
             test: php artisan octane:status || exit 1
             start_period: 5s
@@ -96,6 +101,6 @@ networks:
     api:
         driver: bridge
 
-    gateway:
+    reverse-proxy:
         driver: bridge
         external: true

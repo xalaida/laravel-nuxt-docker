@@ -1,6 +1,6 @@
 name: api-local
 
-version: '3.9'
+version: "3.9"
 
 services:
     app:
@@ -11,18 +11,23 @@ services:
         restart: unless-stopped
         environment:
             APP_ENV: local
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.api.rule=Host(`api.host.local`)"
+            - "traefik.http.routers.api.service=api"
+            - "traefik.http.services.api.loadbalancer.server.port=8000"
         volumes:
             - .:/app
         hostname: api
         ports:
             - "8000:8000"
         depends_on:
-          - pgsql
-          - redis
-          - mailpit
+            - pgsql
+            - redis
+            - mailpit
         networks:
             - api
-            - gateway
+            - reverse-proxy
 
     schedule:
         build:
@@ -126,6 +131,6 @@ networks:
     api:
         driver: bridge
 
-    gateway:
+    reverse-proxy:
         driver: bridge
         external: true
