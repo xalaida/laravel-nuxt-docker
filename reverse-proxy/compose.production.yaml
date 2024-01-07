@@ -6,16 +6,18 @@ services:
     traefik:
         image: traefik:v3.0
         command:
-            - "--entrypoints.web.address=:80"
             - "--providers.docker=true"
             - "--providers.docker.network=reverse-proxy"
             - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.websecure.address=:443"
             - "--log.level=info"
         restart: unless-stopped
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
         ports:
             - "80:80"
+            - "443:443"
         networks:
             - reverse-proxy
 
