@@ -34,4 +34,4 @@ if [ "$1" == "--destruct" ]; then
     rm ./install.sh
 fi
 
-echo "The client app has been installed and run on http://localhost:3000."
+echo "The web app has been installed and run on http://localhost:3000."
