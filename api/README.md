@@ -1,6 +1,6 @@
 # API
 
-This section houses your Laravel application.
+This directory houses your Laravel application.
 
 ## Stack
 

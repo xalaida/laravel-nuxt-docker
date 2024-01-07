@@ -1,10 +1,10 @@
-## Client
+## WEB
 
-This directory contains your Nuxt application.
+This directory houses your Nuxt application.
 
 ## Installation
 
-To install the fresh Nuxt 3 application, run the installation script from your terminal and follow the on-screen instructions:
+To install the fresh Nuxt application, run the installation script from your terminal and follow the on-screen instructions:
 
 ```bash
 ./install.sh
