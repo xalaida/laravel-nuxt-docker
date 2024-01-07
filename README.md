@@ -10,11 +10,10 @@
   * Redis
   * Mailpit
   * Minio
-* Client
+* WEB
   * Nuxt (latest version)
-* Gateway
-  * Nginx
-  * Certbot
+* Reverse proxy
+  * Traefik
 
 ## ⚙ Installation
 
@@ -24,7 +23,7 @@ Clone or download the repository:
 git clone https://github.com/nevadskiy/laravel-nuxt-docker.git
 ```
 
-Install [API](api/README.md), [client](client/README.md), and [gateway](gateway/README.md) (optionally for local development) using their installation instructions.
+Install [API](api/README.md), [WEB](web/README.md), and [reverse-proxy](reverse-proxy/README.md) (optionally for local development) using their installation instructions.
 
 ## 🔌 Network communication
 
