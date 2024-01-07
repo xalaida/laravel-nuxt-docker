@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  app:
+    image: node:21-slim
+    command: npm run dev -- -o
+    environment:
+      HOST: 0.0.0.0
+    volumes:
+      - ./:/app
+    working_dir: /app
+    hostname: client
+    ports:
+      - "3000:3000" # Nuxt port
+      - "24678:24678" # Vite port
+    networks:
+      - client
+      - gateway
+
+networks:
+  client:
+    driver: bridge
+
+  gateway:
+    driver: bridge
+    external: true
