@@ -40,3 +40,9 @@ For production environment it is recommended to configure a Reverse Proxy Server
 ## ☕ Contributing
 
 If you see anything that can be improved, feel free to make a pull request. Contributions are welcome and will be fully credited.
+
+## Support the Project
+
+If you find this project helpful or just want to show your appreciation, consider buying me a coffee. Your support helps in maintaining and improving this project.
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-%23FFDD00.svg?&style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/nevadskiy)
