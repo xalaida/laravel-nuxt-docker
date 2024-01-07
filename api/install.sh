@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 COMPOSE_FILE=compose.local.yaml
 APP_SERVICE=app
 GATEWAY_NETWORK=gateway
@@ -34,7 +36,7 @@ install_flysystem_s3() {
         composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 }
 
-docker network create $GATEWAY_NETWORK
+docker network create --driver bridge $GATEWAY_NETWORK || true
 
 docker compose -f $COMPOSE_FILE build
 
