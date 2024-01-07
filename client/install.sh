@@ -4,7 +4,7 @@ set -e
 
 COMPOSE_FILE=compose.local.yaml
 APP_SERVICE=app
-GATEWAY_NETWORK=gateway
+REVERSE_PROXY_NETWORK=reverse-proxy
 TEMP_DIR=tmp
 
 install_nuxt() {
@@ -18,7 +18,7 @@ install_nuxt() {
     rm -r $TEMP_DIR
 }
 
-docker network create --driver bridge $GATEWAY_NETWORK || true
+docker network create --driver bridge $REVERSE_PROXY_NETWORK || true
 
 docker compose -f $COMPOSE_FILE build
 

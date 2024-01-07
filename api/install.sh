@@ -4,7 +4,7 @@ set -e
 
 COMPOSE_FILE=compose.local.yaml
 APP_SERVICE=app
-GATEWAY_NETWORK=gateway
+REVERSE_PROXY_NETWORK=reverse-proxy
 TEMP_DIR=tmp
 
 install_laravel() {
@@ -36,7 +36,7 @@ install_flysystem_s3() {
         composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 }
 
-docker network create --driver bridge $GATEWAY_NETWORK || true
+docker network create --driver bridge $REVERSE_PROXY_NETWORK || true
 
 docker compose -f $COMPOSE_FILE build
 
