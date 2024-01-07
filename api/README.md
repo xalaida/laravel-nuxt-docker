@@ -24,7 +24,7 @@ Now you should be able to see it running in your browser at [http://localhost:80
 
 ## Environments
 
-There are own docker compose file for each environment: production, local, and testing. For local development it could be useful to rename a `compose.local.yaml` file to `compose.yaml` without having to specify it when using docker compose command.
+There are own docker compose file for each environment: production, local, and testing. For local development it could be useful to rename a `compose.local.yaml` file to `compose.yaml`. This allows to run docker compose command  without having to specify the specific compose file.
 
 ### Building images
 
