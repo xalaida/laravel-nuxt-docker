@@ -1,0 +1,136 @@
+name: api-local
+
+version: "3.9"
+
+services:
+    app:
+        build:
+            context: .
+            target: base-dev
+        command: php artisan octane:start --host=0.0.0.0 --port=8000 --watch
+        restart: unless-stopped
+        environment:
+            APP_ENV: local
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.api.rule=Host(`api.host.local`)"
+            - "traefik.http.routers.api.service=api"
+            - "traefik.http.services.api.loadbalancer.server.port=8000"
+        volumes:
+            - .:/app
+        hostname: api
+        ports:
+            - "8000:8000"
+        depends_on:
+            - pgsql
+            - redis
+            - mailpit
+        networks:
+            - api
+            - reverse-proxy
+
+    schedule:
+        build:
+            context: .
+            target: base-dev
+        command: php artisan schedule:work
+        restart: unless-stopped
+        environment:
+            APP_ENV: local
+        volumes:
+            - .:/app
+        depends_on:
+            - pgsql
+            - redis
+            - mailpit
+        networks:
+            - api
+
+    queue:
+        build:
+            context: .
+            target: base-dev
+        command: php artisan queue:work --tries=3
+        restart: unless-stopped
+        environment:
+            APP_ENV: local
+        volumes:
+            - .:/app
+        depends_on:
+            - pgsql
+            - redis
+            - mailpit
+        networks:
+            - api
+
+    pgsql:
+        image: postgres:16.1-alpine
+        environment:
+            POSTGRES_DB: app
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: app
+        volumes:
+            - pgsql:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        networks:
+            - api
+
+    redis:
+        image: redis:6.2-alpine
+        volumes:
+            - redis:/data
+        ports:
+            - "6379:6379"
+        networks:
+            - api
+
+    mailpit:
+        image: axllent/mailpit:latest
+        environment:
+            MP_MAX_MESSAGES: 5000
+            MP_DATA_FILE: /data/mailpit.db
+            MP_SMTP_AUTH_ACCEPT_ANY: 1
+            MP_SMTP_AUTH_ALLOW_INSECURE: 1
+        volumes:
+            - mailpit:/data
+        ports:
+            - "8025:8025"
+            - "1025:1025"
+        networks:
+            - api
+
+    minio:
+        image: minio/minio:latest
+        command: server /buckets --console-address ":9001"
+        environment:
+            MINIO_ROOT_USER: minio-user
+            MINIO_ROOT_PASSWORD: minio-password
+        volumes:
+            - minio:/buckets
+        ports:
+            - "9000:9000"
+            - "9001:9001"
+        networks:
+            - api
+
+volumes:
+    pgsql:
+        driver: local
+
+    redis:
+        driver: local
+
+    mailpit:
+        driver: local
+
+    minio:
+        driver: local
+
+networks:
+    api:
+        driver: bridge
+
+    reverse-proxy:
+        driver: bridge
+        external: true

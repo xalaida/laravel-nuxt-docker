@@ -1,0 +1,13 @@
+/.idea
+/.vscode
+/.git
+.nuxt/
+.output/
+/node_modules
+/tests
+.dockerignore
+.editorconfig
+.gitattributes
+.gitignore
+compose.*.yaml
+Dockerfile

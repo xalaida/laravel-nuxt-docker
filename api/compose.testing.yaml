@@ -1,0 +1,33 @@
+name: api-testing
+
+version: "3.9"
+
+services:
+    app:
+        build:
+            context: .
+            target: base-dev
+        tty: true
+        environment:
+            APP_ENV: testing
+        volumes:
+            - .:/app
+        extra_hosts:
+            - host.docker.internal:host-gateway
+        depends_on:
+            pgsql:
+                condition: service_healthy
+
+    pgsql:
+        image: postgres:16.1-alpine
+        environment:
+            POSTGRES_DB: app
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: app
+        tmpfs:
+          - /var/lib/postgresql/data
+        healthcheck:
+            test: pg_isready -q -d app -U app
+            interval: 5s
+            timeout: 5s
+            retries: 3

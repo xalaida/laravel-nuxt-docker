@@ -1,0 +1,33 @@
+name: web-local
+
+version: "3.9"
+
+services:
+    app:
+        image: node:21-slim
+        command: npm run dev -- -o
+        environment:
+            HOST: 0.0.0.0
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.web.rule=Host(`web.host.local`)"
+            - "traefik.http.routers.web.service=web"
+            - "traefik.http.services.web.loadbalancer.server.port=3000"
+        volumes:
+            - ./:/app
+        working_dir: /app
+        hostname: web
+        ports:
+            - "3000:3000" # Nuxt port
+            - "24678:24678" # Vite port
+        networks:
+            - web
+            - reverse-proxy
+
+networks:
+    web:
+        driver: bridge
+
+    reverse-proxy:
+        driver: bridge
+        external: true

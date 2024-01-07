@@ -1,0 +1,106 @@
+name: api-production
+
+version: "3.9"
+
+services:
+    app:
+        build:
+            context: .
+            target: build
+        entrypoint: bash entrypoint.sh
+        command: php artisan octane:start --host=0.0.0.0 --port=8000
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.api.rule=Host(`api.host.production`)"
+            - "traefik.http.routers.api.service=api"
+            - "traefik.http.services.api.loadbalancer.server.port=8000"
+        expose:
+          - 8000
+        depends_on:
+          pgsql:
+            condition: service_healthy
+          redis:
+            condition: service_healthy
+        networks:
+            - api
+            - reverse-proxy
+        healthcheck:
+            test: php artisan octane:status || exit 1
+            start_period: 5s
+            interval: 5s
+            timeout: 5s
+            retries: 3
+
+    schedule:
+        build:
+            context: .
+            target: build
+        command: php artisan schedule:work
+        restart: unless-stopped
+        depends_on:
+            pgsql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        networks:
+            - api
+
+    queue:
+        build:
+            context: .
+            target: build
+        command: php artisan queue:work --tries=3
+        restart: unless-stopped
+        depends_on:
+            pgsql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        networks:
+            - api
+
+    pgsql:
+        image: postgres:16.1-alpine
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: app
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: app
+        volumes:
+            - pgsql:/var/lib/postgresql/data
+        networks:
+            - api
+        healthcheck:
+            test: pg_isready -q -d app -U app
+            interval: 5s
+            timeout: 5s
+            retries: 3
+
+    redis:
+        image: redis:6.2-alpine
+        restart: unless-stopped
+        volumes:
+            - redis:/data
+        networks:
+            - api
+        healthcheck:
+            test: redis-cli ping || exit 1
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+volumes:
+    pgsql:
+        driver: local
+
+    redis:
+        driver: local
+
+networks:
+    api:
+        driver: bridge
+
+    reverse-proxy:
+        driver: bridge
+        external: true
