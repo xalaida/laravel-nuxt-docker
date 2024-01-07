@@ -1,5 +1,4 @@
 # Excluded files
-/.docker
 /.idea
 /.vscode
 /.git
@@ -16,4 +15,3 @@
 .gitignore
 compose.*.yaml
 Dockerfile
-Makefile
