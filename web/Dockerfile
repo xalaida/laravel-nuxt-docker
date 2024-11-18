@@ -1,5 +1,5 @@
 # Specify base image
-FROM node:21-slim
+FROM node:22-slim
 
 # Specify working directory
 WORKDIR /app
