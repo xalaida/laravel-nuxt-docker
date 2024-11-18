@@ -5,6 +5,8 @@ FROM php:8.3-cli as base
 RUN apt-get update \
 # Install APT packages
     && apt-get install -y  \
+# Install libbrotli-dev  is required for laravel OCTANE server swoole
+    libbrotli-dev \
 # Install ZIP library
     libzip-dev \
 # Install ZIP binary
