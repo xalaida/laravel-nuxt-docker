@@ -4,7 +4,7 @@ version: "3.9"
 
 services:
     app:
-        image: node:21-slim
+        image: node:22-slim
         command: npm run dev -- -o
         environment:
             HOST: 0.0.0.0
